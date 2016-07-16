@@ -1,0 +1,10 @@
+menu "NOR Driver"
+
+config NOR_S25FL256S
+	bool "S25FL256S"
+	default n
+
+config NOR_W25Q64FV
+	bool "W25Q64FV"
+	default n
+endmenu

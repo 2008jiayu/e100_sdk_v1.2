@@ -1,0 +1,5 @@
+menu "Video Analytic"
+
+source va/Kconfig.va_adas
+
+endmenu

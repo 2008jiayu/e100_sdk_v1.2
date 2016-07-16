@@ -1,0 +1,44 @@
+menu "Police camera application"
+comment "Police camera application"
+config APP_POLICECAM_APP
+	depends on APP_POLICECAM
+	bool "Build the police camera application"
+	default y
+
+if APP_POLICECAM_APP
+source app/Kconfig.policecam.app
+endif
+
+
+config APP_POLICECAM_APPLIB
+	depends on APP_POLICECAM
+	bool "Build the police camera application library"
+	default y
+
+if APP_POLICECAM_APPLIB
+source app/Kconfig.policecam.applib
+endif
+
+config APP_STAMP
+        depends on APP_POLICECAM
+        bool "Enable stamp function"
+        default y
+		
+config APP_AMBA_LINK
+        depends on ENABLE_AMBALINK && APP_POLICECAM
+        bool "Enable AMBA LINK"
+        default y
+
+config APP_DSP_WORKBUFFER_SIZE
+    int "Number of MegaBytes of DSP working buffer"
+    default 260
+    help
+        In MegaBytes unit
+
+config APP_ARD
+        depends on APP_POLICECAM
+        bool "Enable ARD function"
+        default y
+
+endmenu
+

@@ -1,0 +1,24 @@
+menu "Net"
+comment "Net"
+config MW_NET_CTRL
+	depends on BUILD_MW_NET
+	bool "Build MW Net Control (Remote API support)"
+	default y
+
+config MW_NET_EVENTNOTIFIER
+	depends on BUILD_MW_NET
+	bool "Build MW Net Event Notifier"
+	default y
+
+config MW_NET_FIFO
+	depends on BUILD_MW_NET
+	bool "Build MW Net FIFO (Streamming)"
+	default y
+
+config MW_NET_UTILITY
+	depends on BUILD_MW_NET
+	bool "Build MW Net Utility"
+	default y
+
+endmenu
+

@@ -1,0 +1,90 @@
+
+ccflags-y += -I$(src)/sensor/inc
+ccflags-y += -I$(src)/sbrg/b5/inc
+
+VINPATH=sensor
+libperipheral-objs += $(VINPATH)/AmbaSensor.o
+libperipheral-objs += $(VINPATH)/AmbaSensor_UnitTest.o
+libperipheral-objs += $(VINPATH)/AmbaCalibInfo.o
+
+ifdef CONFIG_SENSOR_SONY_IMX117
+libperipheral-objs += $(VINPATH)/AmbaSensor_IMX117.o \
+                      $(VINPATH)/AmbaSensor_IMX117Table.o \
+                      $(VINPATH)/AmbaCalibInfo_IMX117.o
+
+endif
+ifdef CONFIG_SENSOR_OV4689
+libperipheral-objs += $(VINPATH)/AmbaSensor_OV4689.o \
+                      $(VINPATH)/AmbaSensor_OV4689Table.o \
+                      $(VINPATH)/AmbaCalibInfo_OV4689.o
+endif
+ifdef CONFIG_SENSOR_B5_OV4689
+libperipheral-objs += $(VINPATH)/AmbaSensor_B5_OV4689.o \
+                      $(VINPATH)/AmbaSensor_B5_OV4689Table.o \
+              $(VINPATH)/AmbaCalibInfo_B5_OV4689.o
+endif
+ifdef CONFIG_SENSOR_TI913914_OV2710
+libperipheral-objs += $(VINPATH)/AmbaSensor_TI913914_OV2710.o \
+                      $(VINPATH)/AmbaSensor_TI913914_OV2710Table.o \
+                      $(VINPATH)/AmbaCalibInfo_TI913914_OV2710.o
+endif
+
+ifdef CONFIG_SENSOR_SONY_IMX206
+libperipheral-objs += $(VINPATH)/AmbaSensor_IMX206.o \
+                      $(VINPATH)/AmbaSensor_IMX206Table.o \
+                      $(VINPATH)/AmbaCalibInfo_IMX206.o
+endif
+
+ifdef CONFIG_SENSOR_OV10823
+libperipheral-objs += $(VINPATH)/AmbaSensor_OV10823.o \
+                      $(VINPATH)/AmbaSensor_OV10823Table.o \
+                      $(VINPATH)/AmbaCalibInfo_OV10823.o
+endif
+
+ifdef CONFIG_SENSOR_AR0330_PARALLEL
+libperipheral-objs += $(VINPATH)/AmbaSensor_AR0330_PARALLEL.o \
+                      $(VINPATH)/AmbaSensor_AR0330_PARALLELTable.o \
+                      $(VINPATH)/AmbaCalibInfo_AR0330_PARALLEL.o
+endif
+
+ifdef CONFIG_SENSOR_AR0230
+libperipheral-objs += $(VINPATH)/AmbaSensor_AR0230.o \
+                      $(VINPATH)/AmbaSensor_AR0230Table.o \
+                      $(VINPATH)/AmbaCalibInfo_AR0230.o
+endif
+
+ifdef CONFIG_SENSOR_OV9750
+libperipheral-objs += $(VINPATH)/AmbaSensor_OV9750.o \
+                      $(VINPATH)/AmbaSensor_OV9750Table.o \
+                      $(VINPATH)/AmbaCalibInfo_OV9750.o
+endif
+
+ifdef CONFIG_SENSOR_MN34120
+libperipheral-objs += $(VINPATH)/AmbaSensor_MN34120.o \
+                      $(VINPATH)/AmbaSensor_MN34120Table.o \
+                      $(VINPATH)/AmbaCalibInfo_MN34120.o
+endif
+
+ifdef CONFIG_SENSOR_SONY_IMX290
+libperipheral-objs += $(VINPATH)/AmbaSensor_IMX290.o \
+                      $(VINPATH)/AmbaSensor_IMX290Table.o \
+                      $(VINPATH)/AmbaCalibInfo_IMX290.o
+endif
+
+ifdef CONFIG_SENSOR_B5_AR0230
+libperipheral-objs += $(VINPATH)/AmbaSensor_B5_AR0230.o \
+                      $(VINPATH)/AmbaSensor_B5_AR0230Table.o \
+                      $(VINPATH)/AmbaCalibInfo_B5_AR0230.o
+endif
+
+ifdef CONFIG_SENSOR_B5_OV9750
+libperipheral-objs += $(VINPATH)/AmbaSensor_B5_OV9750.o \
+                      $(VINPATH)/AmbaSensor_B5_OV9750Table.o \
+                      $(VINPATH)/AmbaCalibInfo_B5_OV9750.o
+endif
+
+ifdef CONFIG_SENSOR_MN34222
+libperipheral-objs += $(VINPATH)/AmbaSensor_MN34222.o \
+                      $(VINPATH)/AmbaSensor_MN34222Table.o \
+                      $(VINPATH)/AmbaCalibInfo_MN34222.o
+endif

@@ -1,0 +1,93 @@
+config ENABLE_SPINOR_BOOT
+	bool "ENABLE_SPINOR_BOOT  "
+	default n
+	help
+
+config ENABLE_EMMC_BOOT
+	bool "ENABLE_EMMC_BOOT "
+	default n
+	help
+
+menu "SET EMMC BOOT PARAMETER"
+depends on ENABLE_EMMC_BOOT
+choice
+	prompt "EMMC ACCESS PARTITON "
+	depends on ENABLE_EMMC_BOOT
+	default CONFIG_EMMC_ACCPART_USER
+	help
+		Select the area of access partition for EMMC boot flow
+
+config EMMC_ACCPART_USER
+	bool "user"
+	help
+		Always assume a 1 bit data access without doing a bus test.
+
+config EMMC_ACCPART_BP1
+	bool "BP1"
+	help
+		Always assume a 4 bit data access without doing a bus test.
+
+config EMMC_ACCPART_BP2
+	bool "BP2"
+	help
+		Always assume a 8 bit data access without doing a bus test.
+
+endchoice
+
+choice
+	prompt "EMMC BOOT PARTITON "
+	depends on ENABLE_EMMC_BOOT
+	default CONFIG_EMMC_BOOTPART_USER
+	help
+		Select the area of boot partition for EMMC boot flow
+
+config EMMC_BOOTPART_USER
+	bool "user"
+	help
+		Always assume a 1 bit data access without doing a bus test.
+
+config EMMC_BOOTPART_BP1
+	bool "BP1"
+	help
+		Always assume a 4 bit data access without doing a bus test.
+
+config EMMC_BOOTPART_BP2
+	bool "BP2"
+	help
+		Always assume a 8 bit data access without doing a bus test.
+
+endchoice
+
+choice
+	prompt "EMMC Boot Bus Width"
+	depends on ENABLE_EMMC_BOOT
+	default CONFIG_EMMC_BOOT_8BIT
+	help
+		Select the data bus width to use for EMMC boot flow
+
+config EMMC_BOOT_1BIT
+	bool "1 bit"
+	help
+		Always assume a 1 bit data access without doing a bus test.
+
+config EMMC_BOOT_4BIT
+	bool "4 bit"
+	help
+		Always assume a 4 bit data access without doing a bus test.
+
+config EMMC_BOOT_8BIT
+	bool "8 bit"
+	help
+		Always assume a 8 bit data access without doing a bus test.
+
+endchoice
+
+config ENABLE_EMMC_HW_RESET
+	depends on ENABLE_EMMC_BOOT
+	bool "Enable EMMC HW reset pin function"
+	default n
+	help
+		EMMC RST_n pin should be pull high.
+
+endmenu
+

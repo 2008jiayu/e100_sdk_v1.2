@@ -1,0 +1,259 @@
+#
+# For a description of the syntax of this configuration file,
+# see build/scripts/Documentation/kbuild/kconfig-language.txt.
+#
+comment "Build Configuration"
+
+menu "Ambarella Build Targets"
+
+config BUILD_AMBA_SSP_UNITTEST
+	bool "Build amba_ssp_ut while make all"
+	default n
+
+if BUILD_AMBA_SSP_UNITTEST
+config BUILD_AMBA_SSP_UNITTEST_NAME_SH
+	string "Custom shell script for linking"
+	default "ssp/unittest/link-amba_ssp_unittest.sh"
+	help
+	  Custom shell script for linking.
+	  Path is relative to top tree.
+
+config BUILD_AMBA_SSP_UNITTEST_NAME_LDS
+	string "Custom link script"
+	default "ssp/unittest/amba_ssp_unittest.lds"
+	help
+	  Custom link script.
+	  Path is relative to top tree.
+
+endif
+
+
+config BUILD_AMBA_SSP_SVC
+        bool "Build amba_ssp_svc while make all"
+	default n
+
+if BUILD_AMBA_SSP_SVC
+config BUILD_AMBA_SSP_SVC_NAME_SH
+	string "Custom shell script for linking"
+	default "ssp/svc/link-amba_ssp_svc.sh"
+	help
+	  Custom shell script for linking.
+	  Path is relative to top tree.
+
+config BUILD_AMBA_SSP_SVC_NAME_LDS
+	string "Custom link script"
+	default "ssp/svc/amba_ssp_svc.lds"
+	help
+	  Custom link script.
+	  Path is relative to top tree.
+
+endif
+
+
+config BUILD_AMBA_MW_UNITTEST
+        bool "Build amba_mw_ut while make all"
+	default n
+
+if BUILD_AMBA_MW_UNITTEST
+config BUILD_AMBA_MW_UNITTEST_NAME_SH
+	string "Custom shell script for linking"
+	default "mw/unittest/link-amba_mw_unittest.sh"
+	help
+	  Custom shell script for linking.
+	  Path is relative to top tree.
+
+config BUILD_AMBA_MW_UNITTEST_NAME_LDS
+	string "Custom link script"
+	default "mw/unittest/amba_mw_unittest.lds"
+	help
+	  Custom link script.
+	  Path is relative to top tree.
+
+endif
+
+
+config BUILD_AMBA_PBA
+        bool "Build amba_pba while make all"
+	default y
+
+
+config BUILD_AMBA_APP
+        bool "Build amba_app while make all"
+	default n
+
+if BUILD_AMBA_APP
+config BUILD_AMBA_APP_NAME_SH
+	string "Custom shell script for linking"
+	default "app/link-amba_app.sh"
+	help
+	  Custom shell script for linking.
+	  Path is relative to top tree.
+	  Default is  if keeping empty.
+
+config BUILD_AMBA_APP_NAME_LDS
+	string "Custom link script"
+	default "app/amba_app.lds"
+	help
+	  Custom link script.
+	  Path is relative to top tree.
+	  Default is  if keeping empty.
+
+endif
+
+endmenu
+
+menu "CPU Options"
+
+menu "ARM CPU ARCH"
+
+config CPU_32v6
+	bool
+
+config CPU_32v6K
+	bool
+
+config CPU_32v7
+	bool
+
+config MMU
+	bool
+
+config AEABI
+	bool
+
+# ARMv7
+config CPU_V7
+	bool "Support ARM V7 processor"
+	default y
+	select CPU_32v6K
+	select CPU_32v7
+	select MMU
+	select AEABI
+	help
+	  Select for ARMv7, like cortex A9
+
+endmenu
+
+if CPU_V7
+
+choice
+	prompt "VFP type"
+	default VFP_SOFT
+	help
+	  Select ARM Floating Point architecture (VFP) type.
+	  VFP provides hardware support for floating point operations in
+	  half-, single- and double-precision floating point arithmetic.
+	  It is fully IEEE 754 compliant with full software library support.
+
+config VFP_V3
+	bool "VFP v3"
+	help
+	  VFPv3 or VFPv3-D32 is an optional extension to the ARM,
+	  Thumb and ThumbEE instruction sets in the ARMv7-A and ARMv7-R
+	  profiles. VFPv3 implementation is with either thirty-two or
+	  sixteen double word registers.
+
+config VFP_SOFT
+	bool "Software floating-point"
+	help
+	   Using software floating-point.
+
+endchoice
+
+config CPU_V7_CA9
+	bool "Optimize for Cortex-A9"
+	default y
+	help
+	  Add "-mcpu=cortex-a9"
+
+endif
+
+endmenu
+
+menu "GCC Options"
+
+config DEBUG_INFO
+        bool "Compile with debug info"
+	default y
+	help
+	  Compile with debug info, i.e. KBUILD_CFLAGS += -g
+
+choice
+	 prompt "gcc optimization level"
+	 default CC_OPTIMIZE_0
+	 help
+	   Set the optimization level for gcc
+
+config CC_OPTIMIZE_0
+	bool "optimization level 0"
+	help
+	  Reduce compilation time and make debugging produce the expected results.
+	  Compile C source without optimize. KBUILD_CFLAGS += -O0.
+
+config CC_OPTIMIZE_1
+	bool "optimization level 1"
+	help
+	  Optimize. KBUILD_CFLAGS += -O1.
+
+config CC_OPTIMIZE_2
+	bool "optimization level 2"
+	help
+	  Optimize even more. KBUILD_CFLAGS += -O2.
+
+config CC_OPTIMIZE_3
+	bool "optimization level 3"
+	help
+	  Optimize yet more. KBUILD_CFLAGS += -O3.
+
+endchoice
+
+config FRAME_WARN
+	int "Warn for stack frames larger than (needs gcc 4.4)"
+	range 0 8192
+	default 0
+	help
+	  Tell gcc to warn at build time for stack frames larger than this.
+	  Setting this too low will cause a lot of warnings.
+	  Setting it to 0 disables the warning.
+	  Requires gcc 4.4
+
+config CC_W_MISSING_BRACES
+        bool "Supress warning for missing-braces"
+	default y
+        help
+	  KBUILD_CFLAGS += -Wno-missing-braces
+
+config CC_CXX_SUPPORT
+	bool "Support C++ files (code size will be bigger)"
+	default n
+	help
+	  Support C++ files, only *.cpp files.
+	  Note-1: libstd++.a is required. So the code size will be bigger.
+	  Note-2: cf. http://wiki.osdev.org/C++
+	    You need to implement __dso_handle, a handle for the DSO
+	    (Dynamic Shared Object) or just declare "void *__dso_handle = NULL;"
+	    The operators 'new' and 'delete' are necessary to be implemented
+	    for proper memory handle.
+
+
+choice
+	prompt "C Standard"
+	default CC_STD_C99
+	help
+	  Set C standard for gcc
+
+config CC_STD_C99
+	bool "ISO C99"
+	help
+	  Compiled all C files by ISO C99
+
+
+config CC_STD_GNU99
+	bool "ISO GNU99"
+	help
+	  Compiled all C files by GNU99
+
+endchoice
+
+endmenu
+

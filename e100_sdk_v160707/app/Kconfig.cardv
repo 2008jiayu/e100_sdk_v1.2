@@ -1,0 +1,58 @@
+menu "Car camera application"
+comment "Car camera application"
+config APP_CARDV_APP
+	depends on APP_CARDV
+	bool "Build the car camera application"
+	default y
+
+if APP_CARDV_APP
+source app/Kconfig.cardv.app
+endif
+
+
+config APP_CARDV_APPLIB
+	depends on APP_CARDV
+	bool "Build the car camera application library"
+	default y
+
+if APP_CARDV_APPLIB
+source app/Kconfig.cardv.applib
+endif
+
+config APP_STAMP
+        depends on APP_CARDV
+        bool "Enable stamp function"
+        default y
+
+config APP_EVENT_OVERLAP
+        depends on APP_CARDV
+        bool "Enable EVENT OVERLAP function"
+        default n
+
+config APP_AMBA_LINK
+        depends on ENABLE_AMBALINK && APP_CARDV
+        bool "Enable AMBA LINK"
+        default n
+
+config APP_DSP_WORKBUFFER_SIZE
+    int "Number of MegaBytes of DSP working buffer"
+    default 260
+    help
+        In MegaBytes unit
+
+config APP_ARD
+        depends on APP_CARDV
+        bool "Enable ARD function"
+        default y
+
+config ECL_GUI
+        bool "Enable ECL GUI DEF"
+        default y
+
+config APP_NEW_GOP
+        depends on APP_ARD
+        bool "Enable new GOP"
+        default n
+
+endmenu
+

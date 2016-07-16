@@ -1,0 +1,80 @@
+menu "AmbaLink"
+
+config ENABLE_AMBALINK
+	bool "Enable AmbaLink"
+	default y
+        depends on BUILD_SSP_LINK
+	help
+	  Enable AmbaLink module.
+
+menu "Ambalink Configuration"
+        depends on ENABLE_AMBALINK
+
+config AMBALINK_BOOT_ARM11_LINUX
+	bool "Enable AmbaLink on ARM11"
+	default n
+        depends on ENABLE_AMBALINK && SOC_A9
+	help
+	  Enable AmbaLink on ARM11.
+
+config AMBALINK_BOSS
+	bool "Enable BOSS Feature"
+	default y
+        depends on ENABLE_AMBALINK
+	help
+	  Running Linux as a thread in RTOS.
+
+config AMBALINK_MEM_SIZE
+	hex "AmbaLink memory size"
+	default 0x04000000
+        depends on ENABLE_AMBALINK
+	help
+	  The memory size for AmbaLink (including shared memory and linux).
+
+config AMBALINK_SHARED_MEM_SIZE
+	hex "AmbaLink shared memory size"
+	default 0x00600000
+        depends on ENABLE_AMBALINK
+	help
+	  The size of shared memory for AmbaLink service.
+          The size is calculated from the size and number of rpmsg and some AmbaLink service,
+          such as global lock and suspend/resume service.
+
+config AMBALINK_CMDLINE
+	string "Command line of AmbaLink"
+	default "ubi.mtd=8 root=ubi0:linux rootfstype=ubifs console=ttyS1 nr_cpus=1 maxcpus=0"
+        depends on ENABLE_AMBALINK
+	help
+	  Comand line parameters for AmbaLink
+
+config AMBALINK_RPMSG_SIZE
+	int "Size of an RPSMG"
+	default 2048
+        depends on ENABLE_AMBALINK
+	help
+	  The memory size of an RPMSG.
+
+config AMBALINK_RPMSG_NUM
+	int "Number of RPSMG buffer"
+	default 2048
+        depends on ENABLE_AMBALINK
+	help
+	  The maximum number of RPMSG at the same time.
+
+config AMBALINK_VRING_SIZE
+	hex "Size of a vring"
+	default 0xa000
+        depends on ENABLE_AMBALINK
+	help
+	  The memory size of a vring.
+
+config AMBALINK_RPMSG_PROFILE_SIZE
+	hex "Size of a profile package"
+	default 0xa000
+        depends on ENABLE_AMBALINK
+	help
+	  The memory size of an rpmsg/rpc profile package.
+
+endmenu
+endmenu
+

@@ -1,0 +1,14 @@
+
+ccflags-y += -I$(src)/sbrg/inc
+
+SBRGPATH=sbrg
+libperipheral-objs += $(SBRGPATH)/AmbaSbrg_Drv.o
+
+ifdef CONFIG_SBRIDGE_TI913914
+libperipheral-objs += $(SBRGPATH)/AmbaSbrg_Ds90ub91x.o
+endif					  
+
+ifneq ($(wildcard $(srctree)/$(src)/sbrg/b5/Makefile),)
+obj-$(CONFIG_SBRIDGE_AMBA_B5) += sbrg/b5/
+endif
+

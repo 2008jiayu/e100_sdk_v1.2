@@ -1,0 +1,8 @@
+config ENABLE_ECL_ADAS
+        bool "Enable ECL Video ADAS"
+        default y
+
+config BUILD_ECL_ADAS
+        depends on ENABLE_ECL_ADAS
+        bool "Build ECL ADAS"
+        default n

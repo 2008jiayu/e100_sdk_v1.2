@@ -1,0 +1,30 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+comment "Chip Configuration"
+
+choice
+	prompt "Ambarella SOC"
+	default SOC_A12
+	help
+	  Select Ambarella SOC series
+
+config SOC_A9
+	bool "Ambarella A9 SOC"
+	help
+	  CPU is ARM11 and Dual Core Cortex A9
+
+config SOC_A12
+	bool "Ambarella A12 SOC"
+        select CPU_V7
+	help
+	  CPU is Single Core Cortex A9
+
+config SOC_A11
+	bool "Ambarella A11 SOC"
+        select CPU_V7
+	help
+	  CPU is Dual Core Cortex A9
+
+endchoice

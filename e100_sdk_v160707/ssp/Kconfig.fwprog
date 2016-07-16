@@ -1,0 +1,181 @@
+#
+# For a description of the syntax of this configuration file,
+# see Documentation/kbuild/kconfig-language.txt.
+#
+
+menu "Firmware Programmer"
+
+menu "Bootstrap Partition"
+
+config BST
+	string "Bootstrap image file"
+	default "AmbaCortexBootstrap_DDR3.bin"
+	help
+		Location of the bootstrap image.
+
+config BST_VIF
+	string "Bootstrap version number"
+	default "1.0.0"
+	help
+		The version number of the bootstrap image.
+		The format is major.minor.patch.
+
+endmenu
+
+menu "Bootloader Partition"
+
+config BLD
+	string "Bootloader image file"
+	default "AmbaBootloaderNAND.bin"
+	help
+		Location of the bootloader image.
+
+config BLD_VIF
+	string "Bootloader version number"
+	default "1.0.0"
+	help
+		The version number of the bootloader image.
+		The format is major.minor.patch.
+
+config BLD_LOADADDR
+	hex "Load address"
+	default 0x10000000
+
+endmenu
+
+menu "SD Firmware Update Partition"
+
+config PBA
+	string "SD firmware update image file"
+	default "AmbaFwUpdaterSD.bin"
+	help
+		Location of the SD firmware update image.
+
+config PBA_VIF
+	string "SD firmware update version number"
+	default "1.0.0"
+	help
+		The version number of the SD firmware update image.
+		The format is major.minor.patch.
+
+config PBA_LOADADDR
+	hex "Load address"
+	default 0x03400000
+
+endmenu
+
+menu "RTOS System Partition"
+
+config SYS
+	string "RTOS system image file"
+	default "AmbaCamera.bin"
+	help
+		Location of the RTOS system image.
+
+config SYS_VIF
+	string "RTOS system version number"
+	default "1.0.0"
+	help
+		The version number of the RTOS system image.
+		The format is major.minor.patch.
+
+config SYS_LOADADDR
+	hex "Load address"
+	default 0xA0001000
+
+endmenu
+
+menu "DSP uCode Partition"
+
+config DSP
+	string "DSP uCode image file"
+	default "AmbaDSP.bin"
+	help
+		Location of the DSP ucode image.
+
+config DSP_VIF
+	string "DSP uCode version number"
+	default "1.0.0"
+	help
+		The version number of the DSP uCode image.
+		The format is major.minor.patch.
+
+config DSP_LIST_FILE
+	string "DSP uCode list file"
+	default "AmbaDSP.list"
+	help
+		Location of the dsp list file that describes
+		the files included in the DSP uCode image.
+
+endmenu
+
+menu "System ROM Partition"
+
+config ROM
+	string "ROM image file"
+	default "AmbaROM.bin"
+	help
+		Location of the ROM image.
+
+config ROM_VIF
+	string "ROM version number"
+	default "1.0.0"
+	help
+		The version number of the system ROM image.
+		The format is major.minor.patch.
+
+config ROM_LIST_FILE
+	string "ROM list file"
+	default "AmbaROM.list"
+	help
+		Location of the romfs list file that describes
+		the files included in the ROM image.
+
+endmenu
+
+menu "Linux Kernel Partition"
+
+config LNX
+	string "Linux image file"
+	default "Image"
+	help
+		Location of the Linux image.
+
+config LNX_VIF
+	string "Linux version number"
+	default "1.0.0"
+	help
+		The version number of the Linux kernel image.
+		The format is major.minor.patch.
+
+config LNX_LOADADDR
+	hex "Load address"
+	default 0x00608000
+
+config DTB
+	string "DTB image file"
+	default "dtb"
+	depends on SOC_A12
+	help
+		Location of the dtb image.
+
+endmenu
+
+menu "Linux Root FS Partition"
+
+config RFS
+	string "RootFS image file"
+	default "rootfs.ubi"
+	help
+		Location of the Linux root FS image.
+
+config RFS_VIF
+	string "RootFS version number"
+	default "1.0.0"
+	help
+		The version number of the Linux root file system image.
+		The format is major.minor.patch.
+
+endmenu
+
+endmenu

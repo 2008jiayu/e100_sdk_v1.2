@@ -1,0 +1,1635 @@
+/**
+ * @file src/app/connected/applib/src/system/ApplibSys_Sensor.c
+ *
+ *  Implementation of Sensor interface.
+ *
+ * History:
+ *    2013/08/14 - [Martin Lai] created file
+ *
+ *
+ * Copyright (c) 2015 Ambarella, Inc.
+ *
+ * This file and its contents (¡°Software¡±) are protected by intellectual property rights
+ * including, without limitation, U.S. and/or foreign copyrights.  This Software is also the
+ * confidential and proprietary information of Ambarella, Inc. and its licensors.  You may
+ * not use, reproduce, disclose, distribute, modify, or otherwise prepare derivative
+ * works of this Software or any portion thereof except pursuant to a signed license
+ * agreement or nondisclosure agreement with Ambarella, Inc. or its authorized
+ * affiliates.	In the absence of such an agreement, you agree to promptly notify and
+ * return this Software to Ambarella, Inc.
+ *
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON-
+ * INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AMBARELLA, INC. OR ITS AFFILIATES BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; COMPUTER FAILURE OR
+ * MALFUNCTION; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+#include <applib.h>
+#include <wchar.h>
+//#define DEBUG_APPLIB_SYS_SENSOR
+#if defined(DEBUG_APPLIB_SYS_SENSOR)
+#define DBGMSG AmbaPrint
+#define DBGMSGc(x) AmbaPrintColor(GREEN,x)
+#define DBGMSGc2 AmbaPrintColor
+#else
+#define DBGMSG(...)
+#define DBGMSGc(...)
+#define DBGMSGc2(...)
+#endif
+static APPLIB_SENSOR_s AppLibSensorGlobal= {0};
+
+AMBA_DSP_CHANNEL_ID_u AppEncChannel;
+
+APPLIB_VIDEOENC_BITRATE_s SensorVideoBitRateTable[SENSOR_VIDEO_RES_NUM][VIDEO_QUALITY_NUM] = {
+    /** mode, avg, ratio_min, ratio_max */
+    {    // SENSOR_VIDEO_RES_UHD_HALF    /** 00 */
+        {  VIDEOENC_SMART_VBR, 60.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 40.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_2560_1920P30
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQHD_FULL
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQHD_HALF
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 20.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 16.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 20.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 16.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1296P30
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1920_1440P60
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1920_1440P30
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P45
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P40
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080I
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_COMP_1080P_FULL
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_COMP_1080P_HALF
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_COMP_1080I
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1200P60
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1200P30
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1440_1080P30
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_900P30
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_FULL
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  9.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_HALF
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WVGA_FULL
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WVGA_HALF
+        {  VIDEOENC_SMART_VBR,  5.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  3.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_SDWIDE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_SD
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  3.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  2.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_960p60
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_960p30
+        {  VIDEOENC_SMART_VBR, 12.5, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  9.5, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_540p30
+        {  VIDEOENC_SMART_VBR, 12.5, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  9.5, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_360P30
+        {  VIDEOENC_SMART_VBR,  0.6, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  0.5, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  0.4, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_VGA_FULL
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_VGA_HALF
+        {  VIDEOENC_SMART_VBR,  5.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  3.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQVGA_FULL
+        {  VIDEOENC_SMART_VBR,  0.7, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  0.6, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  0.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQVGA_HALF
+        {  VIDEOENC_SMART_VBR,  0.7, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  0.6, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  0.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_QVGA
+        {  VIDEOENC_SMART_VBR,  0.7, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  0.6, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  0.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_CIF
+        {  VIDEOENC_SMART_VBR,  0.7, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  0.6, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  0.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQHDP50
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P48
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P24
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_TRUE_1080P15
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1200P48
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_1200P24
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_960P48
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_960P24
+        {  VIDEOENC_SMART_VBR, 12.5, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  9.5, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_P48
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_P24
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WVGA_P48
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WVGA_P24
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_VGA_P48
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_VGA_P24
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_PHOTO
+        {  VIDEOENC_SMART_VBR,  0.7, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  0.6, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  0.5, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_HFR_P240_P200
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_HFR_P200_P200
+        {  VIDEOENC_SMART_VBR, 36.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 30.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 24.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 10.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  8.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+        {  VIDEOENC_SMART_VBR, 18.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR, 15.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR, 12.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+        {  VIDEOENC_SMART_VBR,  6.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  5.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  3.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  2.0, 0.75, 1.25}     // NORMAL
+    },
+    {    // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+        {  VIDEOENC_SMART_VBR,  4.0, 0.75, 1.25},    // SFINE
+        {  VIDEOENC_SMART_VBR,  3.0, 0.75, 1.25},    // FINE
+        {  VIDEOENC_SMART_VBR,  2.0, 0.75, 1.25}     // NORMAL
+    }
+};
+
+#if defined(CONFIG_APP_ARD) && defined(CONFIG_APP_NEW_GOP)
+APPLIB_VIDEOENC_GOP_s SensorVideoGOPTable[VIN_SYS_NUM][SENSOR_VIDEO_RES_NUM] = {
+    /* NTSC */
+    {
+        /** mode, M, N, IDR */
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_UHD_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_2560_1920P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHD_FULL
+        {   GOP_SIMPLE, 1, 30, 30},       // SENSOR_VIDEO_RES_WQHD_HALF
+        {   GOP_SIMPLE, 1, 30, 30},       // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+        {   GOP_SIMPLE, 1, 30, 30},       // SENSOR_VIDEO_RES_1296P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1920_1440P60
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1920_1440P30
+        {   GOP_SIMPLE, 1, 60, 60},       // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P45
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P40
+        {   GOP_SIMPLE, 1, 30, 30},       // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+        {   GOP_SIMPLE, 1, 30, 30},       // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080I
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080P_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080P_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080I
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P60
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1440_1080P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_900P30
+        {   GOP_SIMPLE, 1, 60, 60},       // SENSOR_VIDEO_RES_HD_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_HALF
+
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_SDWIDE
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_SD
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P60
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_540P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_360P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQVGA_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQVGA_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_QVGA
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_CIF
+
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHDP50
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P15
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_P24
+
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_PHOTO
+
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P200_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},         // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8}        // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+
+    },
+    /* PAL */
+    {
+        /** mode, M, N, IDR */
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_UHD_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_2560_1920P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHD_FULL
+        {   GOP_SIMPLE, 1, 25, 25},       // SENSOR_VIDEO_RES_WQHD_HALF
+        {   GOP_SIMPLE, 1, 25, 25},       // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+        {   GOP_SIMPLE, 1, 25, 25},       // SENSOR_VIDEO_RES_1296P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1920_1440P60
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1920_1440P30
+        {   GOP_SIMPLE, 1, 50, 50},       // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P45
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P40
+        {   GOP_SIMPLE, 1, 25, 25},       // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+        {   GOP_SIMPLE, 1, 25, 25},       // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080I
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080P_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080P_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080I
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P60
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1440_1080P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_900P30
+        {   GOP_SIMPLE, 1, 50, 50},       // SENSOR_VIDEO_RES_HD_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_HALF
+
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_SDWIDE
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_SD
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P60
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_540P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_360P30
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQVGA_FULL
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQVGA_HALF
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_QVGA
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_CIF
+
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHDP50
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P15
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_P24
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_P48
+        {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_P24
+
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_PHOTO
+
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P200_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},         // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+        {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+        {   GOP_SIMPLE, 1,  8,  8}        // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+
+    },
+};
+#else /* default */
+APPLIB_VIDEOENC_GOP_s SensorVideoGOPTable[SENSOR_VIDEO_RES_NUM] = {
+    /** mode, M, N, IDR */
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_UHD_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_2560_1920P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHD_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHD_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1296P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1920_1440P60
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1920_1440P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P45
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P40
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080I
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080P_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080P_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_COMP_1080I
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P60
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1440_1080P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_900P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_HALF
+
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_SDWIDE
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_SD
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P60
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_540P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_360P30
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQVGA_FULL
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQVGA_HALF
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_QVGA
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_CIF
+
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WQHDP50
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P48
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P24
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_TRUE_1080P15
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P48
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_1200P24
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P48
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_960P24
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_P48
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_HD_P24
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_P48
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_WVGA_P24
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_P48
+    {   GOP_SIMPLE, 1, 8,  8},        // SENSOR_VIDEO_RES_VGA_P24
+
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_PHOTO
+
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P240_P200
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P200_P200
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+    {   GOP_SIMPLE, 1,  8,  8},         // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+    {   GOP_SIMPLE, 1,  8,  8},        // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+    {   GOP_SIMPLE, 1,  8,  8}        // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+};
+#endif
+
+APPLIB_SENSOR_VIDEO_ENC_CONFIG_s SensorVideoEncConfigTableNTSC[SENSOR_VIDEO_RES_NUM] = {
+    {  3840, 2160, 3840, 2160, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_UHD_HALF
+    {  2560, 1920, 2560, 1920, VAR_4x3, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_2560_1920P30
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHD_FULL
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHD_HALF
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+    {  2304, 1296, 2304, 1296, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_1296P30
+    {  1920, 1440, 1920, 1440, VAR_4x3, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_1920_1440P60
+    {  1920, 1440, 1920, 1440, VAR_4x3, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_1920_1440P30
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  45000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P45
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  40000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P40
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001,  30000, ALL_FIELD}, // SENSOR_VIDEO_RES_TRUE_1080I
+    {  1440, 1080, 1440, 1080, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_COMP_1080P_FULL
+    {  1440, 1080, 1440, 1080, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_COMP_1080P_HALF
+    {  1440, 1080, 1440, 1080, VAR_16x9, 1001,  30000, ALL_FIELD}, // SENSOR_VIDEO_RES_COMP_1080I
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P60
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P30
+    {  1440, 1080, 1440, 1080, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_1440_1080P30
+    {  1600,  900, 1600,  900, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_900P30
+    {  1280,  720, 1280,  720, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_FULL
+    {  1280,  720, 1280,  720, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HALF
+
+    {   848,  480,  848,  480, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_FULL
+    {   848,  480,  848,  480, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_HALF
+    {   720,  480,  720,  480, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_SDWIDE
+    {   720,  480,  720,  480, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_SD
+    {  1280,  960, 1280,  960, VAR_4x3,  1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P60
+    {  1280,  960, 1280,  960, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P30
+    {   960,  540,  960,  540, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_540P30
+    {   640,  360,  640,  360, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_360P30
+    {   640,  480,  640,  480, VAR_4x3,  1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_FULL
+    {   640,  480,  640,  480, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_HALF
+    {   432,  240,  432,  240, VAR_16x9, 1001,  60000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_FULL
+    {   432,  240,  432,  240, VAR_16x9, 1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_HALF
+    {   320,  240,  320,  240, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_QVGA
+    {   352,  240,  352,  240, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_CIF
+
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHDP50
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P48
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P24
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001,  15000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P15
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P48
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P24
+    {  1280,  960, 1280,  960, VAR_4x3,  1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P48
+    {  1280,  960, 1280,  960, VAR_4x3,  1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P24
+    {  1280,  720, 1280,  720, VAR_16x9, 1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_P48
+    {  1280,  720, 1280,  720, VAR_16x9, 1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_P24
+    {   848,  480,  848,  480, VAR_16x9, 1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_P48
+    {   848,  480,  848,  480, VAR_16x9, 1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_P24
+    {   640,  480,  640,  480, VAR_4x3,  1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_P48
+    {   640,  480,  640,  480, VAR_4x3,  1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_P24
+
+    {   352,  240,  352,  240, VAR_4x3,  1001,  30000, ALL_FRAME}, // SENSOR_VIDEO_RES_PHOTO
+
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001, 120000, ALL_FRAME}, // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+    {  1280,  720, 1280,  720, VAR_16x9, 1001, 240000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HFR_P240_P200
+    {  1280,  720, 1280,  720, VAR_16x9, 1000, 200000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HFR_P200_P200
+    {  1280,  720, 1280,  720, VAR_16x9, 1001, 120000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+    {   848,  480,  848,  480, VAR_16x9, 1001, 240000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+    {   848,  480,  848,  480, VAR_16x9, 1001, 120000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+    {   640,  480,  640,  480, VAR_4x3,  1001, 240000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+    {   640,  480,  640,  480, VAR_4x3,  1001, 120000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+    {   432,  240,  432,  240, VAR_16x9, 1001, 240000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+    {   432,  240,  432,  240, VAR_16x9, 1001, 120000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+    {   320,  240,  320,  240, VAR_4x3,  1001, 120000, ALL_FRAME} // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+};
+
+APPLIB_SENSOR_VIDEO_ENC_CONFIG_s SensorVideoEncConfigTablePAL[SENSOR_VIDEO_RES_NUM] = {
+    {  3840, 2160, 3840, 2160, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_UHD_HALF
+    {  2560, 1920, 2560, 1920, VAR_4x3, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_2560_1920P30
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHD_FULL
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHD_HALF
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+    {  2304, 1296, 2304, 1296, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_1296P30
+    {  1920, 1440, 1920, 1440, VAR_4x3, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_1920_1440P60
+    {  1920, 1440, 1920, 1440, VAR_4x3, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_1920_1440P30
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  45000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P45
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  40000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P40
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  25000, ALL_FIELD}, // SENSOR_VIDEO_RES_TRUE_1080I
+    {  1440, 1080, 1440, 1080, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_COMP_1080P_FULL
+    {  1440, 1080, 1440, 1080, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_COMP_1080P_HALF
+    {  1440, 1080, 1440, 1080, VAR_16x9, 1000,  25000, ALL_FIELD}, // SENSOR_VIDEO_RES_COMP_1080I
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P60
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P30
+    {  1440, 1080, 1440, 1080, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_1440_1080P30
+    {  1600,  900, 1600,  900, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_900P30
+    {  1280,  720, 1280,  720, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_FULL
+    {  1280,  720, 1280,  720, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HALF
+
+    {   848,  480,  848,  480, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_FULL
+    {   848,  480,  848,  480, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_HALF
+    {   720,  576,  720,  576, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_SDWIDE
+    {   720,  576,  720,  576, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_SD
+    {  1280,  960, 1280,  960, VAR_4x3,  1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P60
+    {  1280,  960, 1280,  960, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P30
+    {   960,  540,  960,  540, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_540P30
+    {   640,  360,  640,  360, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_360P30
+    {   640,  480,  640,  480, VAR_4x3,  1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_FULL
+    {   640,  480,  640,  480, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_HALF
+    {   432,  240,  432,  240, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_FULL
+    {   432,  240,  432,  240, VAR_16x9, 1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_HALF
+    {   320,  240,  320,  240, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_QVGA
+    {   352,  288,  352,  288, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_CIF
+
+    {  2560, 1440, 2560, 1440, VAR_16x9, 1000,  50000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQHDP50
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P48
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P24
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1001,  15000, ALL_FRAME}, // SENSOR_VIDEO_RES_TRUE_1080P15
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P48
+    {  1600, 1200, 1600, 1200, VAR_4x3,  1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_1200P24
+    {  1280,  960, 1280,  960, VAR_4x3,  1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P48
+    {  1280,  960, 1280,  960, VAR_4x3,  1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_960P24
+    {  1280,  720, 1280,  720, VAR_16x9, 1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_P48
+    {  1280,  720, 1280,  720, VAR_16x9, 1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_P24
+    {   848,  480,  848,  480, VAR_16x9, 1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_P48
+    {   848,  480,  848,  480, VAR_16x9, 1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_P24
+    {   640,  480,  640,  480, VAR_4x3,  1000,  48000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_P48
+    {   640,  480,  640,  480, VAR_4x3,  1000,  24000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_P24
+
+    {   352,  288,  352,  288, VAR_4x3,  1000,  25000, ALL_FRAME}, // SENSOR_VIDEO_RES_PHOTO
+
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+    {  1920, 1080, 1920, 1080, VAR_16x9, 1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+    {  1280,  720, 1280,  720, VAR_16x9, 1000, 200000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HFR_P240_P200
+    {  1280,  720, 1280,  720, VAR_16x9, 1000, 200000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HFR_P200_P200
+    {  1280,  720, 1280,  720, VAR_16x9, 1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+    {   848,  480,  640,  480, VAR_16x9, 1000, 200000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+    {   848,  480,  640,  480, VAR_16x9, 1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+    {   640,  480,  640,  480, VAR_4x3,  1000, 200000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+    {   640,  480,  640,  480, VAR_4x3,  1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+    {   432,  240,  432,  240, VAR_16x9, 1000, 200000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+    {   432,  240,  432,  240, VAR_16x9, 1000, 100000, ALL_FRAME}, // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+    {   320,  240,  432,  240, VAR_16x9, 1000, 100000, ALL_FRAME} // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+};
+
+UINT16 sensor_video_res_string_table_ntsc[SENSOR_VIDEO_RES_NUM][SENSOR_VIDEO_RES_STR_LEN] = {
+    {'3','8','4','0','x','2','1','6','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'2','5','6','0','x','1','9','2','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'2','5','6','0','x','1','4','4','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'2','5','6','0','x','1','4','4','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'H','D','R',' ','2','5','6','0','x','1','4','4','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'2','3','0','4','x','1','2','9','6',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','4','4','0',' ','6','0','P',' ','4',':','3','\0'},
+    {'1','9','2','0','x','1','4','4','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','4','5','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','4','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'H','D','R',' ','1','9','2','0','x','1','0','8','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','6','0','I',' ','1','6',':','9','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','6','0','I',' ','1','6',':','9','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','6','0','P',' ','4',':','3','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'1','6','0','0','x','9','0','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','3','0','P',' ','1','6',':','9','\0'},
+
+    {'8','4','8','x','4','8','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'7','2','0','x','4','8','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'7','2','0','x','4','8','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','6','0','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'9','6','0','x','5','4','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','3','6','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','4','8','0',' ','6','0','P',' ','4',':','3','\0'},
+    {'6','4','0','x','4','8','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'4','3','2','x','2','4','0',' ','6','0','P',' ','1','6',':','9','\0'},
+    {'4','3','2','x','2','4','0',' ','3','0','P',' ','1','6',':','9','\0'},
+    {'3','2','0','x','2','4','0',' ','3','0','P',' ','4',':','3','\0'},
+    {'3','5','2','x','2','4','0',' ','3','0','P',' ','4',':','3','\0'},
+
+    {'2','5','6','0','x','1','4','4','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','4','8','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','2','4','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','1','5','P',' ','1','6',':','9','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','4','8','P',' ','4',':','3','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','2','4','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','4','8','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','2','4','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','7','2','0',' ','4','8','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','4','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','4','8','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','2','4','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','4','8','0',' ','4','8','P',' ','4',':','3','\0'},
+    {'6','4','0','x','4','8','0',' ','2','4','P',' ','4',':','3','\0'},
+
+    {'P','r','e','c','i','s','e','\0'},
+
+    {'1','9','2','0','x','1','0','8','0',' ','1','2','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','1','0','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','4','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','0','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','1','2','0','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','2','4','0','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','1','2','0','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','4','8','0',' ','2','4','0','P',' ','4',':','3','\0'},
+    {'6','4','0','x','4','8','0',' ','1','2','0','P',' ','4',':','3','\0'},
+    {'4','3','2','x','2','4','0',' ','2','4','0','P',' ','1','6',':','9','\0'},
+    {'4','3','2','x','2','4','0',' ','1','2','0','P',' ','1','6',':','9','\0'},
+    {'3','2','0','x','2','4','0',' ','1','2','0','P',' ','4',':','3','\0'}
+};
+
+UINT16 sensor_video_res_string_table_pal[SENSOR_VIDEO_RES_NUM][SENSOR_VIDEO_RES_STR_LEN] = {
+    {'3','8','4','0','x','2','1','6','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'2','5','6','0','x','1','9','2','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'2','5','6','0','x','1','4','4','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'2','5','6','0','x','1','4','4','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'H','D','R',' ','2','5','6','0','x','1','4','4','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'2','3','0','4','x','1','2','9','6',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','4','4','0',' ','5','0','P',' ','4',':','3','\0'},
+    {'1','9','2','0','x','1','4','4','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','4','5','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','4','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'H','D','R',' ','1','9','2','0','x','1','0','8','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','5','0','I',' ','1','6',':','9','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','5','0','I',' ','1','6',':','9','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','5','0','P',' ','4',':','3','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'1','4','4','0','x','1','0','8','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'1','6','0','0','x','9','0','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','5','P',' ','1','6',':','9','\0'},
+
+    {'8','4','8','x','4','8','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'7','2','0','x','4','8','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'7','2','0','x','4','8','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','5','0','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'9','6','0','x','5','4','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','3','6','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','4','8','0',' ','5','0','P',' ','4',':','3','\0'},
+    {'6','4','0','x','4','8','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'4','3','2','x','2','4','0',' ','5','0','P',' ','1','6',':','9','\0'},
+    {'4','3','2','x','2','4','0',' ','2','5','P',' ','1','6',':','9','\0'},
+    {'3','2','0','x','2','4','0',' ','2','5','P',' ','4',':','3','\0'},
+    {'3','5','2','x','2','4','0',' ','2','5','P',' ','4',':','3','\0'},
+
+#ifdef CONFIG_APP_ARD
+    {'2','5','6','0','x','1','4','4','0',' ','5','0','P',' ','1','6',':','9','\0'},
+#else
+    {'2','5','6','0','x','1','4','4','0',' ','6','0','P',' ','1','6',':','9','\0'},
+#endif
+    {'1','9','2','0','x','1','0','8','0',' ','4','8','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','2','4','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','1','5','P',' ','1','6',':','9','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','4','8','P',' ','4',':','3','\0'},
+    {'1','6','0','0','x','1','2','0','0',' ','2','4','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','4','8','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','9','6','0',' ','2','4','P',' ','4',':','3','\0'},
+    {'1','2','8','0','x','7','2','0',' ','4','8','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','4','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','4','8','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','2','4','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','4','8','0',' ','4','8','P',' ','4',':','3','\0'},
+    {'6','4','0','x','4','8','0',' ','2','4','P',' ','4',':','3','\0'},
+
+    {'P','r','e','c','i','s','e','\0'},
+
+    {'1','9','2','0','x','1','0','8','0',' ','1','0','0','P',' ','1','6',':','9','\0'},
+    {'1','9','2','0','x','1','0','8','0',' ','1','0','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','0','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','2','0','0','P',' ','1','6',':','9','\0'},
+    {'1','2','8','0','x','7','2','0',' ','1','0','0','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','2','0','0','P',' ','1','6',':','9','\0'},
+    {'8','4','8','x','4','8','0',' ','1','0','0','P',' ','1','6',':','9','\0'},
+    {'6','4','0','x','4','8','0',' ','2','0','0','P',' ','4',':','3','\0'},
+    {'6','4','0','x','4','8','0',' ','1','0','0','P',' ','4',':','3','\0'},
+    {'4','3','2','x','2','4','0',' ','2','0','0','P',' ','1','6',':','9','\0'},
+    {'4','3','2','x','2','4','0',' ','1','0','0','P',' ','1','6',':','9','\0'},
+    {'3','2','0','x','2','4','0',' ','1','0','0','P',' ','1','6',':','9','\0'}
+};
+
+/* To use this table of piv setting temporarily. */
+APPLIB_SENSOR_PIV_CONFIG_s SensorPIVConfigTable[SENSOR_VIDEO_RES_NUM] = {
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_UHD_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_2560_1920P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQHD_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQHD_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQHD_HALF_HDR
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_1296P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_1920_1440P60
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_1920_1440P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0000},    // SENSOR_VIDEO_RES_TRUE_1080P_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_TRUE_1080P45
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_TRUE_1080P40
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_TRUE_1080P_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_TRUE_HDR_1080P_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_TRUE_1080I
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_COMP_1080P_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_COMP_1080P_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_COMP_1080I
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0000},    // SENSOR_VIDEO_RES_1200P60
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_1200P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_1440_1080P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_900P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0000},    // SENSOR_VIDEO_RES_HD_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_HD_HALF
+
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0000},    // SENSOR_VIDEO_RES_WVGA_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_WVGA_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_SDWIDE
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_SD
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_960P60
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_960P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_540P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_360P30
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_VGA_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_VGA_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQVGA_FULL
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQVGA_HALF
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_QVGA
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_CIF
+
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQHDP50
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_TRUE_1080P48
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_TRUE_1080P24
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0404},    // SENSOR_VIDEO_RES_TRUE_1080P15
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_1200P48
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_1200P24
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_960P48
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_960P24
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_HD_P48
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_HD_P24
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WVGA_P48
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WVGA_P24
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_VGA_P48
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_VGA_P24
+
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_PHOTO
+
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_FHD_HFR_P120_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_FHD_HFR_P100_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQVGA_HFR_P200_P200
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQVGA_HFR_P120_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WQVGA_HFR_P240_P200
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_QVGA_HFR_P120_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_HD_HFR_P120_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_VGA_HFR_P120_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_VGA_HFR_P240_P200
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505},    // SENSOR_VIDEO_RES_WVGA_HFR_P120_P100
+    {VIDEO_PIV_MODE_BOTH, 2000, 0x0505}    // SENSOR_VIDEO_RES_WVGA_HFR_P240_P200
+};
+
+/**
+ *  @brief Remove the Sensor input device
+ *
+ *  Remove the Sensor input device
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_Remove(void)
+{
+    memset(&AppLibSensorGlobal, 0x0, sizeof(APPLIB_SENSOR_s));
+    return 0;
+}
+
+/**
+ *  @brief Attach the Sensor input device and enable the device control.
+ *
+ *  Attach the Sensor input device and enable the device control.
+ *
+ *  @param [in] dev informations of device
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_Attach(APPLIB_SENSOR_s *dev)
+{
+    if (dev == NULL)
+        return -1;
+
+    AppLibSysSensor_Remove();
+    memcpy(&AppLibSensorGlobal, dev, sizeof(APPLIB_SENSOR_s));
+    AmbaPrint("[Applib Sensor] Registered sensor %s", AppLibSensorGlobal.Name);
+    return 0;
+}
+
+/**
+ *  @brief Clean sensor configuration
+ *
+ *  Clean sensor configuration
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_PreInit(void)
+{
+    int ReturnValue = -1;
+
+    /* Clear AppLibSensorGlobal.*/
+    memset(&AppLibSensorGlobal, 0x0, sizeof(APPLIB_SENSOR_s));
+
+    return ReturnValue;
+}
+
+/**
+ *  @brief Initialize the sensor
+ *
+ *  Initialize the sensor
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_Init(void)
+{
+    int ReturnValue = 0;
+    DBGMSG("[Applib - Sensor] <Init> Start");
+#if 0
+    AppEncChannel.Data = 0;
+    AppEncChannel.Bits.VinID = 0;
+#if defined(MULTI_CHANNEL_VIN)
+    AppEncChannel.Bits.SensorID = 0xf;
+#else
+    AppEncChannel.Bits.SensorID = (1<<0);
+#endif
+    AppLibSensorGlobal.Init(AppEncChannel);
+    ReturnValue = AmbaSensor_Init(AppEncChannel);
+#endif
+    DBGMSG("[Applib - Sensor] <Init> End ReturnValue = %d",ReturnValue);
+
+    return ReturnValue;
+}
+
+/**
+ *  @brief Check the system capacity (NTSC or PAL)
+ *
+ *  Check the system capacity (NTSC or PAL)
+ *
+ *  @return 1 Support, 0 Not support
+ */
+int AppLibSysSensor_CheckSysCap(UINT32 cap)
+{
+    return(AppLibSensorGlobal.SysCapacity&cap);
+}
+
+/**
+ *  @brief Check the capacity of dzoom function
+ *
+ *  Check the capacity of dzoom function
+ *
+ *  @return 1 Support, 0 Not support
+ */
+int AppLibSysSensor_CheckDzoomCap(void)
+{
+    return AppLibSensorGlobal.DzoomCapacity;
+}
+
+/**
+ *  @brief Check the capacity of 3D function
+ *
+ *  Check the capacity of 3D function
+ *
+ *  @return 1 Support, 0 Not support
+ */
+int AppLibSysSensor_Check3dCap(void)
+{
+    return AppLibSensorGlobal.ThreeDCapacity;
+}
+
+/**
+ *  @brief Check the rotation of sensor
+ *
+ *  Check the rotation of sensor
+ *
+ *  @return The rotation of sensor
+ */
+int AppLibSysSensor_CheckRotate(void)
+{
+    return AppLibSensorGlobal.Rotate;
+}
+
+/**
+ *  @brief Get the number of video resolution
+ *
+ *  Get the number of video resolution
+ *
+ *  @return The number of video resolution
+ */
+int AppLibSysSensor_GetVideoResNum(void)
+{
+    return AppLibSensorGlobal.VideoResNum;
+}
+
+/**
+ *  @brief Get the number of photo size
+ *
+ *  Get the number of photo size
+ *
+ *  @param [in] capMode Capture mode
+ *
+ *  @return The number of photo size
+ */
+int AppLibSysSensor_GetPjpegConfigNum(int capMode)
+{
+    int ReturnValue = 0;
+    switch (capMode) {
+    case SENSOR_PHOTO_CAP_NORMAL:
+        ReturnValue = AppLibSensorGlobal.PjpegConfigNormalNum;
+        break;
+    case SENSOR_PHOTO_CAP_COLLAGE:
+        ReturnValue = AppLibSensorGlobal.PjpegConfigCollageNum;
+        break;
+    case SENSOR_PHOTO_CAP_BURST:
+        ReturnValue = AppLibSensorGlobal.PjpegConfigBurstNum;
+        break;
+    default:
+        AmbaPrintColor(RED,"Invalid capture mode.");
+        break;
+    }
+    return ReturnValue;
+}
+
+/**
+ *  @brief Get the video resolution id by index
+ *
+ *  Get the video resolution id by index
+ *
+ *  @param [in] resRef Reference index
+ *
+ *  @return The video resolution id
+ */
+int AppLibSysSensor_GetVideoResID(int resRef)
+{
+    return AppLibSensorGlobal.GetVideoResID(resRef);
+}
+
+/**
+ *  @brief Get the sensor mode of photo live view
+ *
+ *  Get the sensor mode of photo live view
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The sensor mode
+ */
+int AppLibSysSensor_GetPhotoLiveViewModeID(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetPhotoLiveviewModeID(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the sensor mode of photo HFR mode
+ *
+ *  Get the sensor mode of photo live view
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The sensor mode
+ */
+int AppLibSysSensor_GetPhotoHfrModeID(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetPhotoHfrModeID(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the sensor mode of photo HFR pre-flash mode
+ *
+ *  Get the sensor mode of photo live view
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The sensor mode
+ */
+int AppLibSysSensor_GetPhotoPreflashHfrModeID(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetPhotoPreflashHfrModeID(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the sensor mode of photo capture mode
+ *
+ *  Get the sensor mode of photo live view
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The sensor mode config
+ */
+APPLIB_SENSOR_STILLCAP_MODE_CONFIG_s* AppLibSysSensor_GetStillCaptureModeConfig(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetStillCaptureModeConfig(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the sensor mode of photo OB mode
+ *
+ *  Get the sensor mode of photo live view
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The sensor mode
+ */
+int AppLibSysSensor_GetStillCaptureObModeID(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetStillCaptureObModeID(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the strings of video resolution
+ *
+ *  Get the strings of video resolution
+ *
+ *  @param [in] videoResID Video resolution index
+ *
+ *  @return The strings of video resolution
+ */
+UINT16* AppLibSysSensor_GetVideoResStr(int videoResID)
+{
+    return AppLibSensorGlobal.GetVideoResString(videoResID);
+}
+
+/**
+ *  @brief Get the strings of photo size
+ *
+ *  Get the strings of photo size
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The strings of photo size
+ */
+UINT16* AppLibSysSensor_GetPhotoSizeStr(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetPhotoSizeString(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the vin mode
+ *
+ *  Get the vin mode
+ *
+ *  @param [in] vinConfig The vin configuration
+ *
+ *  @return The vin mode
+ */
+int AppLibSysSensor_GetVinMode(APPLIB_SENSOR_VIN_CONFIG_s *vinConfig)
+{
+    return AppLibSensorGlobal.GetVinMode(vinConfig);
+}
+
+/**
+ *  @brief Get the aspect ratio of capture mode
+ *
+ *  Get the aspect ratio of capture mode
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The aspect ratio of capture mode
+ */
+int AppLibSysSensor_GetCaptureModeAR(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetCaptureModeAR(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the size of preview window
+ *
+ *  Get the size of preview window
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *  @param [out] width Width
+ *  @param [out] height Height
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPreviewWindow(int capMode, int pjpegConfigID, int *width, int *height)
+{
+    return AppLibSensorGlobal.GetPreviewWindow(capMode, pjpegConfigID, width, height);
+}
+
+/**
+ *  @brief Get the quality value of photo
+ *
+ *  Get the quality value of photo
+ *
+ *  @param [in] qualityMode Quality mode index
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPhotoQualityConfig(int qualityMode)
+{
+    return AppLibSensorGlobal.GetPhotoQualityConfig(qualityMode);
+}
+
+/**
+ *  @brief Get the photo live view configuration
+ *
+ *  Get the photo live view configuration
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The photo live view configuration
+ */
+APPLIB_SENSOR_STILLPREV_CONFIG_s* AppLibSysSensor_GetPhotoLiveviewConfig(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetPhotoLiveviewConfig(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the photo capture configuration
+ *
+ *  Get the photo capture configuration
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The photo capture configuration
+ */
+APPLIB_SENSOR_STILLCAP_CONFIG_s* AppLibSysSensor_GetPjpegConfig(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetPjpegConfig(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the video configuration
+ *
+ *  Get the video configuration
+ *
+ *  @param [in] videoResID Video resolution index
+ *
+ *  @return The video configuration
+ */
+APPLIB_SENSOR_VIDEO_ENC_CONFIG_s* AppLibSysSensor_GetVideoConfig(int videoResID)
+{
+    return AppLibSensorGlobal.GetVideoConfig(videoResID);
+}
+
+/**
+ *  @brief Get the video bit rate
+ *
+ *  Get the video bit rate
+ *
+ *  @param [in] videoResID Video resolution index
+ *  @param [in] videoQuality Video quality index
+ *
+ *  @return The video bit rate
+ */
+APPLIB_VIDEOENC_BITRATE_s* AppLibSysSensor_GetVideoBitRate(int videoResID, int videoQuality)
+{
+    return AppLibSensorGlobal.GetVideoBiteRate(videoResID, videoQuality);
+}
+
+/**
+ *  @brief Get the GOP of video
+ *
+ *  Get the GOP of video
+ *
+ *  @param [in] videoResID Video resolution index
+ *
+ *  @return The GOP of video
+ */
+APPLIB_VIDEOENC_GOP_s* AppLibSysSensor_GetVideoGOP(int videoResID)
+{
+    return AppLibSensorGlobal.GetVideoGOP(videoResID);
+}
+
+/**
+ *  @brief Get the maximum size of video capture
+ *
+ *  Get the maximum size of video capture
+ *
+ *  @param [out] width Width
+ *  @param [out] height Height
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPhotoMaxVcapSize(int *width, int *height)
+{
+    *width = AppLibSensorGlobal.PhotoMaxVcapWidth;
+    *height = AppLibSensorGlobal.PhotoMaxVcapHeight;
+    return 0;
+}
+
+/**
+ *  @brief Get the maximum size of photo encoding size
+ *
+ *  Get the maximum size of photo encoding size
+ *
+ *  @param [out] width Width
+ *  @param [out] height Height
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPhotoMaxEncSize(int *width, int *height)
+{
+    *width = AppLibSensorGlobal.PhotoMaxEncWeight;
+    *height = AppLibSensorGlobal.PhotoMaxEncHeight;
+    return 0;
+}
+
+/**
+ *  @brief Get the maximum size of photo preview size
+ *
+ *  Get the maximum size of photo preview size
+ *
+ *  @param [out] width Width
+ *  @param [out] height Height
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPhotoMaxPreviewSize(int *width, int *height)
+{
+    *width = AppLibSensorGlobal.PhotoMaxPrevWidth;
+    *height = AppLibSensorGlobal.PhotoMaxPrevHeight;
+    return 0;
+}
+
+/**
+ *  @brief Get IQ Channel Count
+ *
+ *  Get IQ Channel Count
+ *
+ *
+ *  @return  IQ Channel Count
+ */
+UINT32 AppLibSysSensor_GetIQChannelCount(void)
+{
+    return AppLibSensorGlobal.IQChannelCount;
+}
+
+
+/**
+ *  @brief Check the video resolution valid in this sensor setting.
+ *
+ *  Check the video resolution valid in this sensor setting.
+ *
+ *  @param [in] videoResID Video resolution index
+ *
+ *  @return >=0 Valid, <0 failure
+ */
+int AppLibSysSensor_CheckVideoRes(int videoResID)
+{
+    return AppLibSensorGlobal.CheckVideoRes(videoResID);
+}
+/**
+ * @brief Get PIV configuration of a specific video resolution.
+ *
+ * Get PIV configuration of a specific video resolution.
+ *
+ * @param videoResID Video resolution ID
+ *
+ * @return APPLIB_SENSOR_PIV_CONFIG_s* Address of the requested PIV configuration
+ *
+ */
+APPLIB_SENSOR_PIV_CONFIG_s* AppLibSysSensor_GetPIVConfig(int videoResID)
+{
+    return AppLibSensorGlobal.GetPIVConfig(videoResID);
+}
+
+/**
+ *  @brief Get the PIV size
+ *
+ *  Get the PIV size
+ *
+ *  @param [in] videoResID Video resolution id
+ *  @param [out] width PIV width
+ *  @param [out] height PIV height
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPIVSize(int videoResID, APPLIB_SENSOR_PIV_ENC_CONFIG_s *PIVCapConfig)
+{
+    return AppLibSensorGlobal.GetPIVSize(videoResID, PIVCapConfig);
+}
+
+/**
+ *  @brief Get 3D dzoom table
+ *
+ *  Get 3D dzoom table
+ *
+ *  @param [in] videoResID Video resolution id
+ *  @param [in] var Parameter
+ *
+ *  @return 3D dzoom table
+ */
+UINT32* AppLibSysSensor_Get3dDzoomTable(int videoResID, int var)
+{
+    return AppLibSensorGlobal.Get3dDzoomTable(videoResID, var);
+}
+
+/**
+ *  @brief Get the maximum ratio of 3D dzoom
+ *
+ *  Get the maximum ratio of 3D dzoom
+ *
+ *  @param [in] videoResID Video resolution id
+ *  @param [in] var Parameter
+ *
+ *  @return The maximum ratio of 3D dzoom
+ */
+UINT32 AppLibSysSensor_Get3dDzoomMaxRatio(int videoResID, int var)
+{
+    return AppLibSensorGlobal.Get3dDzoomMaxRatio(videoResID, var);
+}
+
+/**
+ *  @brief Get the total step of 3D dzoom
+ *
+ *  Get the total step of 3D dzoom
+ *
+ *  @param [in] videoResID Video resolution id
+ *  @param [in] var Parameter
+ *
+ *  @return The total step of 3D dzoom
+ */
+int AppLibSysSensor_Get3dDzoomTotalStep(int videoResID, int var)
+{
+    return AppLibSensorGlobal.Get3dDzoomTotalStep(videoResID, var);
+}
+
+/**
+ *  @brief Get the shutter mode under photo capture mode
+ *
+ *  Get the shutter mode under photo capture mode
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The shutter mode
+ */
+UINT32 AppLibSysSensor_GetShutterMode(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetShutterMode(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get maximum shutter time
+ *
+ *  Get maximum shutter time
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] pjpegConfigID Photo size index
+ *
+ *  @return The maximum shutter time
+ */
+int AppLibSysSensor_GetMaxShutterTime(int capMode, int pjpegConfigID)
+{
+    return AppLibSensorGlobal.GetMaxShutterTime(capMode, pjpegConfigID);
+}
+
+/**
+ *  @brief Get the video resolution index
+ *
+ *  Get the video resolution index
+ *
+ *  @param [in] resRef Reference video resolution index
+ *
+ *  @return >=0 The video resolution index, <0 failure
+ */
+int AppLibSysSensor_GetVideoResIdx(UINT16 *resRef)
+{
+    int i = 0, Index = 0, ResolutionNumber = 0;
+
+    ResolutionNumber = AppLibSysSensor_GetVideoResNum();
+    if (AppLibSysVin_GetSystemType() == VIN_SYS_PAL) {
+        for (i = 0; i <ResolutionNumber; i++) {
+            Index = AppLibSysSensor_GetVideoResID(i);
+            if ((w_strcmp((WCHAR*)resRef, (WCHAR*)sensor_video_res_string_table_pal[Index]) == 0)) {
+                //AmbaPrintColor(GREEN,"%s,PAL,Index=%d",__FUNCTION__,Index);
+                return Index;
+            }
+        }
+    } else {
+        for (i = 0; i <ResolutionNumber; i++) {
+            Index = AppLibSysSensor_GetVideoResID(i);
+            if ((w_strcmp((WCHAR*)resRef, (WCHAR*)sensor_video_res_string_table_ntsc[Index]) == 0)) {
+                //AmbaPrintColor(GREEN,"%s,NTSC,Index=%d",__FUNCTION__,Index);
+                return Index;
+            }
+        }
+    }
+
+    //AmbaPrintColor(GREEN,"%s,Error!!",__FUNCTION__);
+    return -1;
+}
+
+/**
+ *  @brief Get the index of photo size
+ *
+ *  Get the index of photo size
+ *
+ *  @param [in] capMode Capture mode
+ *  @param [in] photoSize Reference photo size index
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_GetPhotoSizeID(int capMode, UINT16* photoSize)
+{
+    int i, PjpegConfigNumber = 0;
+    UINT16 *String;
+
+    PjpegConfigNumber = AppLibSysSensor_GetPjpegConfigNum(capMode);
+    for (i = 0; i < PjpegConfigNumber; i++) {
+        String = AppLibSysSensor_GetPhotoSizeStr(capMode, i);
+        if ((w_strcmp((WCHAR*)photoSize, (WCHAR*)String) == 0)) {
+            //AmbaPrintColor(GREEN,"%s,i=%d",__FUNCTION__,i);
+            return i;
+        }
+    }
+
+    //AmbaPrintColor(GREEN,"%s,Error",__FUNCTION__);
+    return -1;
+}
+
+/**
+ *  @brief Set IQ Channel Count
+ *
+ *  Set IQ Channel Count
+ *
+ *  @param [in] IQChannelCount IQ Channel Count
+ *
+ *  @return >=0 success, <0 failure
+ */
+int AppLibSysSensor_SetIQChannelCount(UINT32 IQChannelCount)
+{
+    AppLibSensorGlobal.IQChannelCount = IQChannelCount;
+    return 0;
+}
+

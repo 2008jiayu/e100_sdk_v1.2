@@ -1,0 +1,54 @@
+menu "Common Service"
+comment "Common Service"
+config COMSVC_AMBASHELL
+	bool "Build AmbaShell"
+	default y
+if COMSVC_AMBASHELL
+source comsvc/Kconfig.AmbaShell
+endif
+
+config COMSVC_AMBASYS
+	bool "Build AmbaSys common services"
+	default y
+if COMSVC_AMBASYS
+source comsvc/Kconfig.AmbaSys
+endif
+
+config COMSVC_AMBATEST
+	bool "Build AmbaTest framewaork"
+	default y
+if COMSVC_AMBATEST
+source comsvc/Kconfig.AmbaTest
+endif
+
+config COMSVC_FWUPDATE
+	bool "Build Firmware Updater (PBA) Framework"
+	default y
+if COMSVC_FWUPDATE
+source comsvc/Kconfig.FwUpdate
+endif
+
+config COMSVC_MISC
+	bool "Build misc common services"
+	default y
+if COMSVC_MISC
+source comsvc/Kconfig.misc
+endif
+
+config COMSVC_IMAGE
+	bool "Build IQ related common services"
+	default y
+if COMSVC_IMAGE
+source comsvc/Kconfig.image
+endif
+
+config COMSVC_TUNE
+	bool "Build AmbaTune handler services"
+	default y
+if COMSVC_TUNE
+source comsvc/Kconfig.tune
+endif
+
+
+endmenu
+

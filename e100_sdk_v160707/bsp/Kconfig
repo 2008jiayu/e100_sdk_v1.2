@@ -1,0 +1,43 @@
+menu "Board Support Package"
+comment "Board support package"
+choice
+    prompt "BSP"
+    default BSP_DRAGONFLY
+
+config BSP_DRAGONFLY
+    bool "Dragonfly EVK"
+    select EXPGPIO
+    select EXPGPIO_TI_TCA9539
+    select AUDIO_TITLV320AIC3256
+
+config BSP_TAROKO
+    bool "TAROKO EVK"
+    select NAND_CT49248DD962D1
+    select AUDIO_WM8974
+
+config BSP_LIBRA
+    bool "LIBRA POLICECAM"
+    select NAND_S34ML04G1
+    select AUDIO_WM8974
+
+config BSP_BUB
+    bool "BUB"
+    select NAND_S34ML04G1
+    select EXPGPIO
+    select EXPGPIO_TI_TCA9539
+    select AUDIO_TITLV320AIC3256
+
+config BSP_ARIES
+    bool "ARIES CARDV EVK"
+
+config BSP_ORTHRUS
+    bool "ORTHRUS CARDV EVK(2CH)"
+
+config BSP_GOAT
+    bool "GOAT CARDV EVK"
+
+endchoice
+
+source peripheral/Kconfig
+
+endmenu

@@ -1,0 +1,6 @@
+
+EMMCPATH=emmc
+
+ifdef CONFIG_ENABLE_EMMC_BOOT
+libperipheral-objs += $(EMMCPATH)/AmbaCortexEMMC.o
+endif

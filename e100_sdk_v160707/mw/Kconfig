@@ -1,0 +1,44 @@
+menu "Middleware"
+comment "Middleware"
+config BUILD_MW_UNITTEST
+	bool "Build MW Unit Test"
+	default y
+
+if BUILD_MW_UNITTEST
+source mw/Kconfig.unittest
+endif
+
+config BUILD_MW_FLOW
+	bool "Build MW Flow"
+	default y
+
+if BUILD_MW_FLOW
+source mw/Kconfig.dspflow
+endif
+
+config BUILD_MW_SERVICE
+	bool "Build MW Service"
+	default y
+
+if BUILD_MW_SERVICE
+source mw/Kconfig.dataflow
+endif
+
+config BUILD_MW_CFS
+	bool "Build MW Cached File System"
+	default y
+
+if BUILD_MW_CFS
+source mw/Kconfig.cfs
+endif
+
+config BUILD_MW_NET
+	bool "Build MW NET service"
+	default y
+
+if BUILD_MW_NET
+source mw/Kconfig.net
+endif
+
+endmenu
+

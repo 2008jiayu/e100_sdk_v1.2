@@ -1,0 +1,12 @@
+menu "Sensor bridge Driver"
+
+config SBRIDGE_TI913914
+	bool "TI 913/914"
+	default y
+
+
+config SBRIDGE_AMBA_B5
+	bool "Ambarella B5"
+	default n
+
+endmenu

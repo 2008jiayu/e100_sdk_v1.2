@@ -1,0 +1,5 @@
+config ENABLE_SHMOO_TEST
+	bool "Enable Shmoo Test"
+	default n
+	help
+		Automatically doing Shmoo Test.

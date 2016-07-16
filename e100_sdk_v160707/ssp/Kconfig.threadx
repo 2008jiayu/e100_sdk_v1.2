@@ -1,0 +1,36 @@
+menu "ThreadX Config"
+
+config SSP_THREADX_PROFILE
+	bool "ThreadX execution profile support"
+	default y
+	help
+	  ThreadX Execution Profile is designed to track thread
+	  execution time based on the hardware timer.
+      
+config SSP_THREADX_FIQ
+	bool "ThreadX FIQ support"
+	default y
+        depends on !AMBALINK_BOSS
+	help
+	  This option enables FIQ interrupt handling support in the
+	  ThreadX assembly files.
+      
+config SSP_THREADX_STACK_CHECK
+	bool "ThreadX run-time stack checking"
+	default y
+	help
+	  This option enables ThreadX run-time stack checking, which
+	  includes analysis of how much stack has been used and 
+	  examination of data pattern "fences" before and after the stack area.
+	  If a stack error is detected, the registered application stack error
+	  handler is called. This option does result in slightly increased overhead
+	  and code size.
+
+config SSP_THREADX_EVENT_TRACE
+	bool "ThreadX trace feature support"
+	default y
+	help
+	  This option enables the internal ThreadX trace feature. The trace buffer
+	  is supplied at a later time via an application call to tx_trace_enable.
+      
+endmenu

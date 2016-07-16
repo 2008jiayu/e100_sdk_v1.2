@@ -1,0 +1,208 @@
+!_TAG_FILE_FORMAT	2	/extended format; --format=1 will not append ;" to lines/
+!_TAG_FILE_SORTED	1	/0=unsorted, 1=sorted, 2=foldcase/
+!_TAG_PROGRAM_AUTHOR	Darren Hiebert	/dhiebert@users.sourceforge.net/
+!_TAG_PROGRAM_NAME	Exuberant Ctags	//
+!_TAG_PROGRAM_URL	http://ctags.sourceforge.net	/official site/
+!_TAG_PROGRAM_VERSION	5.9~svn20110310	//
+ADAS_BUFF	ApplibVideo_Ecl_ADAS.c	/^} ADAS_BUFF;$/;"	t	typeref:struct:__anon2	file:
+ADAS_BUFF_IS_EMPTY	ApplibVideo_Ecl_ADAS.c	43;"	d	file:
+ADAS_BUFF_IS_FULL	ApplibVideo_Ecl_ADAS.c	42;"	d	file:
+ADAS_BUFF_NUM	ApplibVideo_Ecl_ADAS.c	41;"	d	file:
+ADAS_DISABLE	ApplibVideo_Ecl_ADAS.c	/^    ADAS_DISABLE=0,$/;"	e	enum:__anon1	file:
+ADAS_ENABLE_NOT_OK	ApplibVideo_Ecl_ADAS.c	/^    ADAS_ENABLE_NOT_OK,$/;"	e	enum:__anon1	file:
+ADAS_ENABLE_OK	ApplibVideo_Ecl_ADAS.c	/^    ADAS_ENABLE_OK,$/;"	e	enum:__anon1	file:
+ADAS_ENABLE_TYPE	ApplibVideo_Ecl_ADAS.c	/^} ADAS_ENABLE_TYPE;$/;"	t	typeref:enum:__anon1	file:
+ADAS_ERR	ApplibVideo_Ecl_ADAS.c	37;"	d	file:
+ADAS_FUN	ApplibVideo_Ecl_ADAS.c	36;"	d	file:
+ADAS_IN_BUFF_NUM	ApplibVideo_Ecl_ADAS.c	44;"	d	file:
+ADAS_MSG	ApplibVideo_Ecl_ADAS.c	/^} ADAS_MSG;$/;"	t	typeref:struct:__anon3	file:
+APPLIB_FRM_MGRMESSAGE_t	ApplibVideoAnal_FrmHdlr.c	/^} APPLIB_FRM_MGRMESSAGE_t;$/;"	t	typeref:struct:_APPLIB_FRM_MGRMESSAGE_t_	file:
+APPLIB_TRIA_CB_SLOT_t	ApplibVideoAnal_3aHdlr.c	/^} APPLIB_TRIA_CB_SLOT_t;$/;"	t	typeref:struct:APPLIB_TRIA_CB_SLOT_t_	file:
+APPLIB_TRIA_CB_SLOT_t_	ApplibVideoAnal_3aHdlr.c	/^typedef struct APPLIB_TRIA_CB_SLOT_t_ {$/;"	s	file:
+APPLIB_TRIA_LOC	ApplibVideoAnal_3aHdlr.c	69;"	d	file:
+APPLIB_TRIA_MGRMESSAGE_t	ApplibVideoAnal_3aHdlr.c	/^} APPLIB_TRIA_MGRMESSAGE_t;$/;"	t	typeref:struct:APPLIB_TRIA_MGRMESSAGE_t_	file:
+APPLIB_TRIA_MGRMESSAGE_t_	ApplibVideoAnal_3aHdlr.c	/^typedef struct APPLIB_TRIA_MGRMESSAGE_t_ {$/;"	s	file:
+APPLIB_TRIA_UNL	ApplibVideoAnal_3aHdlr.c	70;"	d	file:
+APPLIB_VA_CB_SLOT_T	ApplibVideoAnal_FrmHdlr.c	/^} APPLIB_VA_CB_SLOT_T;$/;"	t	typeref:struct:APPLIB_VA_CB_SLOT_T_	file:
+APPLIB_VA_CB_SLOT_T_	ApplibVideoAnal_FrmHdlr.c	/^typedef struct APPLIB_VA_CB_SLOT_T_ {$/;"	s	file:
+AmbaVA_TriAHdlr_NewAE	ApplibVideoAnal_3aHdlr.c	/^int AmbaVA_TriAHdlr_NewAE(UINT32 event,$/;"	f
+AppLibVideoAnal_ADAS_Disable	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_Disable(void)$/;"	f
+AppLibVideoAnal_ADAS_Draw_Rect	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_Draw_Rect(int _l, int _t, int _r, int _b, AMP_DISP_INFO_s ddev_info, int valid, int rect_num, u32 color)$/;"	f
+AppLibVideoAnal_ADAS_Enable	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_Enable(void)$/;"	f
+AppLibVideoAnal_ADAS_FCWS_SetCfg	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_FCWS_SetCfg( APPLIB_FCWS_CFG_t* pParams)$/;"	f
+AppLibVideoAnal_ADAS_GetDef_Setting	ApplibVideoAnal_ADAS.c	/^void AppLibVideoAnal_ADAS_GetDef_Setting(APPLIB_LDWS_CFG_t* pLdwsConfig, APPLIB_FCWS_CFG_t* pFcwsConfig, APPLIB_ADAS_PAR_t* pParams)$/;"	f
+AppLibVideoAnal_ADAS_Gui_Hide	ApplibVideoAnal_ADAS.c	/^void AppLibVideoAnal_ADAS_Gui_Hide(void)$/;"	f
+AppLibVideoAnal_ADAS_Gui_Show	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_Gui_Show(cardvws_t *cardvws_res)$/;"	f
+AppLibVideoAnal_ADAS_Gui_Show_timer_handler	ApplibVideoAnal_ADAS.c	/^void AppLibVideoAnal_ADAS_Gui_Show_timer_handler(int eid)$/;"	f
+AppLibVideoAnal_ADAS_Init	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_Init(UINT8 yuvSrc, APPLIB_LDWS_CFG_t ldwsConfig, APPLIB_FCWS_CFG_t fcwsConfig, APPLIB_ADAS_PAR_t params)$/;"	f
+AppLibVideoAnal_ADAS_LDWS_SetCfg	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_LDWS_SetCfg( APPLIB_LDWS_CFG_t* pParams)$/;"	f
+AppLibVideoAnal_ADAS_Process	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_Process(UINT32 event, AMP_ENC_YUV_INFO_s* img)$/;"	f
+AppLibVideoAnal_ADAS_SetPar	ApplibVideoAnal_ADAS.c	/^int AppLibVideoAnal_ADAS_SetPar( APPLIB_ADAS_PAR_t* pParams)$/;"	f
+AppLibVideoAnal_DSP_EventHdlr_NewAE	ApplibVideoAnal_3aHdlr.c	/^int AppLibVideoAnal_DSP_EventHdlr_NewAE(AMBA_DSP_EVENT_CFA_3A_DATA_s* pData3A)$/;"	f
+AppLibVideoAnal_FCMD_DeInit	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_DeInit(void)$/;"	f
+AppLibVideoAnal_FCMD_Disable	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_Disable(void)$/;"	f
+AppLibVideoAnal_FCMD_Enable	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_Enable(void)$/;"	f
+AppLibVideoAnal_FCMD_GetDef_Setting	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_GetDef_Setting( APPLIB_FCMD_CFG_t* pApplibFcmdConfig, APPLIB_FCMD_PAR_t* pApplibFcmdParams)$/;"	f
+AppLibVideoAnal_FCMD_Init	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_Init(UINT8 yuvSrc, APPLIB_FCMD_CFG_t pConfig, APPLIB_FCMD_PAR_t pParams)$/;"	f
+AppLibVideoAnal_FCMD_Process	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_Process(UINT32 event, AMP_ENC_YUV_INFO_s* img)$/;"	f
+AppLibVideoAnal_FCMD_SetCfg	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_SetCfg(APPLIB_FCMD_CFG_t* pConfig)$/;"	f
+AppLibVideoAnal_FCMD_SetPar	ApplibVideoAnal_FCMD.c	/^int AppLibVideoAnal_FCMD_SetPar( APPLIB_FCMD_PAR_t* pParams)$/;"	f
+AppLibVideoAnal_FrmHdlr_GetDefCfg	ApplibVideoAnal_FrmHdlr.c	/^int AppLibVideoAnal_FrmHdlr_GetDefCfg(APPLIB_YUV_TASK_CFG_t* cfg)$/;"	f
+AppLibVideoAnal_FrmHdlr_GetFrmInfo	ApplibVideoAnal_FrmHdlr.c	/^int AppLibVideoAnal_FrmHdlr_GetFrmInfo(UINT8 yuvSrc, AMP_ENC_YUV_INFO_s* yuvInfo, int* frmSizeIsChanged)$/;"	f
+AppLibVideoAnal_FrmHdlr_Init	ApplibVideoAnal_FrmHdlr.c	/^int AppLibVideoAnal_FrmHdlr_Init(void)$/;"	f
+AppLibVideoAnal_FrmHdlr_IsInit	ApplibVideoAnal_FrmHdlr.c	/^int  AppLibVideoAnal_FrmHdlr_IsInit(void)$/;"	f
+AppLibVideoAnal_FrmHdlr_NewFrame	ApplibVideoAnal_FrmHdlr.c	/^int AppLibVideoAnal_FrmHdlr_NewFrame(UINT32 event, AMP_ENC_YUV_INFO_s* yuvInfo)$/;"	f
+AppLibVideoAnal_FrmHdlr_Register	ApplibVideoAnal_FrmHdlr.c	/^int AppLibVideoAnal_FrmHdlr_Register(UINT8 yuvSrc, APPLIB_VA_FRMHDLR_CB func)$/;"	f
+AppLibVideoAnal_FrmHdlr_UnRegister	ApplibVideoAnal_FrmHdlr.c	/^int AppLibVideoAnal_FrmHdlr_UnRegister(UINT8 yuvSrc, APPLIB_VA_FRMHDLR_CB func)$/;"	f
+AppLibVideoAnal_LLWS_DeInit	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_DeInit(void)$/;"	f
+AppLibVideoAnal_LLWS_Disable	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_Disable(void)$/;"	f
+AppLibVideoAnal_LLWS_Enable	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_Enable(void)$/;"	f
+AppLibVideoAnal_LLWS_GetDef_Setting	ApplibVideoAnal_LLWS.c	/^void AppLibVideoAnal_LLWS_GetDef_Setting( APPLIB_LLWS_CFG_t* pConfig, APPLIB_LLWS_PAR_t* pParams)$/;"	f
+AppLibVideoAnal_LLWS_Init	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_Init(APPLIB_LLWS_CFG_t config, APPLIB_LLWS_PAR_t params)$/;"	f
+AppLibVideoAnal_LLWS_Process	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_Process(UINT32 event, AMBA_DSP_EVENT_CFA_3A_DATA_s* pData)$/;"	f
+AppLibVideoAnal_LLWS_SetCfg	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_SetCfg(APPLIB_LLWS_CFG_t* pConfig)$/;"	f
+AppLibVideoAnal_LLWS_SetPar	ApplibVideoAnal_LLWS.c	/^int AppLibVideoAnal_LLWS_SetPar(APPLIB_LLWS_PAR_t* pParams)$/;"	f
+AppLibVideoAnal_MDAE_Process	ApplibVideoAnal_MD.c	/^int AppLibVideoAnal_MDAE_Process(UINT32 event, AMBA_DSP_EVENT_CFA_3A_DATA_s* pData)$/;"	f
+AppLibVideoAnal_MDY_Process	ApplibVideoAnal_MD.c	/^int AppLibVideoAnal_MDY_Process(UINT32 event, AMP_ENC_YUV_INFO_s* img)$/;"	f
+AppLibVideoAnal_MD_DeInit	ApplibVideoAnal_MD.c	/^int AppLibVideoAnal_MD_DeInit(void)$/;"	f
+AppLibVideoAnal_MD_Disable	ApplibVideoAnal_MD.c	/^int AppLibVideoAnal_MD_Disable(void)$/;"	f
+AppLibVideoAnal_MD_Enable	ApplibVideoAnal_MD.c	/^int AppLibVideoAnal_MD_Enable(void)$/;"	f
+AppLibVideoAnal_MD_GetDef_Setting	ApplibVideoAnal_MD.c	/^void AppLibVideoAnal_MD_GetDef_Setting( APPLIB_MD_CFG_t* pAppLibMDConfig)$/;"	f
+AppLibVideoAnal_MD_Init	ApplibVideoAnal_MD.c	/^int AppLibVideoAnal_MD_Init(UINT8 yuvSrc, APPLIB_MD_CFG_t* pConfig)$/;"	f
+AppLibVideoAnal_MD_SetROI	ApplibVideoAnal_MD.c	/^void AppLibVideoAnal_MD_SetROI(APPLIB_MD_CFG_t* pConfig)$/;"	f
+AppLibVideoAnal_StmpHdlr_AddEvent	ApplibVideoAnal_StmpHdlr.c	/^int AppLibVideoAnal_StmpHdlr_AddEvent(UINT32 VaEvent)$/;"	f
+AppLibVideoAnal_StmpHdlr_FCMDEventTimer	ApplibVideoAnal_StmpHdlr.c	/^static void AppLibVideoAnal_StmpHdlr_FCMDEventTimer(int eid)$/;"	f	file:
+AppLibVideoAnal_StmpHdlr_FCWSEventTimer	ApplibVideoAnal_StmpHdlr.c	/^static void AppLibVideoAnal_StmpHdlr_FCWSEventTimer(int eid)$/;"	f	file:
+AppLibVideoAnal_StmpHdlr_GetEventFlag	ApplibVideoAnal_StmpHdlr.c	/^UINT32 AppLibVideoAnal_StmpHdlr_GetEventFlag(void)$/;"	f
+AppLibVideoAnal_StmpHdlr_LDWSEventTimer	ApplibVideoAnal_StmpHdlr.c	/^static void AppLibVideoAnal_StmpHdlr_LDWSEventTimer(int eid)$/;"	f	file:
+AppLibVideoAnal_StmpHdlr_LLWSEventTimer	ApplibVideoAnal_StmpHdlr.c	/^static void AppLibVideoAnal_StmpHdlr_LLWSEventTimer(int eid)$/;"	f	file:
+AppLibVideoAnal_TriAHdlr_GetDefCfg	ApplibVideoAnal_3aHdlr.c	/^int AppLibVideoAnal_TriAHdlr_GetDefCfg(APPLIB_TRIA_TASK_CFG_t* cfg)$/;"	f
+AppLibVideoAnal_TriAHdlr_Init	ApplibVideoAnal_3aHdlr.c	/^int AppLibVideoAnal_TriAHdlr_Init(void)$/;"	f
+AppLibVideoAnal_TriAHdlr_IsInit	ApplibVideoAnal_3aHdlr.c	/^int  AppLibVideoAnal_TriAHdlr_IsInit(void)$/;"	f
+AppLibVideoAnal_TriAHdlr_Register	ApplibVideoAnal_3aHdlr.c	/^int AppLibVideoAnal_TriAHdlr_Register(UINT32 event,$/;"	f
+AppLibVideoAnal_TriAHdlr_UnRegister	ApplibVideoAnal_3aHdlr.c	/^int AppLibVideoAnal_TriAHdlr_UnRegister(UINT32 event,$/;"	f
+AppLibVideo_Ecl_ADAS_Adjust_Speed	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Adjust_Speed(int speed)$/;"	f
+AppLibVideo_Ecl_ADAS_Disable	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Disable(void)$/;"	f
+AppLibVideo_Ecl_ADAS_Draw_Rect	ApplibVideo_Ecl_ADAS.c	/^int AppLibVideo_Ecl_ADAS_Draw_Rect(int _l, int _t, int _r, int _b, AMP_DISP_INFO_s ddev_info, int valid, int rect_num, u32 color)$/;"	f
+AppLibVideo_Ecl_ADAS_Enable	ApplibVideo_Ecl_ADAS.c	/^int AppLibVideo_Ecl_ADAS_Enable(void)$/;"	f
+AppLibVideo_Ecl_ADAS_Get_Result	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Get_Result(K_ADAS **pAdas)$/;"	f
+AppLibVideo_Ecl_ADAS_Gui_Hide	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Gui_Hide(void)$/;"	f
+AppLibVideo_Ecl_ADAS_Gui_Show	ApplibVideo_Ecl_ADAS.c	/^int AppLibVideo_Ecl_ADAS_Gui_Show(void)$/;"	f
+AppLibVideo_Ecl_ADAS_Gui_Show_timer_handler	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Gui_Show_timer_handler(int eid)$/;"	f
+AppLibVideo_Ecl_ADAS_Gui_dc_Show	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Gui_dc_Show(K_DC *pDc)$/;"	f
+AppLibVideo_Ecl_ADAS_Init	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Init(int mode)$/;"	f
+AppLibVideo_Ecl_ADAS_Limit_t	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Limit_t(int index, int t_ms)$/;"	f
+AppLibVideo_Ecl_ADAS_Proc	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Proc(UINT32 event, AMP_ENC_YUV_INFO_s* img)$/;"	f
+AppLibVideo_Ecl_ADAS_Set_Display_Mode	ApplibVideo_Ecl_ADAS.c	/^void AppLibVideo_Ecl_ADAS_Set_Display_Mode(int mode)$/;"	f
+AppLib_MDAEConfig	ApplibVideoAnal_MD.c	/^static AMBA_MDAE_CFG_t AppLib_MDAEConfig = {0};$/;"	v	file:
+AppLib_MDAEParams	ApplibVideoAnal_MD.c	/^static AMBA_MDAE_PAR_t AppLib_MDAEParams = {0};$/;"	v	file:
+AppLib_MDYConfig	ApplibVideoAnal_MD.c	/^static AMBA_MDY_CFG_t AppLib_MDYConfig = {0};$/;"	v	file:
+AppLib_MDYParams	ApplibVideoAnal_MD.c	/^static AMBA_MDY_PAR_t AppLib_MDYParams = {0};$/;"	v	file:
+AppLib_TempFrmMessage	ApplibVideoAnal_FrmHdlr.c	/^static APPLIB_FRM_MGRMESSAGE_t AppLib_TempFrmMessage[APPLIB_FRM_HDLR_YUV_NUM];$/;"	v	file:
+AppLib_VA_LOC	ApplibVideoAnal_FrmHdlr.c	71;"	d	file:
+AppLib_VA_MSGQUEUE_SIZE	ApplibVideoAnal_FrmHdlr.c	42;"	d	file:
+AppLib_VA_Maintask	ApplibVideoAnal_FrmHdlr.c	/^void AppLib_VA_Maintask(UINT32 info)$/;"	f
+AppLib_VA_TASK_NAMEE	ApplibVideoAnal_FrmHdlr.c	41;"	d	file:
+AppLib_VA_UNL	ApplibVideoAnal_FrmHdlr.c	72;"	d	file:
+AppTriAStack	ApplibVideoAnal_3aHdlr.c	/^static UINT8 AppTriAStack[(32<<10)];$/;"	v	file:
+AppYuvStack	ApplibVideoAnal_FrmHdlr.c	/^static UINT8 AppYuvStack[(32<<10)];$/;"	v	file:
+ApplibAdasGpsData	ApplibVideoAnal_ADAS.c	/^static gps_data_t* ApplibAdasGpsData = NULL;$/;"	v	file:
+ApplibAdasInit	ApplibVideoAnal_ADAS.c	/^static int ApplibAdasInit = 0;$/;"	v	file:
+ApplibAdasIsCalibrated	ApplibVideoAnal_ADAS.c	/^static int ApplibAdasIsCalibrated = 0;$/;"	v	file:
+ApplibAdasYuvSrc	ApplibVideoAnal_ADAS.c	/^static UINT8 ApplibAdasYuvSrc = 0;$/;"	v	file:
+ApplibFcmdConfig	ApplibVideoAnal_FCMD.c	/^static AMP_FCMD_CFG_t ApplibFcmdConfig = {0};$/;"	v	file:
+ApplibFcmdGpsData	ApplibVideoAnal_FCMD.c	/^static gps_data_t* ApplibFcmdGpsData = NULL;$/;"	v	file:
+ApplibFcmdInit	ApplibVideoAnal_FCMD.c	/^static int ApplibFcmdInit = 0;$/;"	v	file:
+ApplibFcmdParams	ApplibVideoAnal_FCMD.c	/^static AMP_FCMD_PAR_t ApplibFcmdParams = {0};$/;"	v	file:
+ApplibFcmdYuvSrc	ApplibVideoAnal_FCMD.c	/^static UINT8 ApplibFcmdYuvSrc = 0;$/;"	v	file:
+ApplibLlwsConfig	ApplibVideoAnal_LLWS.c	/^static AMP_LLWS_CFG_t ApplibLlwsConfig = {0};$/;"	v	file:
+ApplibLlwsInit	ApplibVideoAnal_LLWS.c	/^static int ApplibLlwsInit = 0;$/;"	v	file:
+ApplibLlwsParams	ApplibVideoAnal_LLWS.c	/^static AMP_LLWS_PAR_t ApplibLlwsParams = {0};$/;"	v	file:
+ApplibMDYuvSrc	ApplibVideoAnal_MD.c	/^static UINT8 ApplibMDYuvSrc = 0;$/;"	v	file:
+Applib_MD_Init	ApplibVideoAnal_MD.c	/^static int Applib_MD_Init = 0;$/;"	v	file:
+Applib_MD_Method	ApplibVideoAnal_MD.c	/^static APPLIB_ADAS_MD_METHOD_e Applib_MD_Method = APPLIB_MD_YUV;$/;"	v	file:
+CbFunc	ApplibVideoAnal_3aHdlr.c	/^    APPLIB_TRIA_CB_SLOT_t CbFunc[APPLIB_TRIA_HDLR_MAX_CB];$/;"	m	struct:_G_TRIA_t_	file:
+CbFunc	ApplibVideoAnal_FrmHdlr.c	/^    APPLIB_VA_CB_SLOT_T CbFunc[APPLIB_FRM_HDLR_MAX_CB];$/;"	m	struct:_G_APPLIB_VA_T_	file:
+Event	ApplibVideoAnal_3aHdlr.c	/^    UINT32 Event;$/;"	m	struct:APPLIB_TRIA_CB_SLOT_t_	file:
+Event	ApplibVideoAnal_FrmHdlr.c	/^    UINT32 Event;$/;"	m	struct:APPLIB_VA_CB_SLOT_T_	file:
+FCMDTime	ApplibVideoAnal_StmpHdlr.c	/^static int FCMDTime = 0;$/;"	v	file:
+FCWSTime	ApplibVideoAnal_StmpHdlr.c	/^static int FCWSTime = 0;$/;"	v	file:
+Func	ApplibVideoAnal_3aHdlr.c	/^    APPLIB_VA_TRIAHDLR_CB Func;$/;"	m	struct:APPLIB_TRIA_CB_SLOT_t_	file:
+Func	ApplibVideoAnal_FrmHdlr.c	/^    APPLIB_VA_FRMHDLR_CB Func;$/;"	m	struct:APPLIB_VA_CB_SLOT_T_	file:
+G_APPLIB_TRIA_t	ApplibVideoAnal_3aHdlr.c	/^} G_APPLIB_TRIA_t;$/;"	t	typeref:struct:_G_TRIA_t_	file:
+G_APPLIB_VA_T	ApplibVideoAnal_FrmHdlr.c	/^} G_APPLIB_VA_T;$/;"	t	typeref:struct:_G_APPLIB_VA_T_	file:
+G_AppLib_TRIA	ApplibVideoAnal_3aHdlr.c	/^static G_APPLIB_TRIA_t G_AppLib_TRIA = { 0 };$/;"	v	file:
+G_AppLib_VA	ApplibVideoAnal_FrmHdlr.c	/^static G_APPLIB_VA_T G_AppLib_VA = { 0 };$/;"	v	file:
+IPC_PRIVATE	ApplibVideo_Ecl_ADAS.c	39;"	d	file:
+Init	ApplibVideoAnal_3aHdlr.c	/^    UINT8 Init;$/;"	m	struct:_G_TRIA_t_	file:
+Init	ApplibVideoAnal_FrmHdlr.c	/^    UINT8 Init;$/;"	m	struct:_G_APPLIB_VA_T_	file:
+LDWSTime	ApplibVideoAnal_StmpHdlr.c	/^static int LDWSTime = 0;$/;"	v	file:
+LLWSTime	ApplibVideoAnal_StmpHdlr.c	/^static int LLWSTime = 0;$/;"	v	file:
+MessageData	ApplibVideoAnal_3aHdlr.c	/^    UINT32 MessageData[2];$/;"	m	struct:APPLIB_TRIA_MGRMESSAGE_t_	file:
+MessageData	ApplibVideoAnal_FrmHdlr.c	/^    UINT32 MessageData[2];$/;"	m	struct:_APPLIB_FRM_MGRMESSAGE_t_	file:
+MessageID	ApplibVideoAnal_3aHdlr.c	/^    UINT32 MessageID;$/;"	m	struct:APPLIB_TRIA_MGRMESSAGE_t_	file:
+MessageID	ApplibVideoAnal_FrmHdlr.c	/^    UINT32 MessageID;$/;"	m	struct:_APPLIB_FRM_MGRMESSAGE_t_	file:
+MsgPool	ApplibVideoAnal_3aHdlr.c	/^    UINT8 MsgPool[sizeof(APPLIB_TRIA_MGRMESSAGE_t) * TRIA_MSGQUEUE_SIZE];$/;"	m	struct:_G_TRIA_t_	file:
+MsgPool	ApplibVideoAnal_FrmHdlr.c	/^    UINT8 MsgPool[sizeof(APPLIB_FRM_MGRMESSAGE_t) * AppLib_VA_MSGQUEUE_SIZE];$/;"	m	struct:_G_APPLIB_VA_T_	file:
+MsgQueue	ApplibVideoAnal_3aHdlr.c	/^    AMBA_KAL_MSG_QUEUE_t MsgQueue;$/;"	m	struct:_G_TRIA_t_	file:
+MsgQueue	ApplibVideoAnal_FrmHdlr.c	/^    AMBA_KAL_MSG_QUEUE_t MsgQueue;$/;"	m	struct:_G_APPLIB_VA_T_	file:
+Mutex	ApplibVideoAnal_3aHdlr.c	/^    AMBA_KAL_MUTEX_t Mutex;$/;"	m	struct:_G_TRIA_t_	file:
+Mutex	ApplibVideoAnal_FrmHdlr.c	/^    AMBA_KAL_MUTEX_t Mutex;$/;"	m	struct:_G_APPLIB_VA_T_	file:
+OSD_BLEND_HEIGHT	ApplibVideoAnal_ADAS.c	53;"	d	file:
+OSD_BLEND_HEIGHT	ApplibVideo_Ecl_ADAS.c	34;"	d	file:
+OSD_BLEND_WIDTH	ApplibVideoAnal_ADAS.c	52;"	d	file:
+OSD_BLEND_WIDTH	ApplibVideo_Ecl_ADAS.c	33;"	d	file:
+OSD_DCHAN_HEIGHT	ApplibVideoAnal_ADAS.c	51;"	d	file:
+OSD_DCHAN_HEIGHT	ApplibVideo_Ecl_ADAS.c	32;"	d	file:
+OSD_DCHAN_WIDTH	ApplibVideoAnal_ADAS.c	50;"	d	file:
+OSD_DCHAN_WIDTH	ApplibVideo_Ecl_ADAS.c	31;"	d	file:
+OSD_FCHAN_HEIGHT	ApplibVideoAnal_ADAS.c	49;"	d	file:
+OSD_FCHAN_HEIGHT	ApplibVideo_Ecl_ADAS.c	30;"	d	file:
+OSD_FCHAN_WIDTH	ApplibVideoAnal_ADAS.c	48;"	d	file:
+OSD_FCHAN_WIDTH	ApplibVideo_Ecl_ADAS.c	29;"	d	file:
+OVERLAY_HEIGHT	ApplibVideoAnal_ADAS.c	71;"	d	file:
+OVERLAY_WIDTH	ApplibVideoAnal_ADAS.c	70;"	d	file:
+PreviousYSize	ApplibVideoAnal_FrmHdlr.c	/^static int PreviousYSize = 0;$/;"	v	file:
+TRIA_MSGQUEUE_SIZE	ApplibVideoAnal_3aHdlr.c	43;"	d	file:
+TRIA_TASK_NAMEE	ApplibVideoAnal_3aHdlr.c	42;"	d	file:
+Task	ApplibVideoAnal_3aHdlr.c	/^    AMBA_KAL_TASK_t Task;$/;"	m	struct:_G_TRIA_t_	file:
+Task	ApplibVideoAnal_FrmHdlr.c	/^    AMBA_KAL_TASK_t Task;$/;"	m	struct:_G_APPLIB_VA_T_	file:
+VA_TriA_Maintask	ApplibVideoAnal_3aHdlr.c	/^void VA_TriA_Maintask(UINT32 info)$/;"	f
+VaEventFlag	ApplibVideoAnal_StmpHdlr.c	/^static UINT32 VaEventFlag = 0;$/;"	v	file:
+YUVInfo	ApplibVideoAnal_FrmHdlr.c	/^    AMP_ENC_YUV_INFO_s YUVInfo;$/;"	m	struct:_APPLIB_FRM_MGRMESSAGE_t_	file:
+_APPLIB_FRM_MGRMESSAGE_t_	ApplibVideoAnal_FrmHdlr.c	/^typedef struct _APPLIB_FRM_MGRMESSAGE_t_ {$/;"	s	file:
+_G_APPLIB_VA_T_	ApplibVideoAnal_FrmHdlr.c	/^typedef struct _G_APPLIB_VA_T_ {$/;"	s	file:
+_G_TRIA_t_	ApplibVideoAnal_3aHdlr.c	/^typedef struct _G_TRIA_t_ {$/;"	s	file:
+bIsReady	ApplibVideo_Ecl_ADAS.c	/^    int bIsReady;$/;"	m	struct:__anon2	file:
+calibrationValid	ApplibVideoAnal_ADAS.c	/^    int calibrationValid;$/;"	m	struct:cardvws_s	file:
+cardvws_s	ApplibVideoAnal_ADAS.c	/^typedef struct cardvws_s$/;"	s	file:
+cardvws_t	ApplibVideoAnal_ADAS.c	/^} cardvws_t;$/;"	t	typeref:struct:cardvws_s	file:
+dc_type	ApplibVideo_Ecl_ADAS.c	/^    K_DC_TYPE dc_type;$/;"	m	struct:__anon3	file:
+frame	ApplibVideo_Ecl_ADAS.c	/^    ADAS_BUFF *frame;$/;"	m	struct:__anon3	file:
+g_adas	ApplibVideo_Ecl_ADAS.c	/^static K_ADAS       g_adas;$/;"	v	file:
+g_adas_buff	ApplibVideo_Ecl_ADAS.c	/^static ADAS_BUFF    g_adas_buff[ADAS_BUFF_NUM];$/;"	v	file:
+g_adas_buff_in	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_buff_in = 0;$/;"	v	file:
+g_adas_buff_out	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_buff_out = 0;$/;"	v	file:
+g_adas_display_mode	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_display_mode = 1;        \/\/ ÏÔÊ¾ ²»ÏÔÊ¾$/;"	v	file:
+g_adas_enable_flag	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_enable_flag = ADAS_ENABLE_OK;$/;"	v	file:
+g_adas_frame_mark	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_frame_mark[16];$/;"	v	file:
+g_adas_frame_remain	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_frame_remain = 0;$/;"	v	file:
+g_adas_init_flag	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_init_flag = 0;$/;"	v	file:
+g_adas_mode	ApplibVideo_Ecl_ADAS.c	/^static int          g_adas_mode = 0;                \/\/ µ¥Ç° µ¥ºó Ç°ºó$/;"	v	file:
+g_cardvws	ApplibVideoAnal_ADAS.c	/^static cardvws_t g_cardvws;$/;"	v	file:
+g_thread_exit_flag	ApplibVideo_Ecl_ADAS.c	/^static int          g_thread_exit_flag = 1;$/;"	v	file:
+hood	ApplibVideoAnal_ADAS.c	/^    int hood, horizon, pan;$/;"	m	struct:cardvws_s	file:
+horizon	ApplibVideoAnal_ADAS.c	/^    int hood, horizon, pan;$/;"	m	struct:cardvws_s	file:
+img_addr	ApplibVideo_Ecl_ADAS.c	/^    int img_addr;$/;"	m	struct:__anon3	file:
+img_h	ApplibVideo_Ecl_ADAS.c	/^    int img_h;$/;"	m	struct:__anon3	file:
+img_w	ApplibVideo_Ecl_ADAS.c	/^    int img_w;$/;"	m	struct:__anon3	file:
+lane	ApplibVideoAnal_ADAS.c	/^    int lane[2][2][2]; \/\/ [0:left, 1:right][0:top, 1:bottom][0:x, 1:y]$/;"	m	struct:cardvws_s	file:
+laneValid	ApplibVideoAnal_ADAS.c	/^    int laneValid[2]; \/\/ [0:left, 1:right]$/;"	m	struct:cardvws_s	file:
+m_adas_info	ApplibVideo_Ecl_ADAS.c	/^ADAS_INFO           m_adas_info;$/;"	v
+msg_type	ApplibVideo_Ecl_ADAS.c	/^    long int msg_type;$/;"	m	struct:__anon3	file:
+pBuff	ApplibVideo_Ecl_ADAS.c	/^    void *pBuff;$/;"	m	struct:__anon2	file:
+pData3A	ApplibVideoAnal_3aHdlr.c	/^    AMBA_DSP_EVENT_CFA_3A_DATA_s* pData3A;$/;"	m	struct:APPLIB_TRIA_MGRMESSAGE_t_	file:
+pan	ApplibVideoAnal_ADAS.c	/^    int hood, horizon, pan;$/;"	m	struct:cardvws_s	file:
+time	ApplibVideo_Ecl_ADAS.c	/^    int time;$/;"	m	struct:__anon3	file:
+vehicle	ApplibVideoAnal_ADAS.c	/^    int vehicle[2][2]; \/\/ [0:left, 1:right][0:x, 1:y]$/;"	m	struct:cardvws_s	file:
+vehicleValid	ApplibVideoAnal_ADAS.c	/^    int vehicleValid;$/;"	m	struct:cardvws_s	file:

@@ -1,0 +1,18 @@
+menu "Audio codec Driver"
+
+config AUDIO_TITLV320AIC3256
+	bool "TI tlv320aic3256"
+	default y
+config AUDIO_WM8974
+	bool "Wolfson Microelectronics WM8974"
+	default n
+config AUDIO_ALC5660
+	bool "REALTEK ALC5660"
+	default y
+
+config AUDIO_AK4951EN
+	bool "AKM AK4951EN"
+	default n
+	
+endmenu
+

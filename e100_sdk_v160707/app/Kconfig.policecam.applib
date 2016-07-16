@@ -1,0 +1,10 @@
+menu "Police camera application library"
+comment "Police camera application library"
+
+config APP_POLICECAM_APPLIB_ALL
+	depends on APP_POLICECAM_APPLIB
+	bool "Build all of the police camera applib"
+	default y
+
+endmenu
+

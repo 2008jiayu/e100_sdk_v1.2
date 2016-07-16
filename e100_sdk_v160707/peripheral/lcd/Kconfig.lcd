@@ -1,0 +1,23 @@
+menu "LCD Driver"
+
+config LCD_WDF9648W
+	bool "Wintek WDF9648W"
+	default y
+
+config LCD_T20P52
+	bool "T20O52"
+	default n
+
+config LCD_T27P05
+	bool "T27P05"
+    default n
+
+config LCD_T30P61
+	bool "T30P61"
+    default n
+	
+config LCD_SSD2828
+	bool "SSD2828"
+    default n	
+	
+endmenu

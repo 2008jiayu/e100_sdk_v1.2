@@ -1,0 +1,373 @@
+system.tuning_mode IMG_MODE_PREVIEW
+aaa_function.awb_op 0
+aaa_function.ae_op 0
+aaa_function.af_op 0
+aaa_function.adj_op 0
+
+ae_info.agc_index 0
+ae_info.shutter_index 0
+ae_info.iris_index 0
+ae_info.dgain 0
+
+static_black_level.r_black 0
+static_black_level.g_r_black 0
+static_black_level.g_b_black 0
+static_black_level.b_black 0
+deferred_black_level.enable 0
+
+li_auto_bad_pixel_correction.enable 0
+li_auto_bad_pixel_correction.hot_pixel_detection_strength 0
+li_auto_bad_pixel_correction.dark_pixel_detection_strength 0
+li_auto_bad_pixel_correction.correction_method 0
+
+li_cfa_leakage_filter.enable 0
+li_cfa_leakage_filter.alpha_rr 0
+li_cfa_leakage_filter.alpha_rb 0
+li_cfa_leakage_filter.alpha_br 0
+li_cfa_leakage_filter.alpha_bb 0
+li_cfa_leakage_filter.saturation_level 0
+
+li_cfa_noise_filter.enable 0
+li_cfa_noise_filter.noise_level_red 0
+li_cfa_noise_filter.noise_level_green 0
+li_cfa_noise_filter.noise_level_blue 0
+li_cfa_noise_filter.original_blend_strength_red 0
+li_cfa_noise_filter.original_blend_strength_green 0
+li_cfa_noise_filter.original_blend_strength_blue 0
+li_cfa_noise_filter.extent_regular_red 0
+li_cfa_noise_filter.extent_regular_green 0
+li_cfa_noise_filter.extent_regular_blue 0
+li_cfa_noise_filter.extent_fine_red 0
+li_cfa_noise_filter.extent_fine_green 0
+li_cfa_noise_filter.extent_fine_blue 0
+li_cfa_noise_filter.strength_fine_red 0
+li_cfa_noise_filter.strength_fine_green 0
+li_cfa_noise_filter.strength_fine_blue 0
+li_cfa_noise_filter.selectivity_regular 0
+li_cfa_noise_filter.selectivity_fine 0
+
+li_anti_aliasing.enable 0
+
+wb_gains.r_gain 0
+wb_gains.g_gain 0
+wb_gains.b_gain 0
+global_dgain.gain 0
+
+dgain_saturation_level.level_red 0
+dgain_saturation_level.level_green_even 0
+dgain_saturation_level.level_green_odd 0
+dgain_saturation_level.level_blue 0
+
+local_exposure.enable 0
+local_exposure.radius 0
+local_exposure.luma_weight_shift 0
+local_exposure.luma_weight_red 0
+local_exposure.luma_weight_green 0
+local_exposure.luma_weight_blue 0
+local_exposure.gain_curve 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+color_correction.reg_path 
+color_correction.three_d_path 
+
+tone_curve.curve_red 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+tone_curve.curve_green 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+tone_curve.curve_blue 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+rgb_to_yuv_matrix.m11 0
+rgb_to_yuv_matrix.m12 0
+rgb_to_yuv_matrix.m13 0
+rgb_to_yuv_matrix.m21 0
+rgb_to_yuv_matrix.m22 0
+rgb_to_yuv_matrix.m23 0
+rgb_to_yuv_matrix.m31 0
+rgb_to_yuv_matrix.m32 0
+rgb_to_yuv_matrix.m33 0
+rgb_to_yuv_matrix.y_offset 0
+rgb_to_yuv_matrix.u_offset 0
+rgb_to_yuv_matrix.v_offset 0
+
+chroma_scale.enable 0
+chroma_scale.gain_curve 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+
+li_chroma_median_filter.enable 0
+li_chroma_median_filter.cb_adaptive_strength 0
+li_chroma_median_filter.cr_adaptive_strength 0
+li_chroma_median_filter.cb_non_adaptive_strength 0
+li_chroma_median_filter.cr_non_adaptive_strength 0
+li_chroma_median_filter.cb_adaptive_amount 0
+li_chroma_median_filter.cr_adaptive_amount 0
+
+li_demosaic.activity_thresh 0
+li_demosaic.activity_difference_thresh 0
+li_demosaic.grad_clip_thresh 0
+li_demosaic.grad_noise_thresh 0
+li_demosaic.zipper_noise_add_thresh 0
+li_demosaic.zipper_noise_mult_thresh 0
+li_demosaic.black_white_resolution_detail 0
+li_demosaic.clamp_directional_interpolation 0
+
+li_gb_gr_mismatch_correct.narrow_enable 0
+li_gb_gr_mismatch_correct.wide_enable 0
+li_gb_gr_mismatch_correct.wide_safety 0
+li_gb_gr_mismatch_correct.wide_thresh 0
+
+video_mctf.enable 0
+video_mctf.y_temporal_alpha0 0
+video_mctf.y_temporal_alpha1 0
+video_mctf.y_temporal_alpha2 0
+video_mctf.y_temporal_alpha3 0
+video_mctf.y_temporal_T0 0
+video_mctf.y_temporal_T1 0
+video_mctf.y_temporal_T2 0
+video_mctf.y_temporal_T3 0
+video_mctf.y_temporal_maxchange 0
+video_mctf.y_radius 0
+video_mctf.y_strength_3d 0
+video_mctf.y_strength_spatial 0
+video_mctf.y_level_adjust 0
+video_mctf.cb_temporal_alpha0 0
+video_mctf.cb_temporal_alpha1 0
+video_mctf.cb_temporal_alpha2 0
+video_mctf.cb_temporal_alpha3 0
+video_mctf.cb_temporal_T0 0
+video_mctf.cb_temporal_T1 0
+video_mctf.cb_temporal_T2 0
+video_mctf.cb_temporal_T3 0
+video_mctf.cb_temporal_maxchange 0
+video_mctf.cb_radius 0
+video_mctf.cb_strength_3d 0
+video_mctf.cb_strength_spatial 0
+video_mctf.cb_level_adjust 0
+video_mctf.cr_temporal_alpha0 0
+video_mctf.cr_temporal_alpha1 0
+video_mctf.cr_temporal_alpha2 0
+video_mctf.cr_temporal_alpha3 0
+video_mctf.cr_temporal_T0 0
+video_mctf.cr_temporal_T1 0
+video_mctf.cr_temporal_T2 0
+video_mctf.cr_temporal_T3 0
+video_mctf.cr_temporal_maxchange 0
+video_mctf.cr_radius 0
+video_mctf.cr_strength_3d 0
+video_mctf.cr_strength_spatial 0
+video_mctf.cr_level_adjust 0
+video_mctf.y_combine_strength 0
+video_mctf_level.y_temporal_max_change_not_T0T1_level_based 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_low 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_low_delta 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_low_strength 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_mid_strength 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_high 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_high_delta 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_high_strength 0
+video_mctf_level.y_temporal_either_max_change_or_T0T1_add_method 0
+video_mctf_level.cb_temporal_max_change_not_T0T1_level_based 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_low 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_low_delta 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_low_strength 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_mid_strength 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_high 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_high_delta 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_high_strength 0
+video_mctf_level.cb_temporal_either_max_change_or_T0T1_add_method 0
+video_mctf_level.cr_temporal_max_change_not_T0T1_level_based 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_low 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_low_delta 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_low_strength 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_mid_strength 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_high 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_high_delta 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_high_strength 0
+video_mctf_level.cr_temporal_either_max_change_or_T0T1_add_method 0
+
+li_color_dependent_luma_noise_reduction.enable 0
+li_color_dependent_luma_noise_reduction.strength 0
+
+li_processing_select.use_1st_sharpen_not_asf 0
+li_sharpen_noise_filter_sharpen.fir_specify 0
+li_sharpen_noise_filter_sharpen.fir_strength_iso 0
+li_sharpen_noise_filter_sharpen.fir_strength_dir 0
+li_sharpen_noise_filter_sharpen.fir_per_dir_fir_iso_strengths 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_sharpen.fir_per_dir_fir_dir_strengths 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_sharpen.fir_per_dir_fir_dir_amounts 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_sharpen.fir_coefs 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_sharpen_coring.coring_table 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_sharpen_min_coring_result.low 0
+li_sharpen_noise_filter_sharpen_min_coring_result.low_delta 0
+li_sharpen_noise_filter_sharpen_min_coring_result.low_strength 0
+li_sharpen_noise_filter_sharpen_min_coring_result.mid_strength 0
+li_sharpen_noise_filter_sharpen_min_coring_result.high 0
+li_sharpen_noise_filter_sharpen_min_coring_result.high_delta 0
+li_sharpen_noise_filter_sharpen_min_coring_result.high_strength 0
+li_sharpen_noise_filter_sharpen_min_coring_result.method 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.low 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.low_delta 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.low_strength 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.mid_strength 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.high 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.high_delta 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.high_strength 0
+li_sharpen_noise_filter_sharpen_coring_index_scale.method 0
+li_sharpen_noise_filter_sharpen_scale_coring.low 0
+li_sharpen_noise_filter_sharpen_scale_coring.low_delta 0
+li_sharpen_noise_filter_sharpen_scale_coring.low_strength 0
+li_sharpen_noise_filter_sharpen_scale_coring.mid_strength 0
+li_sharpen_noise_filter_sharpen_scale_coring.high 0
+li_sharpen_noise_filter_sharpen_scale_coring.high_delta 0
+li_sharpen_noise_filter_sharpen_scale_coring.high_strength 0
+li_sharpen_noise_filter_sharpen_scale_coring.method 0
+li_sharpen_noise_filter_noise.fir_specify 0
+li_sharpen_noise_filter_noise.fir_strength_iso 0
+li_sharpen_noise_filter_noise.fir_strength_dir 0
+li_sharpen_noise_filter_noise.fir_per_dir_fir_iso_strengths 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_noise.fir_per_dir_fir_dir_strengths 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_noise.fir_per_dir_fir_dir_amounts 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_noise.fir_coefs 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+li_sharpen_noise_filter_noise.level_str_adjust_low 0
+li_sharpen_noise_filter_noise.level_str_adjust_low_delta 0
+li_sharpen_noise_filter_noise.level_str_adjust_low_strength 0
+li_sharpen_noise_filter_noise.level_str_adjust_mid_strength 0
+li_sharpen_noise_filter_noise.level_str_adjust_high 0
+li_sharpen_noise_filter_noise.level_str_adjust_high_delta 0
+li_sharpen_noise_filter_noise.level_str_adjust_high_strength 0
+li_sharpen_noise_filter_noise.level_str_adjust_method 0
+li_sharpen_noise_filter_noise.max_change_up 0
+li_sharpen_noise_filter_noise.max_change_down 0
+li_sharpen_noise_filter_both.enable 0
+li_sharpen_noise_filter_both.mode 0
+li_sharpen_noise_filter_both.edge_thresh 0
+li_sharpen_noise_filter_both.wide_edge_detect 0
+li_sharpen_noise_filter_both.max_change_up5x5 0
+li_sharpen_noise_filter_both.max_change_down5x5 0
+li_sharpen_noise_filter_both.max_change_up 0
+li_sharpen_noise_filter_both.max_change_down 0
+li_sharpen_noise_filter_both.three_d_y_offset 0
+li_sharpen_noise_filter_both.three_d_u_offset 0
+li_sharpen_noise_filter_both.three_d_v_offset 0
+li_sharpen_noise_filter_both.three_d_y_shift 0
+li_sharpen_noise_filter_both.three_d_v_shift 0
+li_sharpen_noise_filter_both.three_d_u_shift 0
+li_sharpen_noise_filter_both.three_d_u_bits 0
+li_sharpen_noise_filter_both.three_d_v_bits 0
+li_sharpen_noise_filter_both.three_d_table 0
+li_advanced_spatial_filter.enable 0
+li_advanced_spatial_filter.T0T1_div_low 0
+li_advanced_spatial_filter.T0T1_div_low_delta 0
+li_advanced_spatial_filter.T0T1_div_low_strength 0
+li_advanced_spatial_filter.T0T1_div_mid_strength 0
+li_advanced_spatial_filter.T0T1_div_high 0
+li_advanced_spatial_filter.T0T1_div_high_delta 0
+li_advanced_spatial_filter.T0T1_div_high_strength 0
+li_advanced_spatial_filter.T0T1_div_method 0
+li_advanced_spatial_filter.directional_decide_t0 0
+li_advanced_spatial_filter.directional_decide_t1 0
+li_advanced_spatial_filter.max_change_up 0
+li_advanced_spatial_filter.max_change_down 0
+li_advanced_spatial_filter.fir_specify 0
+li_advanced_spatial_filter.fir_strength_iso 0
+li_advanced_spatial_filter.fir_strength_dir 0
+li_advanced_spatial_filter.fir_wide_edge_detect 0
+li_advanced_spatial_filter.fir_per_dir_fir_iso_strengths 0 0 0 0 0 0 0 0 0
+li_advanced_spatial_filter.fir_per_dir_fir_dir_strengths 0 0 0 0 0 0 0 0 0
+li_advanced_spatial_filter.fir_per_dir_fir_dir_amounts 0 0 0 0 0 0 0 0 0
+li_advanced_spatial_filter.fir_coefs 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+li_advanced_spatial_filter.level_str_adjust_low 0
+li_advanced_spatial_filter.level_str_adjust_low_delta 0
+li_advanced_spatial_filter.level_str_adjust_low_strength 0
+li_advanced_spatial_filter.level_str_adjust_mid_strength 0
+li_advanced_spatial_filter.level_str_adjust_high 0
+li_advanced_spatial_filter.level_str_adjust_high_delta 0
+li_advanced_spatial_filter.level_str_adjust_high_strength 0
+li_advanced_spatial_filter.level_str_adjust_method 0
+li_advanced_spatial_filter.alpha_min_up 0
+li_advanced_spatial_filter.alpha_max_up 0
+li_advanced_spatial_filter.T0_up 0
+li_advanced_spatial_filter.T1_up 0
+li_advanced_spatial_filter.alpha_min_down 0
+li_advanced_spatial_filter.alpha_max_down 0
+li_advanced_spatial_filter.T0_down 0
+li_advanced_spatial_filter.T1_down 0
+li_advanced_spatial_filter.three_d_y_offset 0
+li_advanced_spatial_filter.three_d_u_offset 0
+li_advanced_spatial_filter.three_d_v_offset 0
+li_advanced_spatial_filter.three_d_y_shift 0
+li_advanced_spatial_filter.three_d_v_shift 0
+li_advanced_spatial_filter.three_d_u_shift 0
+li_advanced_spatial_filter.three_d_u_bits 0
+li_advanced_spatial_filter.three_d_v_bits 0
+li_advanced_spatial_filter.three_d_table 0
+
+li_chroma_filter.enable 0
+li_chroma_filter.noise_level_cb 0
+li_chroma_filter.noise_level_cr 0
+li_chroma_filter.original_blend_strength_cb 0
+li_chroma_filter.original_blend_strength_cr 0
+li_chroma_filter.radius 0
+
+final_sharpen_noise_filter_sharpen.fir_specify 0
+final_sharpen_noise_filter_sharpen.fir_strength_iso 0
+final_sharpen_noise_filter_sharpen.fir_strength_dir 0
+final_sharpen_noise_filter_sharpen.fir_per_dir_fir_iso_strengths 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_sharpen.fir_per_dir_fir_dir_strengths 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_sharpen.fir_per_dir_fir_dir_amounts 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_sharpen.fir_coefs 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_sharpen_coring.coring_table 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_sharpen_min_coring_result.low 0
+final_sharpen_noise_filter_sharpen_min_coring_result.low_delta 0
+final_sharpen_noise_filter_sharpen_min_coring_result.low_strength 0
+final_sharpen_noise_filter_sharpen_min_coring_result.mid_strength 0
+final_sharpen_noise_filter_sharpen_min_coring_result.high 0
+final_sharpen_noise_filter_sharpen_min_coring_result.high_delta 0
+final_sharpen_noise_filter_sharpen_min_coring_result.high_strength 0
+final_sharpen_noise_filter_sharpen_min_coring_result.method 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.low 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.low_delta 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.low_strength 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.mid_strength 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.high 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.high_delta 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.high_strength 0
+final_sharpen_noise_filter_sharpen_coring_index_scale.method 0
+final_sharpen_noise_filter_sharpen_scale_coring.low 0
+final_sharpen_noise_filter_sharpen_scale_coring.low_delta 0
+final_sharpen_noise_filter_sharpen_scale_coring.low_strength 0
+final_sharpen_noise_filter_sharpen_scale_coring.mid_strength 0
+final_sharpen_noise_filter_sharpen_scale_coring.high 0
+final_sharpen_noise_filter_sharpen_scale_coring.high_delta 0
+final_sharpen_noise_filter_sharpen_scale_coring.high_strength 0
+final_sharpen_noise_filter_sharpen_scale_coring.method 0
+final_sharpen_noise_filter_noise.fir_specify 0
+final_sharpen_noise_filter_noise.fir_strength_iso 0
+final_sharpen_noise_filter_noise.fir_strength_dir 0
+final_sharpen_noise_filter_noise.fir_per_dir_fir_iso_strengths 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_noise.fir_per_dir_fir_dir_strengths 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_noise.fir_per_dir_fir_dir_amounts 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_noise.fir_coefs 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0
+final_sharpen_noise_filter_noise.level_str_adjust_low 0
+final_sharpen_noise_filter_noise.level_str_adjust_low_delta 0
+final_sharpen_noise_filter_noise.level_str_adjust_low_strength 0
+final_sharpen_noise_filter_noise.level_str_adjust_mid_strength 0
+final_sharpen_noise_filter_noise.level_str_adjust_high 0
+final_sharpen_noise_filter_noise.level_str_adjust_high_delta 0
+final_sharpen_noise_filter_noise.level_str_adjust_high_strength 0
+final_sharpen_noise_filter_noise.level_str_adjust_method 0
+final_sharpen_noise_filter_noise.max_change_up 0
+final_sharpen_noise_filter_noise.max_change_down 0
+final_sharpen_noise_filter_both.enable 0
+final_sharpen_noise_filter_both.mode 0
+final_sharpen_noise_filter_both.edge_thresh 0
+final_sharpen_noise_filter_both.wide_edge_detect 0
+final_sharpen_noise_filter_both.max_change_up5x5 0
+final_sharpen_noise_filter_both.max_change_down5x5 0
+final_sharpen_noise_filter_both.max_change_up 0
+final_sharpen_noise_filter_both.max_change_down 0
+final_sharpen_noise_filter_both.three_d_y_offset 0
+final_sharpen_noise_filter_both.three_d_u_offset 0
+final_sharpen_noise_filter_both.three_d_v_offset 0
+final_sharpen_noise_filter_both.three_d_y_shift 0
+final_sharpen_noise_filter_both.three_d_v_shift 0
+final_sharpen_noise_filter_both.three_d_u_shift 0
+final_sharpen_noise_filter_both.three_d_u_bits 0
+final_sharpen_noise_filter_both.three_d_v_bits 0
+final_sharpen_noise_filter_both.three_d_table 0
+

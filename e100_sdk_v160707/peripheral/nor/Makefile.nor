@@ -1,0 +1,12 @@
+
+NORPATH=nor
+
+ifdef CONFIG_NOR_S25FL256S
+libperipheral-objs += $(NORPATH)/AmbaCortexNOR_S25FL256S.o
+libperipheral-objs += $(NORPATH)/AmbaNOR_S25FL256S.o
+endif
+
+ifdef CONFIG_NOR_W25Q64FV
+libperipheral-objs += $(NORPATH)/AmbaCortexNOR_W25Q64FV.o
+libperipheral-objs += $(NORPATH)/AmbaNOR_W25Q64FV.o
+endif

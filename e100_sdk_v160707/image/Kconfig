@@ -1,0 +1,62 @@
+
+menu "Image Services"
+comment "Image Services"
+config IMG_SCHEDULER
+	bool "Build Image Scheduler"
+	default y
+
+if IMG_SCHEDULER
+source image/Kconfig.imgschdlr
+endif
+
+config IMG_PROC
+	bool "Build Image Wrapper for Algorithm Libraries"
+	default y
+
+if IMG_PROC
+source image/Kconfig.imgproc
+endif
+
+config IMG_CALIBRATION
+	bool "Build Image Calibration"
+	default y
+
+if IMG_CALIBRATION
+source image/Kconfig.imgcalib
+endif
+
+config IMG_ITUNER
+	bool "Build ITuner Text Parser"
+	default y
+
+if IMG_ITUNER
+source image/Kconfig.ituner
+endif
+
+config IMG_UTILS
+	bool "Build Image Utilities"
+	default y
+
+if IMG_UTILS
+source image/Kconfig.utils
+endif
+
+config IMG_ENCMONITOR
+	bool "Build Encode Monitor"
+	default y
+
+if IMG_ENCMONITOR
+source image/Kconfig.encmonitor
+endif
+
+menuconfig EIS_TASK
+        bool "Build EIS Task"
+        default y
+
+if EIS_TASK
+source image/Kconfig.eis
+endif
+
+endmenu
+
+

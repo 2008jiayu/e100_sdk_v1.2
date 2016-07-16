@@ -1,0 +1,139 @@
+#!/bin/bash
+
+optError=1
+optGCC=4.9.3-20150303
+optRmPath=1
+
+eabi_gcc_in_path()
+{
+	GCC=`which arm-none-eabi-gcc 2>&1 | grep -v 'not found' | grep -v "no arm-none-eabi-gcc"`
+
+	if [ "${GCC}" == "" ]; then
+		return 0
+	fi
+
+	GCCVER=`${GCC} -v 2>&1 | grep "gcc version" | awk '{printf "%s-%s", $3, $4}'`
+	if [ "${GCCVER}" != "${optGCC}" ]; then
+		if [ "${optRmPath}" == "1" ]; then
+			existedGCC=`which arm-none-eabi-gcc | sed -e 's@/arm-none-eabi-gcc@@'`
+			oldpath=`echo $PATH | sed -e "s@${existedGCC}@@g" | sed -e 's@::@:@g' | sed -e 's@^:@@'`
+			export PATH=${oldpath}
+		fi
+		return 0;
+	fi
+
+	return 1
+}
+
+eabi_show_ver()
+{
+	CC_VER=`arm-none-eabi-gcc -dumpversion`
+	CC_PATH=`which arm-none-eabi-gcc`
+	echo "***************************************************************"
+	echo "arm-none-eabi-gcc is in your paths!"
+	echo "Path:    $CC_PATH"
+	echo "Version: $CC_VER"
+	echo "***************************************************************"
+}
+
+export_cc_path()
+{
+	case "${optGCC}" in
+	"4.9.3-20150303")
+		if [ -e /usr/local/gcc-arm-none-eabi-4_9-2015q1/bin/arm-none-eabi-gcc  ]; then
+			export PATH=/usr/local/gcc-arm-none-eabi-4_9-2015q1/bin:$PATH
+		else
+			echo "/usr/local/gcc-arm-none-eabi-4_9-2015q1/bin/arm-none-eabi-gcc is not found."
+		fi
+		;;
+	"4.7.4-20130913")
+		if [ -e /usr/local/gcc-arm-none-eabi-4_7-2013q3/bin/arm-none-eabi-gcc  ]; then
+			export PATH=/usr/local/gcc-arm-none-eabi-4_7-2013q3/bin:$PATH
+		else
+			echo "/usr/local/gcc-arm-none-eabi-4_7-2013q3/bin/arm-none-eabi-gcc is not found."
+		fi
+		;;
+	*)
+		echo "Unknown CC version ${optGCC}"
+		;;
+	esac
+}
+
+usage()
+{
+	echo -e "\nPlease source this script instead of executing it!"
+	echo -e "Usage:"
+	echo "  -v version"
+	echo -e "\tversion: 4.9.3-20150303 (default version)"
+	echo -e "\tversion: 4.7.4-20130913"
+	echo "Example:"
+	echo ". $script_name    (source default version)"
+	echo ". $script_name -v 4.9.3-20150303"
+	echo ". $script_name -v 4.7.4-20130913"
+}
+
+#----------------------------
+
+if [[ "$0" != *"bash" ]]; then
+	script_name="$0"
+	usage
+	exit 1
+else
+	script_name="gcc-arm-none-eabi-env"
+fi
+
+# Tricky when using "source" to run this script.
+OPTIND=1
+
+while getopts ":hrv:" opt; do
+	case "${opt}" in
+	v)
+		case "${OPTARG}" in
+			"4.9.3-20150303")
+				;;
+			"4.7.4-20130913")
+				;;
+			*)
+				echo "Invalid version: ${OPTARG}"
+				optError=1
+				;;
+		esac
+		optGCC=${OPTARG}
+		optError=0
+		;;
+	h)
+		optError=1
+		;;
+	*)
+		echo "Invalid option: -$OPTARG" >&2
+		optError=1
+		;;
+	esac
+done
+
+if [[ ${optError} -ne 0 && $# -ne 0 ]]; then
+	usage
+	return 0
+fi
+
+eabi_gcc_in_path
+if [ $? -ne 0 ]; then
+	eabi_show_ver
+	return 0
+fi
+
+export_cc_path
+
+eabi_gcc_in_path
+if [ $? -eq 0 ]; then
+	echo "***************************************************************"
+	echo "arm-none-eabi-gcc not found in your paths..."
+	echo "please make sure the GNU toolchain is installed"
+	echo "and PATH is set correctly!"
+	echo "***************************************************************"
+	return 1
+else
+	eabi_show_ver
+	return 0
+fi
+

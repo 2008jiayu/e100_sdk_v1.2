@@ -1,0 +1,105 @@
+#
+# This configuration is for prfile2
+#
+menu "prfile2"
+
+config PF_CHAR_CODE_SET
+	string "The coding set for prfile2"
+	help
+		The coding set for prfile2
+	default ASCII
+
+config PF_MAX_DISK
+	int "MAX disk"
+	default 13
+
+config PF_MAX_VOLUME
+	int "MAX volume"
+	default 13
+
+config PF_MAX_FILE_NUM
+	int "MAX file number"
+	default 10
+
+config PF_MAX_DIR_NUM
+	int "Max dir number"
+	default 3
+
+config PF_MAX_CONTEXT_NUM
+	int "max context num"
+	default 0
+
+config PF_USE_API_STUB
+	int "use api stub"
+	default 0
+
+config PF_TASK_PRIORITY
+	int "high:0, middle:1, low:2"
+	default 1
+
+config PF_TASK_STACK_SIZE
+	string "stack size"
+	default 0x4000
+
+config PF_PARAM_CHECK_ENABLE
+	bool "param check enable"
+	default y
+
+config PF_UNICODE_INTERFACE_SUPPORT
+	bool "unicode interface support"
+	default y
+
+config PF_FREE_CLUSTER_SEARCH_SUPPORT
+	bool "free cluster search support"
+	default y
+
+config PF_AUTO_REGCTX_SUPPORT
+	bool "auto regctx support"
+	default n
+
+config PF_AUTO_CONTEXT_REGISTRATION
+	bool "auto context registration"
+	default n
+
+config PF_MAX_EMPTY_ENTRY_DETECT
+	hex "max empty entry detect"
+	default 0x1000
+
+config PF_SEQUENTIAL_FILE_DETECT
+	bool "sequential file detect"
+	default y
+
+config PF_DIRCACHE_SUPPORT
+	bool "dircache support"
+	default n
+
+config PF_EXFAT_SUPPORT
+	bool "exfat support"
+	default y
+
+config PF_EXFAT_SET_PERCENT_IN_USE
+	bool "set percent in use"
+	default n
+	depends on PF_EXFAT_SUPPORT
+
+config PF_EXFAT_UPDATE_VOLUME_DIRTY
+	bool "update volume dirty"
+	default n
+	depends on PF_EXFAT_SUPPORT
+
+config PF_EXFAT_CHECK_VOLUME_DIRTY
+	bool "check volume dirty"
+	default n
+	depends on PF_EXFAT_SUPPORT
+
+config PF_EXFAT_FORMAT_SUPPORT
+	bool "formate support"
+	default y
+	depends on PF_EXFAT_SUPPORT
+
+config PF_EXFAT_USE_FAT_CHAIN
+	bool "use fat chain"
+	default y
+	depends on PF_EXFAT_SUPPORT
+
+endmenu

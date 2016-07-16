@@ -1,0 +1,11 @@
+Ucode base starts at 0x00900000
+Photo liveview ucode starts at _cth0_enc_main
+                0x0090da6c                _cth0_enc_main
+Encoder ucode starts at _enc_dummy
+                0x00a30c3c                _enc_dummy
+Decoder ucode starts at cth1_dec_main
+                0x00bdc95c                _cth1_dec_main
+Load ucode from base to _cth0_enc_main for vout mode
+Load ucode from base to _enc_dummy for photo liveview mode
+Load ucode from base to _cth1_dec_main for encode mode
+Don't need to load default_binary.bin for vout mode

@@ -1,0 +1,37 @@
+menu "MISC Drivers"
+
+config EXPGPIO
+	bool "Expand GPIO"
+	default n
+
+config EXPGPIO_TI_TCA9539
+	depends on EXPGPIO
+	bool "- TI TCA9539 Expand GPIO"
+	default y
+
+config IRDA
+	bool "Infrared Controller"
+	default y
+
+config IRDA_SONY
+	depends on IRDA
+	bool "- SONY IrDA Protocol"
+	default n
+
+config IRDA_PHILIPS
+	depends on IRDA
+	bool "- PHILIPS IrDA Protocol"
+	default n
+
+config IRDA_PANASONIC
+	depends on IRDA
+	bool "- PANASONIC IrDA Protocol"
+	default n
+
+config IRDA_NEC
+	depends on IRDA
+	bool "- NEC IrDA Protocol"
+	default n
+
+endmenu
+

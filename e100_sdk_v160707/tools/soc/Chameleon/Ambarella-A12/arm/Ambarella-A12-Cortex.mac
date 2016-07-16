@@ -1,0 +1,3 @@
+; Line below will prevent file to be included in public Chameleon release
+; #Distribution:Ambarella
+echo Nothing here ...

@@ -1,0 +1,11 @@
+GSENSORPATH=g_sensor
+
+ccflags-y += -I$(src)/g_sensor/inc
+libperipheral-objs += $(GSENSORPATH)/AmbaGSensor.o
+ifdef CONFIG_G_SENSOR_ST_LIS3DE
+libperipheral-objs += $(GSENSORPATH)/AmbaGSensor_ST_LIS3DE.o
+endif
+ifdef CONFIG_G_SENSOR_MIRA_DA380
+libperipheral-objs += $(GSENSORPATH)/AmbaGSensor_MIRA_DA380.o
+endif
+

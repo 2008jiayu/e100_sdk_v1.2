@@ -1,0 +1,11 @@
+menu "G-SENSOR Driver"
+
+config G_SENSOR_ST_LIS3DE
+        bool "G_SENSOR_ST_LIS3DE"
+        default n
+
+config G_SENSOR_MIRA_DA380
+        bool "G_SENSOR_MIRA_DA380"
+        default n
+endmenu
+

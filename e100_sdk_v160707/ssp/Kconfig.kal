@@ -1,0 +1,7 @@
+config BUILD_SSP_THREADX
+        bool "Build ThreadX"
+        default y
+
+if BUILD_SSP_THREADX
+source ssp/Kconfig.threadx
+endif

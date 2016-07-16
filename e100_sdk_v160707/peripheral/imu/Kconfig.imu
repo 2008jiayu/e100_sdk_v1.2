@@ -1,0 +1,15 @@
+menu "IMU Driver"
+
+config IMU_AMBARELLA_DMY0000
+    bool "Ambarella dummy IMU"
+    default y
+    
+config IMU_INVENSENSE_MPU6500
+    bool "Invensense MPU6500"
+    default y
+
+config IMU_INVENSENSE_ICM20608
+    bool "Invensense ICM20608"
+    default n
+
+endmenu

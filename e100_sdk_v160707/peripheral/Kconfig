@@ -1,0 +1,15 @@
+menu "Peripheral"
+source peripheral/dram/Kconfig.dram
+source peripheral/sbrg/Kconfig.sbrg
+source peripheral/sensor/Kconfig.sensor
+source peripheral/yuvinput/Kconfig.yuvinput
+source peripheral/lcd/Kconfig.lcd
+source peripheral/imu/Kconfig.imu
+source peripheral/nand/Kconfig.nand
+source peripheral/nor/Kconfig.nor
+source peripheral/audio/Kconfig.audio
+source peripheral/misc/Kconfig.misc
+source peripheral/gps/Kconfig.gps
+source peripheral/g_sensor/Kconfig.g_sensor
+endmenu
+

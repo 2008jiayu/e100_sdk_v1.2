@@ -1,0 +1,5 @@
+config ENABLE_L2_CACHE
+	bool "Enable L2 cache"
+	default y
+	help
+		Enable L2 Cache.

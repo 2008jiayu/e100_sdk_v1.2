@@ -1,0 +1,39 @@
+menu "Connected camera application"
+comment "Connected camera application"
+config APP_CONNECTED_APP
+	depends on APP_CONNECTED
+	bool "Build the connected camera application"
+	default y
+
+if APP_CONNECTED_APP
+source app/Kconfig.connected.app
+endif
+
+
+config APP_CONNECTED_APPLIB
+	depends on APP_CONNECTED
+	bool "Build the connected camera application library"
+	default y
+
+if APP_CONNECTED_APPLIB
+source app/Kconfig.connected.applib
+endif
+
+config APP_CONNECTED_STAMP
+        depends on APP_CONNECTED
+        bool "Enable stamp function"
+        default y
+		
+config APP_CONNECTED_AMBA_LINK
+        depends on ENABLE_AMBALINK && APP_CONNECTED
+        bool "Enable AMBA LINK"
+        default y
+
+config APP_DSP_WORKBUFFER_SIZE
+    int "Number of MegaBytes of DSP working buffer"
+    default 260
+    help
+        In MegaBytes unit
+
+endmenu
+

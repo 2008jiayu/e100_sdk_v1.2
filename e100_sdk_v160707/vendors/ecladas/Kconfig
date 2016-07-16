@@ -1,0 +1,5 @@
+menu "ECL Adas"
+
+source vendors/ecladas/Kconfig.ecl.adas
+        
+endmenu

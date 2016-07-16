@@ -1,0 +1,10 @@
+menu "Connected camera application library"
+comment "Connected camera application library"
+
+config APP_CONNECTED_APPLIB_ALL
+	depends on APP_CONNECTED_APPLIB
+	bool "Build all of the connected camera applib"
+	default y
+
+endmenu
+

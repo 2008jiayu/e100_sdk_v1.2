@@ -1,0 +1,572 @@
+#############################################################################
+# For $(AMBA_TARGET)
+#############################################################################
+
+# sub-target that amba_all will depend on
+AMBA_TARGET :=
+# sub-target to clean that 'clean' will depend on
+AMBA_CLEAN_ALLDIRS :=
+AMBA_ALL_LINK_SHS :=
+AMBA_CLEAN_ALL :=
+
+# Define host utilities.
+ifeq ($(HOST_OS), CYGWIN)
+	export AMBA_HOST_CRC := $(call cygpath,$(objtree))/tools/exec/win/host_crc32.exe
+	export AMBA_HOST_ROMFS := $(call cygpath,$(objtree))/tools/exec/win/host_romfs_gen.exe
+	export AMBA_HOST_PERMUTATE := $(call cygpath,$(objtree))/tools/exec/win/host_permutate.exe
+	export AMBA_HOST_SDFW_GEN := $(call cygpath,$(objtree))/tools/exec/win/host_sdfw_gen.exe
+else
+	export AMBA_HOST_CRC := $(objtree)/tools/exec/lnx/host_crc32
+	export AMBA_HOST_ROMFS := $(objtree)/tools/exec/lnx/host_romfs_gen
+	export AMBA_HOST_PERMUTATE := $(objtree)/tools/exec/lnx/host_permutate
+	export AMBA_HOST_SDFW_GEN := $(objtree))/tools/exec/lnx/host_sdfw_gen
+endif
+
+# ---------------------------------------------------------------------------
+# Install path
+#      Here export default AMBA_LIB_FOLDER and AMBA_O_LIB,
+#      but then override if module declare install-path
+#      AMBA_LIB_FOLDER:
+#              default folder to put released libraries (or new compiled libraries)
+#      AMBA_O_LIB:
+#              With O=<somepath>, new compiled libraries will be put at <somepath>/lib
+#              Release libraries will also be copied to this folder.
+# ---------------------------------------------------------------------------
+
+ifeq ($(CONFIG_SSP_THREADX_SMP),y)
+AMBA_LIB_FOLDER := $(srctree)/vendors/ambarella/libsmp
+else
+AMBA_LIB_FOLDER := $(srctree)/vendors/ambarella/lib
+endif
+export AMBA_LIB_FOLDER
+
+ifneq ($(O),)
+AMBA_O_LIB := $(objtree)/lib
+export AMBA_O_LIB
+endif
+
+# Because of the quoted string format that Kconfig uses, we need to
+# destringify the following variables before processing them.
+
+BST     :=      $(shell echo $(CONFIG_BST))
+BLD     :=      $(shell echo $(CONFIG_BLD))
+PBA     :=      $(shell echo $(CONFIG_PBA))
+SYS     :=      $(shell echo $(CONFIG_SYS))
+DSP     :=      $(shell echo $(CONFIG_DSP))
+ROM     :=      $(shell echo $(CONFIG_ROM))
+ifeq ($(CONFIG_ENABLE_AMBALINK),y)
+LNX     :=      $(shell echo $(CONFIG_LNX))
+RFS     :=      $(shell echo $(CONFIG_RFS))
+else
+LNX     :=
+RFS     :=
+endif
+
+HOST_PERMUTATE_ARG      = bst
+
+ifneq ($(BLD),)
+	HOST_PERMUTATE_ARG      += bld
+endif
+
+ifneq ($(PBA),)
+	HOST_PERMUTATE_ARG      += pba
+endif
+
+ifneq ($(SYS),)
+	HOST_PERMUTATE_ARG      += sys
+endif
+
+ifneq ($(DSP),)
+	HOST_PERMUTATE_ARG      += dsp
+endif
+
+ifneq ($(ROM),)
+	HOST_PERMUTATE_ARG      += rom
+endif
+
+HOST_PERMUTATE_LNX_ARG  := $(HOST_PERMUTATE_ARG)
+ifneq ($(LNX),)
+	HOST_PERMUTATE_LNX_ARG  += lnx
+endif
+
+ifneq ($(RFS),)
+	HOST_PERMUTATE_LNX_ARG  += rfs
+endif
+
+# ---------------------------------------------------------------------------
+# Link flags for targets
+# ---------------------------------------------------------------------------
+
+# Amba Target out dir
+ifeq ("$(origin T)", "command line")
+  KBUILD_AMBA_OUT_DIR := $(T)
+endif
+ifndef KBUILD_AMBA_OUT_DIR
+# KBUILD_AMBA_OUT_DIR is a relative path to $(objtree).
+  KBUILD_AMBA_OUT_DIR := out
+endif
+export KBUILD_AMBA_OUT_DIR
+
+ifneq ($(KBUILD_AMBA_OUT_DIR),)
+# KBUILD_AMBA_FWPROG_OUT_DIR is a relative path to $(objtree).
+export KBUILD_AMBA_FWPROG_OUT_DIR := $(KBUILD_AMBA_OUT_DIR)/fwprog
+endif
+
+# ---------------------------------------------------------------------------
+# Externally visible symbols (used by link-amba_xxx.sh)
+# ---------------------------------------------------------------------------
+LDFLAGS_amba_bst := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_bst
+export DIR_amba_bst := ssp/amboot/bst
+export LDS_amba_bst := $(call cygpath,$(obj)/$(DIR_amba_bst)/amba_bst.lds)
+LINK_SH_amba_bst := $(srctree)/$(DIR_amba_bst)/link-amba_bst.sh
+
+LDFLAGS_amba_bld := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_bld
+export DIR_amba_bld := ssp/amboot/bld
+export LDS_amba_bld := $(call cygpath,$(obj)/$(DIR_amba_bld)/amba_bld.lds)
+LINK_SH_amba_bld := $(srctree)/$(DIR_amba_bld)/link-amba_bld.sh
+
+LDFLAGS_amba_pba := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_pba
+export DIR_amba_pba := app/fwupdater
+export LDS_amba_pba := $(call cygpath,$(obj)/$(DIR_amba_pba)/amba_pba.lds)
+LINK_SH_amba_pba := $(srctree)/$(DIR_amba_pba)/link-amba_pba.sh
+
+LDFLAGS_amba_ssp_svc := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_ssp_svc
+export DIR_amba_ssp_svc := ssp/svc
+export LDS_amba_ssp_svc := $(call cygpath,$(objtree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_SSP_SVC_NAME_LDS)))
+LINK_SH_amba_ssp_svc := $(srctree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_SSP_SVC_NAME_SH))
+
+LDFLAGS_amba_ssp_ut := $(LDFLAGS_amba_common)
+export DIR_amba_ssp_ut := ssp/unittest
+export LDFLAGS_amba_ssp_ut
+export LDS_amba_ssp_ut := $(call cygpath,$(objtree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_SSP_UNITTEST_NAME_LDS)))
+LINK_SH_amba_ssp_ut := $(srctree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_SSP_UNITTEST_NAME_SH))
+
+LDFLAGS_amba_mw_ut := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_mw_ut
+export DIR_amba_mw_ut := mw/unittest
+export LDS_amba_mw_ut := $(call cygpath,$(objtree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_MW_UNITTEST_NAME_LDS)))
+LINK_SH_amba_mw_ut := $(srctree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_MW_UNITTEST_NAME_SH))
+
+LDFLAGS_amba_app := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_app
+export DIR_amba_app := app
+export LDS_amba_app := $(call cygpath,$(objtree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_APP_NAME_LDS)))
+LINK_SH_amba_app := $(srctree)/$(patsubst "%",%,$(CONFIG_BUILD_AMBA_APP_NAME_SH))
+
+LDFLAGS_amba_fwprog := $(LDFLAGS_amba_common)
+export LDFLAGS_amba_fwprog
+export DIR_amba_fwprog := ssp/fwprog
+export DIR_amba_fwprog_out := .temp
+export FWPROG_OUT_DIR := $(DIR_amba_fwprog)/$(DIR_amba_fwprog_out)
+export LDS_amba_fwprog := $(call cygpath,$(obj)/$(DIR_amba_fwprog)/amba_fwprog.lds)
+LINK_SH_amba_fwprog := $(srctree)/$(DIR_amba_fwprog)/link-amba_fwprog.sh
+
+
+# ---------------------------------------------------------------------------
+# Dirs for targets
+# ---------------------------------------------------------------------------
+if_exist = $(if $(wildcard $(srctree)/$(1)), $(1))
+if_mk_exist = $(if $(wildcard $(srctree)/$(1)/Makefile), $(1))
+
+TOOLS_HOST_UTILS := $(call if_exist,tools/hostutils)
+
+# common dirs for building bld, fwprog
+nonos_common_dirs	:= $(call if_exist,bsp)
+nonos_common_dirs	+= $(call if_exist,peripheral)
+nonos_common_dirs	+= $(call if_exist,comsvc/AmbaSys)
+nonos_common_dirs	+= $(call if_exist,ssp/soc/NonOs)
+nonos_common_dirs	+= $(call if_exist,ssp/soc/arm11)
+
+# common dirs in rtos for building unittest, app
+rtos_common_dirs	:= $(TOOLS_HOST_UTILS)
+rtos_common_dirs	+= $(call if_exist,bsp)
+rtos_common_dirs	+= $(call if_exist,audio)
+rtos_common_dirs	+= $(call if_exist,comsvc)
+rtos_common_dirs	+= $(call if_exist,peripheral)
+rtos_common_dirs	+= $(call if_exist,va)
+ifeq ($(CONFIG_BUILD_GPL_LIB),y)
+rtos_common_dirs	+= $(call if_exist,vendors/gpl)
+endif
+ifeq ($(CONFIG_BUILD_FOSS_LIB),y)
+rtos_common_dirs	+= $(call if_exist,vendors/foss)
+endif
+ifeq ($(CONFIG_BUILD_ECL_ADAS),y)
+rtos_common_dirs	+= $(call if_exist,vendors/ecladas)
+endif
+ifeq ($(CONFIG_BT),y)
+rtos_common_dirs	+= $(call if_exist,vendors/bt)
+endif
+
+# common dirs in ssp for building unittest, app
+ssp_common_dirs		:= $(call if_exist,ssp/dsp)
+ssp_common_dirs		+= $(call if_exist,ssp/fs)
+ssp_common_dirs		+= $(call if_exist,ssp/kal)
+ssp_common_dirs		+= $(call if_exist,ssp/usb)
+ssp_common_dirs		+= $(call if_mk_exist,ssp/soc)
+ssp_common_dirs		+= $(call if_exist,ssp/link)
+ssp_common_dirs		+= $(call if_exist,ssp/unittest)
+ssp_common_dirs		+= $(call if_exist,image)
+ssp_common_dirs		+= $(call if_exist,vendors/ExpressLogic)
+ssp_common_dirs		+= $(call if_exist,vendors/esol)
+
+# common dirs in mw for building unittest, app
+mw_common_dirs		:= $(call if_exist,mw/cfs)
+mw_common_dirs		+= $(call if_exist,mw/dataflow)
+mw_common_dirs		+= $(call if_exist,mw/dspflow)
+mw_common_dirs		+= $(call if_exist,mw/net)
+
+# ---------------------------------------------------------------------------
+
+amba_bst-dirs		:= $(call if_exist,peripheral)
+amba_bst-dirs		+= $(call if_exist,ssp/soc/bootup/bst)
+amba_bst-dirs		+= $(call if_exist,$(DIR_amba_bst))
+
+amba_bld-dirs		:= $(nonos_common_dirs)
+amba_bld-dirs		+= $(call if_exist,ssp/soc/bootup/bld)
+amba_bld-dirs		+= $(call if_exist,$(DIR_amba_bld))
+
+amba_pba-dirs		:= $(rtos_common_dirs)
+amba_pba-dirs		+= $(call if_exist,ssp/pba)
+amba_pba-dirs		+= $(call if_exist,$(DIR_amba_pba))
+
+amba_ssp_svc-dirs	:= $(rtos_common_dirs)
+amba_ssp_svc-dirs	+= $(ssp_common_dirs)
+amba_ssp_svc-dirs	+= $(call if_exist,$(DIR_amba_ssp_svc))
+
+amba_ssp_ut-dirs	:= $(rtos_common_dirs)
+amba_ssp_ut-dirs	+= $(ssp_common_dirs)
+#amba_ssp_ut-dirs	+= $(call if_exist,$(DIR_amba_ssp_ut))
+
+amba_mw_ut-dirs		:= $(rtos_common_dirs)
+amba_mw_ut-dirs		+= $(ssp_common_dirs)
+amba_mw_ut-dirs		+= $(mw_common_dirs)
+amba_mw_ut-dirs		+= $(call if_exist,$(DIR_amba_mw_ut))
+
+amba_app-dirs		:= $(rtos_common_dirs)
+amba_app-dirs		+= $(ssp_common_dirs)
+amba_app-dirs		+= $(mw_common_dirs)
+amba_app-dirs		+= $(call if_exist,$(DIR_amba_app))
+
+amba_fwprog-dirs	+= $(call if_exist,$(DIR_amba_fwprog))
+
+# ---------------------------------------------------------------------------
+# alldirs is used for AMBA_CLEAN_ALLDIRS
+# ---------------------------------------------------------------------------
+amba_bst-alldirs		:= $(sort $(amba_bst-dirs) $(amba_bst %/,%,$(filter %/, \
+				     $(amba_bst-n)  $(amba_bst-))))
+
+amba_bld-alldirs		:= $(sort $(amba_bld-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_bld-n)  $(amba_bld-))))
+
+amba_pba-alldirs		:= $(sort $(amba_pba-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_pba-n)  $(amba_pba-))))
+
+amba_ssp_svc-alldirs		:= $(sort $(amba_ssp_svc-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_ssp_svc-n)  $(amba_ssp_svc-))))
+
+amba_ssp_ut-alldirs		:= $(sort $(amba_ssp_ut-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_ssp_ut-n)  $(amba_ssp_ut-))))
+
+amba_mw_ut-alldirs		:= $(sort $(amba_mw_ut-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_mw_ut-n)  $(amba_mw_ut-))))
+
+amba_app-alldirs		:= $(sort $(amba_app-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_app-n)  $(amba_app-))))
+
+amba_fwprog-alldirs		:= $(sort $(amba_fwprog-dirs) $(patsubst %/,%,$(filter %/, \
+				     $(amba_fwprog-n)  $(amba_fwprog-))))
+
+# ---------------------------------------------------------------------------
+# Targets and recipes
+# ---------------------------------------------------------------------------
+
+amba_bst-deps		:= $(amba_bst-dirs)
+amba_bld-deps		:= $(amba_bld-dirs)
+amba_pba-deps		:= $(amba_pba-dirs)
+amba_ssp_svc-deps	:= $(amba_ssp_svc-dirs) $(patsubst "%",%,$(CONFIG_BUILD_AMBA_SSP_SVC_NAME_LDS))
+amba_ssp_ut-deps	:= $(amba_ssp_ut-dirs) $(patsubst "%",%,$(CONFIG_BUILD_AMBA_SSP_UNITTEST_NAME_LDS))
+amba_mw_ut-deps		:= $(amba_mw_ut-dirs) $(patsubst "%",%,$(CONFIG_BUILD_AMBA_MW_UNITTEST_NAME_LDS))
+amba_fwprog-deps	:= $(amba_fwprog-dirs)
+amba_fwprog-extra-deps	:= $(nonos_common_dirs)
+amba_app-deps		:= $(amba_app-dirs) $(patsubst "%",%,$(CONFIG_BUILD_AMBA_APP_NAME_LDS))
+
+#$(warning amba_ssp_ut-deps=$(amba_ssp_ut-deps))
+
+# ---------------------------------------------------------------------------
+# Handle descending into subdirectories listed in $(amba_all-dirs)
+# Preset locale variables to speed up the build process. Limit locale
+# tweaks to this spot to avoid wrong language settings when running
+# make menuconfig etc.
+# Error messages still appears in the original language
+# ---------------------------------------------------------------------------
+
+# Except $(amba_fwprog-dirs), since it has it own rule.
+amba_all-dirs := $(sort $(amba_app-dirs) $(amba_bld-dirs) $(amba_bst-dirs) $(amba_pba-dirs) $(amba_mw_ut-dirs) $(amba_ssp_ut-dirs) $(amba_ssp_svc-dirs))
+PHONY += $(amba_all-dirs)
+$(amba_all-dirs): amba_prepare build/scripts
+	$(Q)$(MAKE) $(build)=$@
+
+FWLIST := $(DIR_amba_fwprog)/$(DIR_amba_fwprog_out)/.fwlist
+quiet_cmd_gen_fwlist = Gen $@
+      cmd_gen_fwlist = mkdir -p $(dir $(FWLIST)) && \
+			echo -n "FIRMWARES =      " > $(FWLIST) && \
+			$(AMBA_HOST_PERMUTATE) -m $(HOST_PERMUTATE_ARG) >> $(FWLIST) && \
+			$(AMBA_HOST_PERMUTATE) -m $(HOST_PERMUTATE_LNX_ARG) >> $(FWLIST)
+
+.fwlist: $(FWLIST)
+$(FWLIST): $(TOOLS_HOST_UTILS)
+	@$(call echo-cmd,gen_fwlist) $(cmd_gen_fwlist)
+
+PHONY += $(amba_fwprog-dirs)
+$(amba_fwprog-dirs): amba_prepare build/scripts $(FWLIST)
+	$(Q)$(MAKE) $(build)=$@
+
+# ---------------------------------------------------------------------------
+# Amba targets rules.
+# ---------------------------------------------------------------------------
+
+# --- amba_bst --- #
+      cmd_link-amba_bst = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_bst)
+quiet_cmd_link-amba_bst = LINK    $@
+
+AMBA_TARGET += amba_bst
+PHONY += amba_bst
+amba_bst: $(LINK_SH_amba_bst) $(amba_bst-deps) FORCE
+	+$(call if_changed,link-amba_bst)
+
+# --- amba_bld --- #
+      cmd_link-amba_bld = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_bld)
+quiet_cmd_link-amba_bld = LINK    $@
+
+AMBA_TARGET += amba_bld
+PHONY += amba_bld
+amba_bld: $(LINK_SH_amba_bld) $(amba_bld-deps) FORCE
+	+$(call if_changed,link-amba_bld)
+
+# --- amba_bld --- #
+      cmd_link-amba_pba = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_pba)
+quiet_cmd_link-amba_pba = LINK    $@
+
+# --- amba_pba --- #
+AMBA_TARGET += amba_pba
+PHONY += amba_pba
+amba_pba: $(LINK_SH_amba_pba) $(amba_pba-deps) FORCE
+	+$(call if_changed,link-amba_pba)
+
+# --- amba_ssp_svc --- #
+      cmd_link-amba_ssp_svc = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_ssp_svc)
+quiet_cmd_link-amba_ssp_svc = LINK    $@
+
+AMBA_TARGET += amba_ssp_svc
+PHONY += amba_ssp_svc
+amba_ssp_svc: $(LINK_SH_amba_ssp_svc) $(amba_ssp_svc-deps) FORCE
+	+$(call if_changed,link-amba_ssp_svc)
+
+# --- amba_ssp_ut --- #
+      cmd_link-amba_ssp_ut = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_ssp_ut)
+quiet_cmd_link-amba_ssp_ut = LINK    $@
+
+AMBA_TARGET += amba_ssp_ut
+PHONY += amba_ssp_ut
+amba_ssp_ut: $(LINK_SH_amba_ssp_ut) $(amba_ssp_ut-deps) FORCE
+	+$(call if_changed,link-amba_ssp_ut)
+
+# --- amba_mw_ut --- #
+      cmd_link-amba_mw_ut = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_mw_ut)
+quiet_cmd_link-amba_mw_ut = LINK    $@
+
+AMBA_TARGET += amba_mw_ut
+PHONY += amba_mw_ut
+amba_mw_ut: $(LINK_SH_amba_mw_ut) $(amba_mw_ut-deps) FORCE
+	+$(call if_changed,link-amba_mw_ut)
+
+# --- amba_app --- #
+      cmd_link-amba_app = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_app)
+quiet_cmd_link-amba_app = LINK    $@
+
+AMBA_TARGET += amba_app
+PHONY += amba_app
+amba_app: $(LINK_SH_amba_app) $(amba_app-deps) FORCE
+	+$(call if_changed,link-amba_app)
+	@echo TODO: Link $@ ...
+
+# --- amba_fwprog --- #
+      cmd_link-amba_fwprog = $(CONFIG_SHELL) $< $(LD) $(LDFLAGS) $(LDFLAGS_amba_fwprog)
+quiet_cmd_link-amba_fwprog = LINK    $@
+
+AMBA_TARGET += amba_fwprog
+PHONY += amba_fwprog
+amba_fwprog: $(LINK_SH_amba_fwprog) $(amba_fwprog-deps) $(amba_fwprog-extra-deps) FORCE
+	+$(call if_changed,link-amba_fwprog)
+
+
+# ---------------------------------------------------------------------------
+cmd_KOUT = $(srctree)/$(lastword $(subst /, ,$(subst /.,,$(1))))
+cmd_amba_mk = $(if $(KBUILD_VERBOSE:1=),@)$(MAKE) $(if $(O),-C $(call cmd_KOUT,$(O)) KBUILD_SRC=$(srctree) -f $(srctree)/Makefile) $(1)
+
+PHONY += amba_amboot amboot
+amba_amboot amboot:
+	+$(call cmd_amba_mk,amba_bst)
+	+$(call cmd_amba_mk,amba_bld)
+	+$(call cmd_amba_mk,amba_fwprog)
+
+PHONY += amba_amboot_clean amboot_clean
+amba_amboot_clean amboot_clean:
+	+$(call cmd_amba_mk,amba_bst_clean)
+	+$(call cmd_amba_mk,amba_bld_clean)
+	+$(call cmd_amba_mk,amba_fwprog_clean)
+
+# Default target of Ambarella SDK
+PHONY += amba_all
+amba_all:
+	@echo "$@: make start !"
+ifeq ($(CONFIG_BUILD_AMBA_SSP_UNITTEST),y)
+	+$(call cmd_amba_mk,amba_ssp_ut)
+endif
+ifeq ($(CONFIG_BUILD_AMBA_SSP_SVC),y)
+	+$(call cmd_amba_mk,amba_ssp_svc)
+endif
+ifeq ($(CONFIG_BUILD_AMBA_MW_UNITTEST),y)
+	+$(call cmd_amba_mk,amba_mw_ut)
+endif
+ifeq ($(CONFIG_BUILD_AMBA_APP),y)
+	+$(call cmd_amba_mk,amba_app)
+endif
+ifeq ($(CONFIG_BUILD_AMBA_PBA),y)
+	+$(call cmd_amba_mk,amba_pba)
+endif
+	+$(call cmd_amba_mk,amboot)
+	@echo "$@: make done !"
+
+amba_configs := $(sort $(foreach f, $(shell find $(srctree)/configs -maxdepth 1 -name "*defconfig"), $(notdir $(f))))
+cmd_target_build = $(MAKE) $${f} && $(MAKE)
+cmd_amba_targets = for f in $(1); do echo "$(cmd_target_build)" && $(cmd_target_build) || exit 1; done
+
+amba_targets:
+	@echo "build configs: $(amba_configs)"
+	+$(Q)$(call cmd_amba_targets,$(amba_configs))
+	@echo "$@: make done !"
+
+# ---------------------------------------------------------------------------
+# Clean ruls for targets
+# ---------------------------------------------------------------------------
+cmd_amba_cleandep = for i in $(1); do $(MAKE) $${i}-clean; done
+cmd_amba_clean_link_sh = \
+			for i in $(1); do \
+				if [ -s $${i} ] && [ ! -d $${i} ]; then \
+					$(CONFIG_SHELL) $${i} clean; \
+				fi \
+			done
+
+AMBA_CLEAN_ALLDIRS += $(amba_bst-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_bst)
+PHONY += amba_bst_clean
+amba_bst_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_bst-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_bst) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_bld-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_bld)
+PHONY += amba_bld_clean
+amba_bld_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_bld-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_bld) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_pba-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_pba)
+PHONY += amba_pba_clean
+amba_pba_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_pba-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_pba) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_ssp_svc-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_ssp_svc)
+PHONY += amba_ssp_svc_clean
+amba_ssp_svc_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_ssp_svc-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_ssp_svc) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_ssp_ut-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_ssp_ut)
+PHONY += amba_ssp_ut_clean
+amba_ssp_ut_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_ssp_ut-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_ssp_ut) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_mw_ut-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_mw_ut)
+PHONY += amba_mw_ut_clean
+amba_mw_ut_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_mw_ut-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_mw_ut) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_app-alldirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_app)
+PHONY += amba_app_clean
+amba_app_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_app-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_app) clean
+
+AMBA_CLEAN_ALLDIRS += $(amba_fwprog-dirs)
+AMBA_ALL_LINK_SHS += $(LINK_SH_amba_fwprog)
+PHONY += amba_fwprog_clean
+amba_fwprog_clean:
+	+$(Q)$(call cmd_amba_cleandep,$(amba_fwprog-deps))
+	$(Q)$(CONFIG_SHELL) $(LINK_SH_amba_fwprog) clean
+
+#AMBA_CLEAN_ALLDIRS := $(sort $(AMBA_CLEAN_ALLDIRS))
+AMBA_CLEAN_ALLDIRS := app audio bsp comsvc image mw peripheral ssp tools va
+
+AMBA_CLEAN_ALL += amba_clean_all
+PHONY += amba_clean_all
+amba_clean_all:
+	+$(Q)$(call cmd_amba_cleandep,$(AMBA_CLEAN_ALLDIRS))
+	+$(Q)$(call cmd_amba_clean_link_sh,$(AMBA_ALL_LINK_SHS))
+
+# ---------------------------------------------------------------------------
+# Auxiliary amba targets. Internal use.
+# ---------------------------------------------------------------------------
+ambalib-reset:
+	@echo "\"git reset --hard\" at vendors/ambarella"
+	@cd vendors/ambarella; git reset --hard
+
+ambalib-sync:
+	@echo "\"git reset --hard\" at vendors/ambarella"
+	@echo "\"repo sync .\" at vendors/ambarella"
+	@cd vendors/ambarella; git reset --hard && repo sync .
+
+PHONY += size
+size:
+	@$(srctree)/build/maintenance/dump_size.sh $(if $(SN),$(SN))
+
+
+# ---------------------------------------------------------------------------
+# distribute
+# ---------------------------------------------------------------------------
+ifeq ($(CONFIG_SOC_A9),y)
+MANIFEST = manifest_a9_ssp_svc.txt
+else ifeq ($(CONFIG_SOC_A12),y)
+MANIFEST = manifest_a12_app.txt
+endif
+MANIFEST_DIR = $(srctree)/build/manifests
+HAS_APPLIB_SRC = n
+RTOS_DIR = rtos
+
+export MANIFEST MANIFEST_DIR HAS_APPLIB_SRC RTOS_DIR
+
+# depends on MANIFEST HAS_APPLIB_SRC RTOS_DIR srctree variable.
+PHONY += distribute
+distribute:
+	@( \
+		$(MAKE) build/scripts/basic-clean; \
+		$(MAKE) build/scripts/kconfig-clean; \
+		echo MANIFEST=$(MANIFEST_DIR)/$(MANIFEST); \
+		cd $(srctree); cd .. ; \
+		if [ "$(O)" != "" ]; then cp -f $(AMBA_O_LIB)/*.a $(AMBA_LIB_FOLDER)/; fi; \
+		./${RTOS_DIR}/build/scripts/distribute \
+	)
+

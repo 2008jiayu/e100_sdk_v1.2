@@ -1,0 +1,103 @@
+#!/bin/sh
+
+clean_up()
+{
+	echo "clean up distribute..."
+	echo "    rm -rf ${OUTPUT_STEM}.* ${OUTPUT_DIR}/${RTOS_DIR}"
+	rm -rf ${OUTPUT_STEM}.* ${OUTPUT_DIR}/${RTOS_DIR}
+}
+
+if [ $# != 0 ]; then
+    echo Usage: $0
+    echo "Needs to export MANIFEST HAS_APPLIB_SRC RTOS_DIR for $0"
+    exit -1
+fi
+
+. ${MANIFEST_DIR}/${MANIFEST}
+
+if [ "$SOURCE_DIR" = "" ]; then
+    echo "\$SOURCE_DIR must be specified!"
+    exit -1
+fi
+
+if [ "$OUTPUT" = "" ]; then
+    echo "\$OUTPUT must be specified!"
+    exit -1
+fi
+
+if [ "$OUTPUT_DIR" = "" ]; then
+    echo "\$OUTPUT_DIR must be specified!"
+    exit -1
+fi
+
+SOURCE_EXPANDED_EXCLUDE="
+--exclude .gitignore
+--exclude .git
+--exclude .temp
+--exclude *.a
+--exclude *.o
+--exclude .*.cmd
+"
+
+LIB_EXPANDED_EXCLUDE="
+--exclude .gitignore
+--exclude .git
+"
+
+# Use relative path
+ln -sf build/Kconfig	${RTOS_DIR}/Kconfig
+ln -sf build/Makefile	${RTOS_DIR}/Makefile
+
+# FIXME: Tricky to remove absolute path in ${O}/Makefile.
+#        It will make 1st time "make distclean" failed at distributed package.
+if [ "${O}" != "" ]; then
+	sed -i -e 's!MAKEARGS := -C .*!MAKEARGS := -C \.\.!' ${RTOS_DIR}/${O}/Makefile
+fi
+
+mkdir -p $OUTPUT_DIR"/${RTOS_DIR}"
+
+for i in ${SOURCE_EXCLUDE}; do
+    SOURCE_EXPANDED_EXCLUDE="${SOURCE_EXPANDED_EXCLUDE} --exclude ${i} "
+done
+
+for i in ${LIB_EXCLUDE}; do
+    LIB_EXPANDED_EXCLUDE="${LIB_EXPANDED_EXCLUDE} --exclude ${i}"
+done
+
+SOURCE_DIR=$(echo ${SOURCE_DIR} | tr -s [:space:])
+LIB_DIR=$(echo ${LIB_DIR} | tr -s [:space:])
+SOURCE_EXPANDED_EXCLUDE=$(echo ${SOURCE_EXPANDED_EXCLUDE} | tr -s [:space:])
+LIB_EXPANDED_EXCLUDE=$(echo ${LIB_EXPANDED_EXCLUDE} | tr -s [:space:])
+
+echo Generating distribution package \'${OUTPUT}\' ...
+OUTPUT_TAR=`echo ${OUTPUT} | sed 's/.gz//'`
+OUTPUT_STEM=`echo ${OUTPUT} | sed 's/.gz//' | sed 's/.tar//'`
+
+# Strip debug symbol
+find ${LIB_DIR} -type f | grep "\.a" | xargs ${STRIP} --strip-debug
+
+clean_up
+echo "output is ${OUTPUT}"
+
+for i in ${SOURCE_DIR};do
+    tar --append --file=${OUTPUT_TAR} ${i} ${SOURCE_EXPANDED_EXCLUDE}
+done
+
+for i in ${LIB_DIR};do
+    tar --append --file=${OUTPUT_TAR} ${i} ${LIB_EXPANDED_EXCLUDE}
+done
+
+gzip ${OUTPUT_TAR}
+md5sum ${OUTPUT} > ${OUTPUT}.md5sum
+
+echo Unarchiving distribution package \'${OUTPUT}\' ...
+cd ${OUTPUT_DIR}
+tar xfz ${OUTPUT}
+
+echo Done
+echo "Your files are ready:"
+echo "   ${OUTPUT}"
+echo "   ${OUTPUT}.md5sum"
+echo "Please double check its contents before actual distribution!"
+echo "Good-day!"
+

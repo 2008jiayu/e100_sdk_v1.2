@@ -1,0 +1,10 @@
+menu "Car camera application library"
+comment "Car camera application library"
+
+config APP_CARDV_APPLIB_ALL
+	depends on APP_CARDV_APPLIB
+	bool "Build all of the car camera applib"
+	default y
+
+endmenu
+

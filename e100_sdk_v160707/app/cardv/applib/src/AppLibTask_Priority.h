@@ -1,0 +1,94 @@
+/**
+ * @file src/app/connected/applib/src/AppLibTask_Priority.h
+ *
+ * Applib task priority setting
+ *
+ * History:
+ *    2015/01/28 - [Annie Ting] created file
+ *
+ *
+ * Copyright (c) 2015 Ambarella, Inc.
+ *
+ * This file and its contents (¡°Software¡±) are protected by intellectual property rights
+ * including, without limitation, U.S. and/or foreign copyrights.  This Software is also the
+ * confidential and proprietary information of Ambarella, Inc. and its licensors.  You may
+ * not use, reproduce, disclose, distribute, modify, or otherwise prepare derivative
+ * works of this Software or any portion thereof except pursuant to a signed license
+ * agreement or nondisclosure agreement with Ambarella, Inc. or its authorized
+ * affiliates.	In the absence of such an agreement, you agree to promptly notify and
+ * return this Software to Ambarella, Inc.
+ *
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON-
+ * INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AMBARELLA, INC. OR ITS AFFILIATES BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; COMPUTER FAILURE OR
+ * MALFUNCTION; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+ */
+
+
+/*************************************************************************
+ * Applib Task Priority Definitions
+ ************************************************************************/
+
+#ifdef CONFIG_APP_ARD
+#define APPLIB_MUXER_MGR_TASK_PRIORITY 81
+#define APPLIB_MUXER_TASK_PRIORITY 81
+#else
+#define APPLIB_MUXER_MGR_TASK_PRIORITY 150
+#define APPLIB_MUXER_TASK_PRIORITY 153
+#endif
+#define APPLIB_DEMUXER_TASK_PRIORITY 156
+#define APPLIB_EDITOR_TASK_PRIORITY 169
+
+#define APPLIB_STORAGE_ASYNC_OP_TASK_PRIORITY 113
+#define APPLIB_COMSVC_ASYNC_OP_TASK_PRIORITY 163
+
+#define APPLIB_NET_CTRL_TASK_PRIORITY 166
+#define APPLIB_NET_PLAYER_TASK_PRIORITY 102
+
+#ifdef CONFIG_APP_ARD
+#define APPLIB_MONITOR_STORAGE_TASK_PRIORITY 114
+#else
+#define APPLIB_MONITOR_STORAGE_TASK_PRIORITY 175
+#endif
+#define APPLIB_MONITOR_SD_TASK_PRIORITY 119
+#define APPLIB_MONITOR_HDMI_TASK_PRIORITY 178
+#define APPLIB_HCMGR_TASK_PRIORITY 110
+
+#define APPLIB_STILL_DEC_TASK_PRIORITY 58
+#define APPLIB_STILL_ENC_TASK_PRIORITY 62
+#define APPLIB_STILL_PLAYER_TASK_PRIORITY 39
+#define APPLIB_STILL_TRANSCODER_TASK_PRIORITY 40
+#define APPLIB_STILL_RAW_ENC_TASK_PRIORITY 64
+#define APPLIB_STILL_RAW_CAP_TASK_PRIORITY 60
+
+#define APPLIB_AUDIO_DEC_TASK_PRIORITY 51
+#define APPLIB_AUDIO_ENC_TASK_PRIORITY 50
+#define APPLIB_AUDIO_INPUT_TASK_PRIORITY 35
+#define APPLIB_AUDIO_OUTPUT_TASK_PRIORITY 37
+
+#define APPLIB_VIDEO_DEC_TASK_PRIORITY 55
+#define APPLIB_VIDEO_ENC_TASK_PRIORITY 54
+#define APPLIB_VIDEO_PLAYER_TASK_PRIORITY 52
+#define APPLIB_VIDEO_TRANSCODER_TASK_PRIORITY 53
+
+#define APPLIB_ENC_MONITOR_VDSP_TASK_PRIORITY 31
+#define APPLIB_ENC_MONITOR_TIMER_TASK_PRIORITY 172
+
+#define APPLIB_IMAGE_SCHDLR_TASK_PRIORITY 23
+#define APPLIB_IMAGE_SCHDLR_MSG_TASK_PRIORITY 27
+#define APPLIB_VIN_HDLR_TASK_PRIORITY 20
+
+#define APPLIB_AE_TASK_PRIORITY 29
+#define APPLIB_AWB_TASK_PRIORITY 33
+#define APPLIB_ADJ_TASK_PRIORITY 69
+#define APPLIB_OB_TASK_PRIORITY 67
+
+
+

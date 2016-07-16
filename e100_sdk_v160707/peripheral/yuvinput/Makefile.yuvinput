@@ -1,0 +1,10 @@
+
+ccflags-y += -I$(src)/yuvinput/inc
+YUVINPUTPATH=yuvinput
+libperipheral-objs += $(YUVINPUTPATH)/AmbaYuv.o
+
+ifdef CONFIG_YUVINPUT_TI5150
+libperipheral-objs += $(YUVINPUTPATH)/AmbaYuv_TI5150.o \
+                      $(YUVINPUTPATH)/AmbaYuv_TI5150Table.o
+endif
+

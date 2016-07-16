@@ -1,0 +1,59 @@
+menu "Sensor Driver"
+
+config SENSOR_SONY_IMX117
+    bool "Sony IMX117"
+    default n
+
+config SENSOR_OV4689
+    bool "OmniVision OV4689"
+    default n
+    
+config SENSOR_B5_OV4689
+    bool "B5 plus OmniVision OV4689"
+    default n
+
+config SENSOR_TI913914_OV2710
+    bool "TI913/914 OV2710"
+    default n
+
+config SENSOR_SONY_IMX206
+    bool "Sony IMX206"
+    default n
+    
+config SENSOR_OV10823
+    bool "OmniVision OV10823"
+    default n
+    
+config SENSOR_AR0330_PARALLEL
+    bool "Aptina AR0330 PARALLEL"
+    default n
+
+config SENSOR_AR0230
+    bool "Aptina AR0230 HiSPi"
+    default n
+
+config SENSOR_OV9750
+    bool "OmniVision OV9750"
+    default n
+    
+config SENSOR_MN34120
+    bool "Panasonic MN34120"
+    default n
+
+config SENSOR_SONY_IMX290
+    bool "Sony IMX290"
+    default n
+
+config SENSOR_B5_AR0230
+    bool "B5 plus Aptina AR0230"
+    default n
+
+config SENSOR_B5_OV9750
+    bool "B5 plus OmniVision OV9750"
+    default n
+
+config SENSOR_MN34222
+    bool "Panasonic MN34222"
+    default n
+
+endmenu

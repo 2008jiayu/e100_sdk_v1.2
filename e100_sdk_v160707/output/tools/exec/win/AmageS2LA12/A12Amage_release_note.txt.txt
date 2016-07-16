@@ -1,0 +1,151 @@
+Branch Main:
+Version 2015/01/08:
+	Amage:  
+			1. Amage tool support video tuning
+			2. Match to SDK FW at a12sdk_6.2.001 
+			3. libusb-win32-bin-1.2.4.0.7z
+			
+			AdjBinEditor:
+				1.Liso video/still 
+				2.Hiso still/video 
+				3.Photo Preview/Scene mode
+				4.AdjTableParam/StillParam
+				5.DeStillParam/DeVideoParam
+				6.Defaultparam
+				7.Add AQP table on ADJ_FILTER_INFO_s
+				
+			Document:
+			SDK6-UG-008 1.0	AMBARELLA_SDK6_UG_A12_Amage	pdf
+
+Version 2015/03/04:
+	Amage:
+			1. Support video tuning/stillrawencode/IQtable(ADJtoDRAM).
+
+Version 2015/03/23:
+	Amage:  
+			1.fix raw alignment problem 
+			2.Merage rawencode and get jpeg bottom
+
+
+Version 2015/03/25:
+	Amage:  
+			1.add internal diag_mode
+			2.Amage Video add MCTF dc map
+
+Version 2015/03/27:
+	Amage:  
+			1.fix internal.dialog_mode parse error	
+			
+Version 2015/04/15:
+	Amage:  
+			1.StillHiso structure remove sharp and Default param structure modify
+			
+Version 2015/06/05:
+	Amage:  
+			1.Add Amage Video HDR Tuning Mode
+			
+Version 2015/07/23:
+	Amage:  
+			2.ituner save just save non-null parameters.
+			
+Version A.1.1.0 2015/08/25:
+	Amage:  
+           1.UI Auto Size.
+           2.Add parameters range information
+           3.Disable Apply/Load Rawencod button 1 seconds when those button be clicked.
+           4.Add external form for ituner update.
+           5.Fixed propertygird position when change propertygird table.
+		   6.Quick Switch Hotkey.
+		   7.Add HDR check box(save ituner in HDR mode).
+AdjBinEditor
+
+	version 20141105 including 
+			1.Liso video/still 
+			2.Hiso still/video 
+			3.Photo Preview/Scene mode
+			4.AdjTableParam/StillParam 
+			
+	version 20141112 including 
+				1.Liso video/still 
+				2.Hiso still/video 
+				3.Photo Preview/Scene mode
+				4.AdjTableParam/StillParam 
+				5.DeStillParam/DeVideoParam
+			
+	version 20141120 including 
+				1.Liso video/still 
+				2.Hiso still/video 
+				3.Photo Preview/Scene mode
+				4.AdjTableParam/StillParam 
+				5.Defaultparam
+			
+	version 20141202 ISSUE
+				fix Scene mode save error
+
+	version 20141222
+				MCTF structure changed
+				
+	version 20140115
+				Add AQP table on ADJ_FILTER_INFO_s
+				
+	version 20150326
+				1.Hide IQTable in AdjstillLiso
+				2.sharpen parameters level_str_adjust.T0/T1/alpha_min  alpha_max to iso_strength
+				3.ASF max_change/not_T0T1_alpha/down/up to level_str_adjust
+				4.Modify Liprocessing table title 
+				5.Add Notice at ASF and Sharp Enable
+				
+	version 20150723 (A.1.0.0)
+			typedef struct _AMBA_DSP_IMG_AMP_LINEARIZATION_s_ {
+			--  UINT8 HdrBlendEnable;
+				UINT8 Reserved0;//HdrMode;
+				UINT8 Reserved1;//HdrStream0Sub;
+				UINT8 Reserved2;//HdrStream1Sub;
+				UINT8 Reserved3;//HdrStream1Shift;
+				UINT8 Reserved4;//HdrAlphaMode;
+				AMBA_DSP_IMG_AMP_LINEAR_INFO_s AmpLinear[2];
+			++  UINT32 ShutterRatio;
+			} AMBA_DSP_IMG_AMP_LINEARIZATION_s;
+
+			typedef struct _IMG_PARAM_s_ {
+				UINT32                                 VersionNum;
+				
+				AMBA_DSP_IMG_CFA_LEAKAGE_FILTER_s      CfaLeakageFilterVideo;
+				AMBA_DSP_IMG_CFA_LEAKAGE_FILTER_s      CfaLeakageFilterStill;
+
+				AMBA_DSP_IMG_AAA_STAT_INFO_s           AaaStatisticsInfo;
+				
+				AMBA_DSP_IMG_LOCAL_EXPOSURE_s          LocalExposureVideo;
+				AMBA_DSP_IMG_LOCAL_EXPOSURE_s          LocalExposureStill;
+
+				AMBA_DSP_IMG_COLOR_CORRECTION_s        ColorCorrVideo;
+				AMBA_DSP_IMG_COLOR_CORRECTION_s        ColorCorrStill;
+
+				AMBA_DSP_IMG_RGB_TO_YUV_s              RgbYuvMatrixVideoTv;
+				AMBA_DSP_IMG_RGB_TO_YUV_s              RgbYuvMatrixVideoPc;
+				AMBA_DSP_IMG_RGB_TO_YUV_s              RgbYuvMatrixStill;
+
+				AMBA_DSP_IMG_CHROMA_SCALE_s            ChromaScaleVideo;
+				AMBA_DSP_IMG_CHROMA_SCALE_s            ChromaScaleStill;
+
+				AMBA_DSP_IMG_DGAIN_SATURATION_s        DGainSaturation;
+
+				AMBA_DSP_IMG_CFA_LEAKAGE_FILTER_s      HIsoCfaLeakageFilter;
+				AMBA_DSP_IMG_DEFER_COLOR_CORRECTION_s  HIsoDeferColorCorr;
+				UINT32                                 HdrFrameNum;
+				UINT32                                 FrontWbCheck;     //  0:IDSP    1:LinearTable    2:Sensor
+			++  UINT32                                 ChkDgainMode;     // 0 : none, 1 : SensorDgain,  2 : LinearDgain, 3 : IdspDgain
+				double                                 NonLinearGammaValue;
+				UINT16                                 HdrLinearTableInputValue[353];
+				AMBA_DSP_IMG_HDR_BLENDING_INFO_s       HdrBlendingInfo;
+				AMBA_DSP_IMG_HDR_ALPHA_CALC_CONFIG_s   HdrAlphaConfig0;
+				AMBA_DSP_IMG_HDR_ALPHA_CALC_THRESH_s   HdrAlphaThreshold0;
+				AMBA_DSP_IMG_AMP_LINEARIZATION_s       HdrAmpLinearization0;
+
+			} IMG_PARAM_s;
+
+			Default and Scene Mode
+				   DISABLE, disable slowshutter
+				   1, 2, 3, … : 1 will enter 1st order slowshutter, for example 60->30
+								2 will enter 2nd order slowshutter, for example 60->30->15
+			

@@ -1,0 +1,77 @@
+menu "Bluetooth"
+comment "Bluetooth"
+
+# AMBA Wrapper will be selected if BT is enabled.
+config BT
+	bool "Support Bluetooth"
+	default n
+	select BT_AMBA
+	select BT_AMBA_SRC
+	help
+		Say yes here if you want to enable Bluetooth support.
+
+if BT
+
+source build/kconfigs/Kconfig.vendors.bt.ambarella
+
+choice
+	prompt "Select vendor of Bluetooth stack"
+	help
+	  Select vendor of Bluetooth stack.
+
+config BT_BRCM
+	bool "Broadcom"
+	help
+		Usin Broadcom Bluetooth stack.
+
+endchoice
+
+
+if BT_BRCM
+
+choice
+	prompt "Select chip and module maker"
+	default BT_BRCM_BCM43340_AW
+	help
+	  Select chip and module maker.
+
+config BT_BRCM_BCM43340_AW
+	bool "bcm43340 from AW"
+	help
+		bcm43340 from AW.
+
+config BT_BRCM_BCM43340_AMPAK
+	bool "bcm43340 from Ampak"
+	help
+		bcm43340 from Ampak.
+
+config BT_BRCM_BCM43438_A0_AMPAK
+	bool "bcm43438-A0 from Ampak"
+	help
+		bcm43438-A0 from Ampak.
+		(AP6212-A0)
+
+config BT_BRCM_BCM43438_A1_AMPAK
+	bool "bcm43438-A1 from Ampak"
+	help
+		bcm43438-A1 from Ampak.
+		(AP6212-A1)
+
+config BT_BRCM_BCM43438_AW
+	bool "bcm43438 from AW"
+	help
+		bcm43438 from AW.
+
+config BT_BRCM_BCM43438_USI
+	bool "bcm43438 from USI"
+	help
+		bcm43438 from USI.
+
+endchoice # "Select chip and module maker"
+
+endif # BT_BRCM
+
+endif # BT
+
+endmenu
+

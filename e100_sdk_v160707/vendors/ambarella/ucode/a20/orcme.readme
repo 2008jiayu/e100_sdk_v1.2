@@ -1,0 +1,10 @@
+Ucode base starts at 0x00300000
+Photo liveview ucode starts at _th0_enc_main
+                0x003001a8                _th0_enc_main
+Encoder ucode starts at _me23EncH264
+                0x0031e2cc                _me23EncH264
+Decoder ucode starts at _th0_dec_main
+                0x0036287c                _th0_dec_main
+Load ucode from base to _th0_enc_main for vout mode
+Load ucode from base to _me23EncH264 for photo liveview mode
+Load ucode from base to _th0_dec_main for encode mode

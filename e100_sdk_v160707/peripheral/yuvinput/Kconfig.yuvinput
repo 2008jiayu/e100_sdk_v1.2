@@ -1,0 +1,7 @@
+menu "YUV input Driver"
+
+config YUVINPUT_TI5150
+	bool "TI 5150"
+	default n
+endmenu
+

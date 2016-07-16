@@ -1,0 +1,154 @@
+menu "Middleware Unit Test"
+config MW_UT_DSP_WORKBUFFER_SIZE
+	depends on BUILD_MW_UNITTEST
+	int "Number of MegaBytes of DSP working buffer"
+	default 260
+	help
+		In MegaBytes unit
+
+config BUILD_MW_UT_VIDEO_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Video Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_STILL_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Still Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_AUDIO_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Audio Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_EXT_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build External Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_YUV_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Yuv Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_AV_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Av Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_DUAL_VIN_ENCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Dual Vin Encode Unit Test"
+    default y
+
+config BUILD_MW_UT_ENC_TRANSCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Encode Transcode Unit Test"
+    default y
+
+config BUILD_MW_UT_VIDEO_DECODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Video Decode Unit Test"
+    default y
+
+config BUILD_MW_UT_AUDIO_DECODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Audio Decode/Beep Unit Test"
+    default y
+
+config BUILD_MW_UT_STILL_DECODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Still Decode Unit Test"
+    default y
+
+config BUILD_MW_UT_VA
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build VA Unit Test"
+    default y
+
+config BUILD_MW_UT_DEC_TRANSCODE
+    depends on BUILD_MW_FLOW && BUILD_MW_UNITTEST
+    bool "Build Dec Transcode Unit Test"
+    default y
+
+config BUILD_MW_UT_CFS
+    depends on BUILD_MW_CFS && BUILD_MW_UNITTEST
+    bool "Build CFS Unit Test"
+    default y
+
+config BUILD_MW_UT_DCF
+    depends on BUILD_MW_CFS && BUILD_MW_UNITTEST
+    bool "Build DCF Unit Test"
+    default y
+
+config BUILD_MW_UT_EDITOR
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build Editor Unit Test"
+    default y
+
+config BUILD_MW_UT_EMERGENCY_RECORDING
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build Emergency Recording Unit Test"
+    default y
+
+config BUILD_MW_UT_EVENT_RECORDING
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build Event Recording Unit Test"
+    default y
+
+config BUILD_MW_UT_EXIF_DMX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build EXIF Demuxer Unit Test"
+    default y
+
+config BUILD_MW_UT_EXIF_MUX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build EXIF Muxer Unit Test"
+    default y
+
+config BUILD_MW_UT_EXT_DMX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build External Demuxer Unit Test"
+    default y
+
+config BUILD_MW_UT_EXT_MUX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build External Muxer Unit Test"
+    default y
+
+config BUILD_MW_UT_FIO
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build FIO Unit Test"
+    default y
+
+config BUILD_MW_UT_MKV_DMX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build Matroska Demuxer Unit Test"
+    default y
+
+config BUILD_MW_UT_MKV_MUX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build Matroska Muxer Unit Test"
+    default y
+
+config BUILD_MW_UT_MOV_DMX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build MOV Demuxer Unit Test"
+    default y
+
+config BUILD_MW_UT_MOV_MUX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build MOV Muxer Unit Test"
+    default y
+
+config BUILD_MW_UT_MP4_DMX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build MP4 Demuxer Unit Test"
+    default y
+
+config BUILD_MW_UT_MP4_MUX
+    depends on BUILD_MW_CFS && BUILD_MW_FLOW && BUILD_MW_SERVICE && BUILD_MW_UNITTEST
+    bool "Build MP4 Muxer Unit Test"
+    default y
+
+endmenu

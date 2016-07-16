@@ -1,0 +1,126 @@
+
+# Install files specified by file list in one dir
+amba_install_files()
+{
+	local src=$1
+	local dst=$2
+	local src_file_array=( $3 )
+	local dst_file_array=( $4 )
+	local do_install=1
+
+	# ${#array[@]} outputs array length
+	if [[ ${#dst_file_array[@]} == 0 ]]; then
+		dst_file_array=( ${src_file_array[@]} )
+	fi
+
+	if [[ ! -d $src ]]; then
+		return $do_install
+	fi
+
+	# ${!array[@]} outputs a list of all existing array indexes
+	for i in ${!src_file_array[@]}; do
+		src_f=$(basename ${src_file_array[i]})
+	    dst_f=$(basename ${dst_file_array[i]})
+
+		do_install=$(( do_install+1 ))
+
+		mkdir -p $dst
+		cp -a $src/$src_f $dst/$dst_f
+
+		if [[ ${KBUILD_VERBOSE} == 1 ]]; then
+			echo "cp -a $src/$src_f $dst/$dst_f"
+		fi
+	done
+
+	return $do_install
+}
+
+# Install files in multiple dirs recursively
+check_if_install_dir()
+{
+	local src=$1
+	local dst=$2
+	local recursive=$3
+	local install_file=1
+
+	if [[ ! -d $src ]]; then
+		return $do_install
+	fi
+
+	if [[ "$recursive" == "yes" ]]; then
+		local file_list=`find $src -name "*.h"`
+	else
+		local file_list=`find $src -maxdepth 1 -type f -name "*.h"`
+	fi
+
+	for f in $file_list; do
+		f=$(basename $f)
+		#echo src_file=$src/$f
+		#echo dst_file=$dst/$f
+		install_file=$(( install_file+1 ))
+	done
+
+	if [[ $install_file == 0 ]];then
+		return 0
+	else
+		return 1
+	fi
+}
+
+amba_install_dirs()
+{
+	local src=$1
+	local dst=$2
+	local dir_list=$3
+	local recursive=$4
+	local files_in_dir=$5
+	local do_install=1
+
+	for d in $dir_list; do
+		# Check if any files in dir needs to install
+		if [[ $files_in_dir == "yes" ]]; then
+			check_if_install_dir $src/$d $dst $recursive
+		else
+			check_if_install_dir $src/$d $dst/$d $recursive
+		fi
+
+		if [[ $? == 1 ]]; then
+			do_install=$(( do_install+1 ))
+
+			#echo $src/$d
+			#echo dst=$dst
+			if [[ $files_in_dir == "yes" ]]; then
+				mkdir -p $dst
+				if [[ $recursive == "yes" ]]; then
+					local cmd="cp -a $src/$d/* $dst"
+				else
+					local cmd="cp -a $src/$d/*.h $dst"
+			    fi
+			else
+				# workaround: windows delete the dir would cause error
+				mkdir -p $dst/$d
+				local cmd="cp -a $src/$d $dst"
+			fi
+
+			$cmd
+ 			if [[ ${KBUILD_VERBOSE} == 1 ]]; then
+ 				echo $cmd
+ 			fi
+		fi
+	done
+
+	return $do_install
+}
+
+
+amba_install_show()
+{
+	local module_name=$1
+	local do_install=$2
+
+	if [[ $do_install != 0 ]]; then
+		if [[ ${KBUILD_VERBOSE} == 0 ]]; then
+			echo "  INSTALL_HEADERS  $module_name"
+		fi
+	fi
+}

@@ -1,0 +1,67 @@
+menu "NAND Driver"
+
+config NAND_CT49248DD962D1
+	bool "CT49248DD962D1"
+	default n
+
+config NAND_CT49248NS962D1
+	bool "CT49248NS962D1"
+	default n
+
+config NAND_H27U2G8F2C
+	bool "H27U2G8F2C"
+	default n
+
+config NAND_S34ML04G1
+	bool "S34ML04G1"
+	default n
+
+config NAND_S34ML04G2
+	bool "S34ML04G2"
+	default n	
+
+config NAND_S34ML02G1
+	bool "S34ML02G1"
+	default n
+
+config NAND_S34ML02G2
+	bool "S34ML02G2"
+	default n	
+
+config NAND_S34ML01G1
+	bool "S34ML01G1"
+	default n	
+
+config NAND_S34ML01G2
+	bool "S34ML01G2"
+	default n	
+
+config NAND_MX30LF1G08AA
+	bool "MX30LF1G08AA"
+	default n	
+
+config NAND_MX30UF2G16AB
+	bool "MX30UF2G16AB"
+	default n
+
+	
+config NAND_K9F2G08U0C
+	bool "K9F2G08U0C"
+	default n
+
+config NAND_F59L1G81A
+	bool "ESMT F59L1G81A"
+	default n
+
+config NAND_F59L1G81LA
+	bool "ESMT F59L1G81LA"
+	default n
+
+config NAND_PSU2GA30BT
+	bool "PSU2G30BT"
+	default n
+
+config NAND_PSU4GA30AT
+	bool "PSU4G30AT"
+	default n
+endmenu

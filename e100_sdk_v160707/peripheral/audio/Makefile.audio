@@ -1,0 +1,20 @@
+
+ccflags-y += -I$(src)/audio/inc
+AUDIOPATH=audio
+
+libperipheral-objs += $(AUDIOPATH)/AmbaAudio_CODEC.o
+ifdef CONFIG_AUDIO_TITLV320AIC3256
+libperipheral-objs += $(AUDIOPATH)/AmbaAudio_TLV320AIC3256.o
+endif
+
+ifdef CONFIG_AUDIO_WM8974
+libperipheral-objs += $(AUDIOPATH)/AmbaAudio_WM8974.o
+endif
+
+ifdef CONFIG_AUDIO_ALC5660
+libperipheral-objs += $(AUDIOPATH)/AmbaAudio_ALC5660.o
+endif
+
+ifdef CONFIG_AUDIO_AK4951EN
+libperipheral-objs += $(AUDIOPATH)/AmbaAudio_AK4951EN.o
+endif

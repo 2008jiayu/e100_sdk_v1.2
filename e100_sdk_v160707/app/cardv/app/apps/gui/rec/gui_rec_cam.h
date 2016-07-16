@@ -1,0 +1,249 @@
+/**
+  * @file src/app/apps/gui/rec/gui_rec_cam.h
+  *
+  *  Header of Sport Recorder (sensor) GUI display flows
+  *
+  * History:
+  *    2013/08/09 - [Martin Lai] created file
+  *
+  *
+ * Copyright (c) 2015 Ambarella, Inc.
+ *
+ * This file and its contents (¡°Software¡±) are protected by intellectual property rights
+ * including, without limitation, U.S. and/or foreign copyrights.  This Software is also the
+ * confidential and proprietary information of Ambarella, Inc. and its licensors.  You may
+ * not use, reproduce, disclose, distribute, modify, or otherwise prepare derivative
+ * works of this Software or any portion thereof except pursuant to a signed license
+ * agreement or nondisclosure agreement with Ambarella, Inc. or its authorized
+ * affiliates.	In the absence of such an agreement, you agree to promptly notify and
+ * return this Software to Ambarella, Inc.
+ *
+ * THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,
+ * INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON-
+ * INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE ARE
+ * DISCLAIMED. IN NO EVENT SHALL AMBARELLA, INC. OR ITS AFFILIATES BE LIABLE FOR
+ * ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+ * DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE
+ * GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; COMPUTER FAILURE OR
+ * MALFUNCTION; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+ * THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+ * (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF
+ * THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+  */
+
+#include <string.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <AmbaDataType.h>
+#include <applib.h>
+#include <apps/apps.h>
+#include <apps/gui/utility/gui_utility.h>
+
+#ifndef APP_GUI_REC_CAM_H_
+#define APP_GUI_REC_CAM_H_
+
+__BEGIN_C_PROTO__
+
+typedef enum _GUI_REC_CAM_GUI_CMD_e_ {
+    GUI_FLUSH = 0,
+    GUI_HIDE_ALL,
+    GUI_SET_LAYOUT,
+    GUI_APP_VIDEO_ICON_SHOW,
+    GUI_APP_PHOTO_ICON_SHOW,
+    GUI_APP_ICON_HIDE,
+    GUI_POWER_STATE_SHOW,
+    GUI_POWER_STATE_HIDE,
+    GUI_POWER_STATE_UPDATE,
+    GUI_CARD_SHOW,
+    GUI_CARD_HIDE,
+    GUI_CARD_UPDATE,
+    GUI_WARNING_SHOW,
+    GUI_WARNING_HIDE,
+    GUI_WARNING_UPDATE,
+    GUI_FLASHLIGHT_SHOW,
+    GUI_DETECT_MOTION_ICON_SHOW,
+    GUI_DETECT_MOTION_ICON_HIDE, 
+    GUI_CALIBRATION_ICON_SHOW,
+    GUI_CALIBRATION_ICON_HIDE,
+    GUI_FLASHLIGHT_HIDE,
+    GUI_FLASHLIGHT_HL,
+    GUI_FLASHLIGHT_UPDATE,
+    GUI_SELFTIMER_SHOW,
+    GUI_SELFTIMER_HIDE,
+    GUI_SELFTIMER_HL,
+    GUI_SELFTIMER_UPDATE,
+    GUI_PHOTO_SIZE_SHOW,
+    GUI_PHOTO_SIZE_HIDE,
+    GUI_PHOTO_SIZE_HL,
+    GUI_PHOTO_SIZE_UPDATE,
+    GUI_PHOTO_QUALITY_SHOW,
+    GUI_PHOTO_QUALITY_HIDE,
+    GUI_PHOTO_QUALITY_HL,
+    GUI_PHOTO_QUALITY_UPDATE,
+    GUI_CAP_MODE_SHOW,
+    GUI_CAP_MODE_HIDE,
+    GUI_CAP_MODE_HL,
+    GUI_CAP_MODE_UPDATE,
+    GUI_VIDEO_SENSOR_RES_SHOW,
+    GUI_VIDEO_SENSOR_RES_HIDE,
+    GUI_VIDEO_SENSOR_RES_HL,
+    GUI_VIDEO_SENSOR_RES_UPDATE,
+    GUI_VIDEO_QUALITY_SHOW,
+    GUI_VIDEO_QUALITY_HIDE,
+    GUI_VIDEO_QUALITY_HL,
+    GUI_VIDEO_QUALITY_UPDATE,
+    GUI_REC_MODE_SHOW,
+    GUI_REC_MODE_HIDE,
+    GUI_REC_MODE_HL,
+    GUI_REC_MODE_UPDATE,
+    GUI_STAMP_SET_MODE,
+    GUI_STAMP_SHOW,
+    GUI_STAMP_HIDE,
+    GUI_STAMP_UPDATE_SIZE,
+    GUI_STAMP_UPDATE_DATE,
+    GUI_STAMP_UPDATE_TIME,
+#ifdef CONFIG_APP_ARD
+	GUI_STAMP_UPDATE_DRIVERID,
+#endif
+    GUI_SELFTIMER_COUNTDOWN_SHOW,
+    GUI_SELFTIMER_COUNTDOWN_HIDE,
+    GUI_SELFTIMER_COUNTDOWN_UPDATE,
+    GUI_REC_STATE_SHOW,
+    GUI_REC_STATE_HIDE,
+    GUI_REC_STATE_UPDATE,
+    GUI_REC_TIMER_SHOW,
+    GUI_REC_TIMER_HIDE,
+    GUI_REC_TIMER_UPDATE,
+    GUI_REC_EMERGENCY_SHOW,
+    GUI_REC_EMERGENCY_HIDE,
+    GUI_ZOOMBAR_SHOW,
+    GUI_ZOOMBAR_HIDE,
+    GUI_ZOOMBAR_UPDATE,
+    GUI_PREVIEW_IMG_SHOW,
+    GUI_PREVIEW_IMG_HIDE,
+    GUI_PREVIEW_IMG_UPDATE,
+    GUI_PREVIEW_IMG_PLAY,
+    GUI_PREVIEW_PROC_SET,
+    GUI_PREVIEW_PROC_TRIGGER,
+    GUI_WIFI_STATUS_SHOW,
+    GUI_FSD_MODE_SHOW,
+    GUI_FSD_MODE_HIDE,
+    GUI_FSD_MODE_UPDATE,
+    GUI_SUR_COVER_SHOW,
+    GUI_SUR_COVER_HIDE,
+    GUI_SUR_COVER_UPDATE,
+    GUI_ADAS_STAMP_SHOW,
+    GUI_ADAS_STAMP_HIDE,
+    GUI_ADAS_STAMP_UPDATE,
+#ifdef CONFIG_APP_ARD
+    GUI_MIC_ICON_SHOW,
+    GUI_MIC_ICON_HIDE,
+    GUI_ADAS_CEL_SHOW,
+    GUI_ADAS_CEL_HIDE,
+    // GUI_ADAS_CEL_SET_SHOW,
+    // GUI_ADAS_CEL_SET_HIDE,
+    GUI_EVENT_ICON_SHOW,
+    GUI_EVENT_ICON_HIDE,
+    GUI_GPS_STATUS_ICON_SHOW,
+    GUI_GPS_STATUS_ICON_HIDE,
+    GUI_SPLIT_TIME_ICON_SHOW,
+    GUI_SPLIT_TIME_ICON_HIDE,
+    GUI_EVENT_NUM_SHOW,
+    GUI_PHOTO_NUM_SHOW,
+    GUI_PHOTO_NUM_HIDE,
+    GUI_EVENT_NUM_HIDE,
+    GUI_HDR_ICON_SHOW,
+    GUI_HDR_ICON_HIDE,
+    GUI_DATE_TIME_SHOW,
+    GUI_DATE_TIME_HIDE,
+    GUI_UPDATE_DATE_TIME,
+#endif
+} GUI_REC_CAM_GUI_CMD_e;
+
+/* Flashlight state parameters */
+typedef enum _GUI_REC_CAM_FLASHLIGHT_STATE_ID_e_ {
+    GUI_FLASHLIGHT_OFF = 0,
+    GUI_FLASHLIGHT_AUTO,
+    GUI_FLASHLIGHT_ON,
+    GUI_FLASHLIGHT_CHARGING
+} GUI_REC_CAM_FLASHLIGHT_STATE_ID_e;
+
+/* Self-timer state parameters */
+typedef enum _GUI_REC_CAM_SELFTIMER_STATE_ID_e_ {
+    GUI_SELFTIMER_OFF = 0,
+    GUI_SELFTIMER_3S = 3,
+    GUI_SELFTIMER_5S = 5,
+    GUI_SELFTIMER_10S = 10
+} GUI_REC_CAM_SELFTIMER_STATE_ID_e;
+
+/* quality parameters */
+typedef enum _GUI_REC_CAM_QUALITY_ID_e_ {
+    GUI_SFINE = 0,
+    GUI_FINE,
+    GUI_NORMAL
+} GUI_REC_CAM_QUALITY_ID_e;
+
+/* Record state parameters */
+typedef enum _GUI_REC_CAM_STATE_ID_e_ {
+    GUI_REC_START = 0,
+    GUI_REC_PAUSED,
+    GUI_REC_PRE_RECORD
+} GUI_REC_CAM_STATE_ID_e;
+
+/* Record mode parameters */
+typedef enum _GUI_REC_CAM_RECORD_MODE_ID_e_ {
+    GUI_MODE_DEFAULT = 0,
+    GUI_MODE_TIME_LAPSE_1S,
+    GUI_MODE_TIME_LAPSE_2S,
+    GUI_MODE_TIME_LAPSE_5S,
+    GUI_MODE_TIME_LAPSE_30S,
+    GUI_MODE_PRE_RECORD,
+    GUI_MODE_DUAL_STREAMS,
+    GUI_MODE_PRE_RECORD_DUAL_STREAMS
+} GUI_REC_CAM_RECORD_MODE_ID_e;
+
+#define GUI_STAMP_OFF           (0)
+#define GUI_STAMP_DATE          (1)
+#define GUI_STAMP_TIME          (2)
+#ifdef CONFIG_APP_ARD
+#define GUI_STAMP_DRIVER_ID     (4)
+#define GUI_STAMP_AREA     		(8)
+#endif
+
+/* Stamp date parameters */
+typedef struct _GUI_REC_CAM_STAMP_DATE_s_ {
+    UINT16 Year;
+    UINT8 Month;
+    UINT8 Day;
+} GUI_REC_CAM_STAMP_DATE_s;
+
+/* Stamp time parameters */
+typedef struct _GUI_REC_CAM_STAMP_TIME_s_ {
+    UINT8 Update_h_m;
+    UINT8 Hour;
+    UINT8 Minute;
+    UINT8 Second;
+} GUI_REC_CAM_STAMP_TIME_s;
+
+/* Stamp time parameters */
+typedef struct _GUI_REC_CAM_STAMP_UPDATE_INFO_s_ {
+    UINT8 GuiObjId;
+    UINT32 Left;
+    UINT32 Top;
+    UINT32 Width;
+    UINT32 Height;
+} GUI_REC_CAM_STAMP_UPDATE_INFO_s;
+
+/* Face/Smile GUI parameters */
+typedef enum _GUI_REC_CAM_FSD_MODE_ID_e_ {
+    GUI_FSD_OFF = 0,
+    GUI_FSD_ON,
+    GUI_SMILE_SHUTTER
+} GUI_REC_CAM_FSD_MODE_ID_e;
+
+
+extern int gui_rec_cam_func(UINT32 guiCmd, UINT32 param1, UINT32 param2);
+
+__END_C_PROTO__
+
+#endif /* APP_GUI_REC_CAM_H_ */

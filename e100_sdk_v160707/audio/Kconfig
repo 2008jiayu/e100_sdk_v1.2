@@ -1,0 +1,12 @@
+menu "Audio"
+
+config AUDIO_SYS
+	bool "Audio System Library"
+	default y
+
+if AUDIO_SYS
+source audio/Kconfig.audio_sys
+endif
+
+endmenu
+

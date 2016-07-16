@@ -1,0 +1,78 @@
+menu "System Support Package"
+
+menuconfig BUILD_SSP_AMBOOT
+        bool "Build Amboot"
+        default y
+
+source ssp/Kconfig.amboot
+
+menuconfig BUILD_SSP_DSP
+        bool "Build Dsp Support Package"
+        default y
+
+if BUILD_SSP_DSP
+source ssp/Kconfig.dsp
+endif
+
+menuconfig BUILD_SSP_FS
+        bool "Build AmbaFS"
+        default y
+
+if BUILD_SSP_FS
+source ssp/Kconfig.fs
+endif
+
+menuconfig BUILD_SSP_KAL
+        bool "Build AmbaKAL"
+        default y
+
+if BUILD_SSP_KAL
+source ssp/Kconfig.kal
+endif
+
+menuconfig BUILD_SSP_LINK
+        bool "Build AmbaLink"
+        default y
+
+menuconfig BUILD_SSP_SOC
+        bool "Build SOC"
+        default y
+
+if BUILD_SSP_SOC
+source ssp/Kconfig.soc
+endif
+
+menuconfig BUILD_SSP_SVC
+        bool "Build SerVice Code"
+        default y
+
+if BUILD_SSP_SVC
+source ssp/Kconfig.svc
+endif
+
+menuconfig BUILD_SSP_USB
+        bool "Build AmbaUSB"
+        default y
+
+if BUILD_SSP_USB
+source ssp/Kconfig.usb
+endif
+
+menuconfig BUILD_SSP_USBX
+        bool "Build USBX"
+        default y
+
+if BUILD_SSP_USBX
+source ssp/Kconfig.usbx
+endif
+
+comment "Unit Test"
+menuconfig BUILD_SSP_UNITTEST
+        bool "Build SSP UnitTest"
+        default y
+
+if BUILD_SSP_UNITTEST
+source ssp/Kconfig.unittest
+endif
+
+endmenu

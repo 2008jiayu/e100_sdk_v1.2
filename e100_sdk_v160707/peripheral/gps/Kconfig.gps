@@ -1,0 +1,11 @@
+menu "GPS Driver"
+
+config ECL_RADAR_MODEL
+        bool "ECL_RADAR"
+        default n
+
+config GPS_UBLOX6_GM6XX
+        bool "GPS_GM6XX"
+        default n
+endmenu
+

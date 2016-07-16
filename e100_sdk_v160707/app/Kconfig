@@ -1,0 +1,55 @@
+menu "Application"
+comment "Application"
+
+config APP
+	bool "Build Application"
+	default y
+
+if APP
+choice
+	prompt "Select application"
+	default APP_CONNECTED
+	help
+	  Select Select application
+
+config APP_CONNECTED
+	bool "Connected camera"
+	help
+	  Connected camera
+
+config APP_CONNECTED_MULTI_VIN
+	bool "Connected camera with multi-vin"
+	help
+	  Connected camera with multi-vin
+	  
+config APP_POLICECAM
+	bool "Police camera"
+	help
+	  Police camera
+
+config APP_CARDV
+	bool "Car camera"
+	help
+	  Car camera	  
+	  
+endchoice
+
+if APP_CONNECTED
+source app/Kconfig.connected
+endif
+
+if APP_CONNECTED_MULTI_VIN
+source app/Kconfig.connectedmultivin
+endif
+
+if APP_POLICECAM
+source app/Kconfig.policecam
+endif
+
+if APP_CARDV
+source app/Kconfig.cardv
+endif
+
+endif
+
+endmenu

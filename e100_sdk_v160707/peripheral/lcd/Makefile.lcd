@@ -1,0 +1,25 @@
+
+ccflags-y += -I$(src)/lcd/inc
+LCDPATH=lcd
+
+libperipheral-objs += $(LCDPATH)/AmbaLCD.o
+
+ifdef CONFIG_LCD_WDF9648W
+libperipheral-objs += $(LCDPATH)/AmbaLCD_WDF9648W.o
+endif
+
+ifdef CONFIG_LCD_T20P52
+libperipheral-objs += $(LCDPATH)/AmbaLCD_T20P52.o
+endif
+
+ifdef CONFIG_LCD_T30P61
+libperipheral-objs += $(LCDPATH)/AmbaLCD_T30P61.o
+endif
+
+ifdef CONFIG_LCD_T27P05
+libperipheral-objs += $(LCDPATH)/AmbaLCD_T27P05.o
+endif
+
+ifdef CONFIG_LCD_SSD2828
+libperipheral-objs += $(LCDPATH)/AmbaLCD_SSD2828.o
+endif

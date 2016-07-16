@@ -1,0 +1,71 @@
+
+NANDPATH=nand
+
+#
+# Firmware Programmer uses universal NON-OS driver
+#
+
+ifndef CONFIG_ENABLE_EMMC_BOOT
+libperipheral-objs += $(NANDPATH)/AmbaCortexNAND_K9F2G08U0C.o
+endif
+
+ifdef CONFIG_NAND_CT49248DD962D1
+libperipheral-objs += $(NANDPATH)/AmbaNAND_CT49248DD962D1.o
+endif
+
+ifdef CONFIG_NAND_CT49248NS962D1
+libperipheral-objs += $(NANDPATH)/AmbaNAND_CT49248NS962D1.o
+endif
+
+ifdef CONFIG_NAND_H27U2G8F2C
+libperipheral-objs += $(NANDPATH)/AmbaNAND_H27U2G8F2C.o
+endif
+
+ifdef CONFIG_NAND_K9F2G08U0C
+libperipheral-objs += $(NANDPATH)/AmbaNAND_K9F2G08U0C.o
+endif
+
+ifdef CONFIG_NAND_S34ML02G1
+libperipheral-objs += $(NANDPATH)/AmbaNAND_S34ML02G1.o
+endif
+
+ifdef CONFIG_NAND_S34ML04G1
+libperipheral-objs += $(NANDPATH)/AmbaNAND_S34ML04G1.o
+endif
+
+ifdef CONFIG_NAND_S34ML02G2
+libperipheral-objs += $(NANDPATH)/AmbaNAND_S34ML02G2.o
+endif
+
+ifdef CONFIG_NAND_S34ML01G1
+libperipheral-objs += $(NANDPATH)/AmbaNAND_S34ML01G1.o
+endif
+
+ifdef CONFIG_NAND_S34ML01G2
+libperipheral-objs += $(NANDPATH)/AmbaNAND_S34ML01G2.o
+endif
+
+ifdef CONFIG_NAND_S34ML04G2
+libperipheral-objs += $(NANDPATH)/AmbaNAND_S34ML04G2.o
+endif
+
+ifdef CONFIG_NAND_F59L1G81A
+libperipheral-objs += $(NANDPATH)/AmbaNAND_F59L1G81A.o
+endif
+
+ifdef CONFIG_NAND_F59L1G81LA
+libperipheral-objs += $(NANDPATH)/AmbaNAND_F59L1G81LA.o
+endif
+
+
+ifdef CONFIG_NAND_PSU2GA30BT
+libperipheral-objs += $(NANDPATH)/AmbaNAND_PSU2GA30BT.o
+endif
+
+ifdef CONFIG_NAND_PSU4GA30AT
+libperipheral-objs += $(NANDPATH)/AmbaNAND_PSU4GA30AT.o
+endif
+
+ifdef CONFIG_NAND_MX30UF2G16AB
+libperipheral-objs += $(NANDPATH)/AmbaNAND_MX30UF2G16AB.o
+endif

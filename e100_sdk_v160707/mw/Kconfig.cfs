@@ -1,0 +1,14 @@
+menu "CFS"
+comment "CFS"
+config MW_CFS_LOGM_ENABLE
+    depends on BUILD_MW_CFS
+    bool "Enable CFS Log Module"
+    default n
+
+config MW_CFS_GDMA_COPY_ENABLE
+    depends on BUILD_MW_CFS
+    bool "Enable GDMA Copy"
+    default y
+
+endmenu
+

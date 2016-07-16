@@ -1,0 +1,44 @@
+menu "Audio Codec Lib Select"
+
+config ENABLE_AAC_ENCODER
+    bool "AAC Encoder"
+    default y
+
+config ENABLE_ADPCM_ENCODER
+    bool "ADPCM Encoder"
+    default n
+
+config ENABLE_AC3_ENCODER
+    bool "AC3 Encoder"
+    default n
+
+config ENABLE_MPEG_ENCODER
+    bool "MPEG Encoder"
+    default n
+
+config ENABLE_OPUS_ENCODER
+    bool "OPUS Encoder"
+    default n
+
+config ENABLE_AAC_DECODER
+    bool "AAC Decoder"
+    default y
+
+config ENABLE_ADPCM_DECODER
+    bool "ADPCM Decoder"
+    default n
+
+config ENABLE_AC3_DECODER
+    bool "AC3 Decoder"
+    default n
+
+config ENABLE_MPEG_DECODER
+    bool "MPEG Decoder"
+    default n
+
+config ENABLE_OPUS_DECODER
+    bool "OPUS Decoder"
+    default n
+
+endmenu
+

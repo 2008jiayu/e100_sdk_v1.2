@@ -1,0 +1,14 @@
+<! here is for anyone testing >
+idfjidfjijfqwqqe
+joe modify first file.
+a test for merge
+
+<! here is NOTE >
+1, rom
+rtos\app\cardv\app\rom\app         <-- rtos\vendors\ambarella\romfs\app\cardv
+rtos\app\cardv\app\rom\image       <-- rtos\vendors\ambarella\image
+
+2, ucode
+rtos\app\cardv\app\rom\ucode.list  <-- rtos\vendors\ambarella\ucode\x00\ucode.list
+
+

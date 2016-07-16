@@ -1,0 +1,18 @@
+
+ccflags-y += -I$(src)/imu/inc
+
+IMUPATH=imu
+libperipheral-objs += $(IMUPATH)/AmbaIMU.o
+#libperipheral-objs += $(IMUPATH)/AmbaIMU_UnitTest.o
+
+ifdef CONFIG_IMU_AMBARELLA_DMY0000
+libperipheral-objs += $(IMUPATH)/AmbaIMU_DMY0000.o
+endif
+
+ifdef CONFIG_IMU_INVENSENSE_MPU6500
+libperipheral-objs += $(IMUPATH)/AmbaIMU_MPU6500.o
+endif
+
+ifdef CONFIG_IMU_INVENSENSE_ICM20608
+libperipheral-objs += $(IMUPATH)/AmbaIMU_ICM20608.o
+endif

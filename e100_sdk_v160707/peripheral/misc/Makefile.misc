@@ -1,0 +1,24 @@
+
+ccflags-y += -I$(src)/misc/inc
+MISCPATH=misc
+
+
+ifdef CONFIG_EXPGPIO_TI_TCA9539
+libperipheral-objs += $(MISCPATH)/AmbaExpGPIO_TCA9539.o
+endif
+
+ifdef CONFIG_IRDA_SONY
+libperipheral-objs += $(MISCPATH)/AmbaIR_Sony.o
+endif
+
+ifdef CONFIG_IRDA_PHILIPS
+libperipheral-objs += $(MISCPATH)/AmbaIR_Philips.o
+endif
+
+ifdef CONFIG_IRDA_NEC
+libperipheral-objs += $(MISCPATH)/AmbaIR_NEC.o
+endif
+
+ifdef CONFIG_IRDA_PANASONIC
+libperipheral-objs += $(MISCPATH)/AmbaIR_Panasonic.o
+endif

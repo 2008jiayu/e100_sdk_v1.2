@@ -1,0 +1,82 @@
+#
+# For a description of the syntax of this configuration file,
+# see build/scripts/Documentation/kbuild/kconfig-language.txt.
+#
+
+source bsp/Kconfig
+source ssp/Kconfig.link
+source ssp/Kconfig.fwprog
+
+menu "System Build Selection"
+
+config BUILD_GPL_LIB
+        bool "Build GPL lib"
+	default n
+	help
+	  Enable this option to build GPL lib for experimental purpose only.
+	  The GPL programs are located at vendors/gpl.
+	  Please DO NOT enable options for MP.
+
+if BUILD_GPL_LIB
+config BUILD_GPL_LIB_BM
+	bool "Benchmark utilities"
+	default n
+	help
+	  Enable some benchmark utilities, e.g.
+	  Dhrystone, Whetstone, Linpack, etc.
+
+endif
+
+menuconfig BUILD_FOSS_LIB
+        bool "Build FOSS lib"
+	default n
+	help
+	  Enable this option to build Free Open Source Software.
+	  FOSS is non-GPL open source software.
+
+if BUILD_FOSS_LIB
+config BUILD_FOSS_GPSD
+        bool "Build GPS Daemon in FOSS library"
+	default n
+
+config BUILD_FOSS_FREETYPE
+        bool "Build Free Type in FOSS library"
+	default n
+
+config BUILD_FOSS_OPENCV
+        bool "Build OpenCV in FOSS library"
+	default n
+
+config BUILD_FOSS_LIBJPEG_TURBO
+        bool "Build libjpeg-turbo in FOSS library"
+	default n
+
+endif
+
+menu "Host Utility Selection"
+config BUILD_HOST_CRC
+        bool "Build Host CRC"
+	default n
+	help
+	  Enable this option to build tools/hostutils/host_crc32
+
+config BUILD_HOST_ROMFS_GEN
+        bool "Build Host ROMFS Generator"
+	default n
+	help
+	  Enable this option to build tools/hostutils/host_romfs_gen
+
+config BUILD_HOST_PERMUTATE
+        bool "Build Host Permutate"
+	default n
+	help
+	  Enable this option to build tools/hostutils/host_permutate
+
+config BUILD_HOST_SDFW_GEN
+        bool "Build Host SDFW Generator"
+	default y
+	help
+	  Enable this option to build tools/hostutils/host_sdfw_gen
+endmenu
+
+endmenu

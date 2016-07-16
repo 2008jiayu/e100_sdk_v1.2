@@ -1,0 +1,63 @@
+config BT_AMBA
+	bool "BT wrapper from Ambarella"
+	default y
+	help
+	  Ambarella provide simple and consistent wrapper for Bluetooth stacks.
+
+if BT_AMBA
+
+config BT_AMBA_SRC
+	bool "Have source codes of BT wrapper from Ambarella"
+	default n
+	help
+	  For development.
+
+if BT_AMBA_SRC
+
+config BT_BOOT_RST_BY_SW
+	bool "Reset BT by SW when booting up"
+	default y
+	help
+	  HW does not support power sequence well, so need to be reset by SW.
+
+config BT_RST_PIN
+	int "Pin number of reseting BT chip"
+	default 9
+	help
+	  Pin number of reseting bluetooth chip.
+	  Low: reset
+	  High: work
+
+config BT_PM_ENABLE
+	bool "Enable BT power management"
+	default y
+	help
+	  If BT chip supports pin to trigger power saving mode, say Y.
+
+config BT_PM_PIN
+	int "Pin number of BT chip power management"
+	default 8
+	help
+	  Pin number of BT chip power management.
+	  Low: wake-up
+	  High: sleep
+
+config BT_AMBA_SMP
+	bool "Support SMP pairing"
+	default y
+	help
+	  SMP pairing.
+	  Store keys to SD card during SMP for fast bonding.
+
+config BT_BRCM_SNOOP
+	bool "Enable snoop log for BT debugging."
+	default n
+	depends on BT_BRCM
+	help
+	  Enable snoop log for bluetooth HCI commands.
+	  Log will be saved as btsnoop.* at SD card.
+
+endif # BT_AMBA_SRC
+
+endif # BT_AMBA
+

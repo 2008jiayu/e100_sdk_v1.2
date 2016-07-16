@@ -1,0 +1,5 @@
+menu "DCF"
+comment "Design rule for Camera File system"
+
+endmenu
+

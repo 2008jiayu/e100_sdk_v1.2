@@ -1,0 +1,25 @@
+#
+# For a description of the syntax of this configuration file,
+# see build/scripts/Documentation/kbuild/kconfig-language.txt.
+#
+mainmenu "Ambarella SDK Configuration"
+
+source build/kconfigs/Kconfig.arch
+source build/kconfigs/Kconfig.build_options
+
+comment "System Configuration"
+source build/kconfigs/Kconfig.system
+
+comment "Modules Configuration"
+source app/Kconfig
+source audio/Kconfig
+source comsvc/Kconfig
+source image/Kconfig
+source mw/Kconfig
+source ssp/Kconfig
+source tools/Kconfig
+source va/Kconfig
+
+comment "Third-party vendors"
+source build/kconfigs/Kconfig.vendors.bt
+source vendors/ecladas/Kconfig.ecl.adas

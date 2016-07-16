@@ -1,0 +1,4 @@
+make distclean
+# make a12_app_cardv_goat_ar0230_defconfig
+make a12_app_cardv_goat_ar0230_defconfig
+make

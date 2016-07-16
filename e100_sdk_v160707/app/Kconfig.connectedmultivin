@@ -1,0 +1,39 @@
+menu "Connected camera with multi-vin application"
+comment "Connected camera with multi-vin application"
+config APP_CONNECTED_MULTI_VIN_APP
+	depends on APP_CONNECTED_MULTI_VIN
+	bool "Build the connected camera with multi-vin application"
+	default y
+
+if APP_CONNECTED_MULTI_VIN_APP
+source app/Kconfig.connectedmultivin.app
+endif
+
+
+config APP_CONNECTED_MULTI_VIN_APPLIB
+	depends on APP_CONNECTED_MULTI_VIN
+	bool "Build the connected camera with multi-vin application library"
+	default y
+
+if APP_CONNECTED_MULTI_VIN_APP
+source app/Kconfig.connectedmultivin.applib
+endif
+
+config APP_CONNECTED_STAMP
+        depends on APP_CONNECTED_MULTI_VIN
+        bool "Enable stamp function"
+        default y
+
+config APP_CONNECTED_AMBA_LINK
+        depends on ENABLE_AMBALINK && APP_CONNECTED_MULTI_VIN
+        bool "Enable AMBA LINK"
+        default y
+
+config APP_DSP_WORKBUFFER_SIZE
+    int "Number of MegaBytes of DSP working buffer"
+    default 260
+    help
+        In MegaBytes unit
+
+endmenu
+

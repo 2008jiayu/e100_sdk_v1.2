@@ -1,0 +1,4 @@
+config EIS_ALGO_ENABLE
+        bool "Enable EIS Algorithm"
+        default n
+

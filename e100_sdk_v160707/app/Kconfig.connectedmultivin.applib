@@ -1,0 +1,10 @@
+menu "Connected camera with multi-vin application library"
+comment "Connected camera with multi-vin application library"
+
+config APP_CONNECTED_MULTI_VIN_APPLIB_ALL
+	depends on APP_CONNECTED_MULTI_VIN_APPLIB
+	bool "Build all of the connected camera with multi-vin applib"
+	default y
+
+endmenu
+

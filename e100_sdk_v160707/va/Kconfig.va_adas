@@ -1,0 +1,10 @@
+config ENABLE_VA_ADAS
+        bool "Enable Video Analytic for ADAS"
+        default y
+
+config BUILD_VA_ADAS
+        depends on ENABLE_VA_ADAS
+        bool "Build Video Analytic for ADAS"
+        default y
+
+

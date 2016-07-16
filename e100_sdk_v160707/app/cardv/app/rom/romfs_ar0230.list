@@ -1,0 +1,134 @@
+<!------------------------------------------------------------------------------------------------------------- ->
+<!- @FileName       :: romfs_ar0230.list                                                                        ->
+<!-                                                                                                             ->
+<!- @Description    :: the file list for Ambarella DSP uCodes                                                   ->
+<!-                                                                                                             ->
+<!- @History        ::                                                                                          ->
+<!-      Date        Name        Comments                                                                       ->
+<!-      13/11/2014  C.Y.       Created                                                                         ->
+<!- 																											->
+<!-                                                                                                             ->
+<!- Copyright (c) 2015 Ambarella, Inc.                                                                          ->
+<!-                                                                                                             ->
+<!- This file and its contents (¡°Software¡±) are protected by intellectual property rights                     ->
+<!- including, without limitation, U.S. and/or foreign copyrights.  This Software is also the                   ->
+<!- confidential and proprietary information of Ambarella, Inc. and its licensors.  You may                     ->
+<!- not use, reproduce, disclose, distribute, modify, or otherwise prepare derivative                           ->
+<!- works of this Software or any portion thereof except pursuant to a signed license							->
+<!- agreement or nondisclosure agreement with Ambarella, Inc. or its authorized                                 ->
+<!- affiliates.	In the absence of such an agreement, you agree to promptly notify and                           ->
+<!- return this Software to Ambarella, Inc.                                                                     ->
+<!-                                                                                                             ->
+<!- THIS SOFTWARE IS PROVIDED "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES,                                    ->
+<!- INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF NON-                                               ->
+<!- INFRINGEMENT, MERCHANTABILITY, AND FITNESS FOR A PARTICULAR PURPOSE ARE                                     ->
+<!- DISCLAIMED. IN NO EVENT SHALL AMBARELLA, INC. OR ITS AFFILIATES BE LIABLE FOR								->
+<!- ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL                                      ->
+<!- DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE                                           ->
+<!- GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; COMPUTER FAILURE OR                                       ->
+<!- MALFUNCTION; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY                                            ->
+<!- THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT                                         ->
+<!- (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF                                    ->
+<!- THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.         		                            ->
+<!------------------------------------------------------------------------------------------------------------- ->
+
+<romfs>
+    <!- Relative path from the top directory of the build ->
+    <top>app/cardv/app/rom/</top>
+
+    <!- cardv romfs data 'app' ->
+    <file>app/bitmaps_8bit.bin<alias>bitmaps.bin</alias></file>
+    <file>app/clut.bin<alias>clut.bin</alias></file>
+    <file>app/fonts.bin<alias>fonts.bin</alias></file>
+    <file>app/cour.ttf<alias>cour.ttf</alias></file>
+    <file>app/strings.bin<alias>strings.bin</alias></file>
+    <file>app/invalid.jpg<alias>invalid.jpg</alias></file>
+    <file>app/logo.jpg<alias>logo.jpg</alias></file>
+    <file>app/audio.jpg<alias>audio.jpg</alias></file>
+    <file>app/power_on_48k.pcm<alias>power_on_48k.pcm</alias></file>
+    <file>app/power_off_48k.pcm<alias>power_off_48k.pcm</alias></file>
+    <file>app/error_48k.pcm<alias>error_48k.pcm</alias></file>
+    <file>app/optone_48k.pcm<alias>optone_48k.pcm</alias></file>
+    <file>app/FCMD_48k.pcm<alias>FCMD_48k.pcm</alias></file>
+    <file>app/FCWS_48k.pcm<alias>FCWS_48k.pcm</alias></file>
+    <file>app/LDWS_48k.pcm<alias>LDWS_48k.pcm</alias></file>
+    <file>app/LLWS_48k.pcm<alias>LLWS_48k.pcm</alias></file>
+    <!- cardv romfs data 'image' ->
+    <file>image/defaulttable/A12_CC_Reg.bin<alias>A12_CC_Reg.bin</alias></file>
+    
+
+    <file>image/iqtable/ar0230/idspbins/Cc_bw_gamma_lin_still.bin<alias>cc3d_cc_bw_gamma_lin_still.bin</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_bw_gamma_lin_video.bin<alias>cc3d_cc_bw_gamma_lin_video.bin</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Video0.bin<alias>VideoCc0</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Video1.bin<alias>VideoCc1</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Video2.bin<alias>VideoCc2</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Video3.bin<alias>VideoCc3</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Video4.bin<alias>VideoCc4</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Still0.bin<alias>StillCc0</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Still1.bin<alias>StillCc1</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Still2.bin<alias>StillCc2</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Still3.bin<alias>StillCc3</alias></file>
+    <file>image/iqtable/ar0230/idspbins/Cc_Still4.bin<alias>StillCc4</alias></file>
+
+    <file>image/iqtable/ar0230/bins/Adj_PhotoPreview00.bin<alias>adj_photo_default_00_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_PhotoPreview01.bin<alias>adj_photo_default_01_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_VideoPc00.bin<alias>adj_video_default_00_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_VideoPc01.bin<alias>adj_video_default_01_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_VideoHIso00.bin<alias>adj_hiso_video_default_00_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_VideoHIso01.bin<alias>adj_hiso_video_default_01_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_StillLIso00.bin<alias>adj_still_default_00_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_StillLIso01.bin<alias>adj_still_default_01_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_StillHIso00.bin<alias>adj_hiso_still_default_00_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/Adj_StillHIso00.bin<alias>adj_hiso_still_default_01_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/ScSet01Param.bin<alias>scene_data_s01_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/ScSet02Param.bin<alias>scene_data_s02_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/ScSet03Param.bin<alias>scene_data_s03_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/ScSet04Param.bin<alias>scene_data_s04_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/ScSet05Param.bin<alias>scene_data_s05_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/ImageParam.bin<alias>img_default_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/DefaultParams.bin<alias>aaa_default_00_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/StillParam.bin<alias>adj_still_idx_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/VideoParam.bin<alias>adj_video_idx_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/DeVideoParam.bin<alias>de_default_video_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/DeStillParam.bin<alias>de_default_still_Ar0230</alias></file>
+    <file>image/iqtable/ar0230/bins/AdjTableParam.bin<alias>adj_table_param_default_Ar0230</alias></file>
+
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_bw_gamma_lin_still.bin<alias>cc3d_cc_bw_gamma_lin_still_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_bw_gamma_lin_video.bin<alias>cc3d_cc_bw_gamma_lin_video_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Video0.bin<alias>VideoCc0_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Video1.bin<alias>VideoCc1_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Video2.bin<alias>VideoCc2_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Video3.bin<alias>VideoCc3_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Video4.bin<alias>VideoCc4_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Still0.bin<alias>StillCc0_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Still1.bin<alias>StillCc1_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Still2.bin<alias>StillCc2_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Still3.bin<alias>StillCc3_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/idspbins/Cc_Still4.bin<alias>StillCc4_Ar0230hdr</alias></file>
+
+    <file>image/iqtable/ar0230hdr/bins/Adj_PhotoPreview00.bin<alias>adj_photo_default_00_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_PhotoPreview01.bin<alias>adj_photo_default_01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_VideoPc00.bin<alias>adj_video_default_00_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_VideoPc01.bin<alias>adj_video_default_01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_VideoHIso00.bin<alias>adj_hiso_video_default_00_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_VideoHIso01.bin<alias>adj_hiso_video_default_01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_StillLIso00.bin<alias>adj_still_default_00_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_StillLIso01.bin<alias>adj_still_default_01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_StillHIso00.bin<alias>adj_hiso_still_default_00_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/Adj_StillHIso00.bin<alias>adj_hiso_still_default_01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/ScSet01Param.bin<alias>scene_data_s01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/ScSet02Param.bin<alias>scene_data_s02_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/ScSet03Param.bin<alias>scene_data_s03_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/ScSet04Param.bin<alias>scene_data_s04_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/ScSet05Param.bin<alias>scene_data_s05_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/ImageParam.bin<alias>img_default_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/DefaultParams.bin<alias>aaa_default_00_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/DefaultParams01.bin<alias>aaa_default_01_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/StillParam.bin<alias>adj_still_idx_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/VideoParam.bin<alias>adj_video_idx_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/DeVideoParam.bin<alias>de_default_video_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/DeStillParam.bin<alias>de_default_still_Ar0230hdr</alias></file>
+    <file>image/iqtable/ar0230hdr/bins/AdjTableParam.bin<alias>adj_table_param_default_Ar0230hdr</alias></file>
+    <file>image/calibration/ar230/warp/default/calib6.bin<alias>calib6.bin</alias></file>
+    <file>image/calibration/ar230/ca/default/calib13.bin<alias>calib13.bin</alias></file>
+</romfs>
